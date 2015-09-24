@@ -15,9 +15,9 @@ import readline
 import dateutil.parser as parser
 import collections
 
-nested_dict = lambda: collections.defaultdict(nested_dict)
+#nested_dict = lambda: collections.defaultdict(nested_dict)
 
-data = nested_dict()
+data = { } 
 
 class tabCompleter(object):
 	def pathCompleter(self,text,state):
@@ -70,7 +70,6 @@ def find_new(key, d):
 def get_input_for(key, dflt_txt, d):
 	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
 	t = tabCompleter()
-	#t.createListCompleter(find_new(key, d))
 	t.createListCompleter(list(set(find(key, d))))
 	readline.set_completer_delims('\t')
 	readline.parse_and_bind("tab: complete")
@@ -85,7 +84,7 @@ def get_taskid(d):
 	else:
 		print "Existing tasks: "
 		for tid in d.keys():
-			print tid.split("-")[1], d[tid]["title"]
+			print tid.split("-")[1], d[tid]["task title"]
 		dflt_txt = str(len(d.keys())+1)
 		readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
 		task_id = raw_input("Enter task no.")
@@ -96,37 +95,85 @@ def get_taskid(d):
 			sys.exit(0)
 	return task_id
 
-def add_task(data):
-	default =  time.strftime("%Y-%m-%d")
-	date = get_input_for("date", default, data)
-	(yy, mm, dd) = (str(parser.parse(date).year), str(parser.parse(date).month), 
-			str(parser.parse(date).day))
+def add_task(data, tid, stid, yy, mm, dd):
+	#default =  time.strftime("%Y-%m-%d")
+	#date = get_input_for("date", default, data)
+	#(yy, mm, dd) = (str(parser.parse(date).year), str(parser.parse(date).month), 
+	#		str(parser.parse(date).day))
 	
-	id = get_taskid(data[yy][mm][dd])
-	taskid = "task-" + str(id)
-	td = data[yy][mm][dd][taskid]
-	#task = data[yy][mm][dd][taskid]	
-	#sid = get_taskid(task)
-	#subtaskid = "subtask-" + str(sid)
-	#td = task[subtaskid]
-	if id <= len(td.keys()):   ## edit existing data
-		td["title"] = get_input_for("title", td["title"], data)
-		td["start"] = get_input_for("start", td["start"], data)
-		td["end"] = get_input_for("end", td["end"], data)
-		td["type"] = get_input_for("type", td["type"], data)
-		td["project"] = get_input_for("project", td["project"], data)
-		td["link"] = get_input_for("link", td["link"], data)
-		td["detail"] = get_input_for("detail", td["detail"], data)
-		td["attachment"] = get_input_for("attachment", td["attachment"], data)
-		td["status"] = get_input_for("status", td["status"], data)
-	else:		
-		td["title"] = get_input_for("title", "", data)
-		td["start"] = get_input_for("start", "", data)
-		td["end"] = get_input_for("end", "", data)
-		td["type"] = get_input_for("type", "", data)
-		td["project"] = get_input_for("project", "", data)
-		td["link"] = get_input_for("link", "", data)
-		td["detail"] = get_input_for("detail", "", data)
-		td["attachment"] = get_input_for("attachment", "", data)
-		td["status"] = get_input_for("status", "open", data)
+	#id = get_taskid(data[yy][mm][dd])
+	yy = str(yy)
+	mm = str(mm)
+	dd = str(dd)
+	taskid = "task-" + str(tid)
+	subtaskid = "subtask-" + str(stid)
+
+	try:
+		data[yy]
+	except:	
+		data[yy] = {}
+	try:
+		data[yy][mm]
+	except:
+		data[yy][mm] = {}
+	try:
+		data[yy][mm][dd]
+	except:
+		data[yy][mm][dd] = {}
+	try:
+		data[yy][mm][dd][taskid]
+		title = data[yy][mm][dd][taskid]["task title"]
+	except:
+		data[yy][mm][dd][taskid]= {}
+		title = ""
+	data[yy][mm][dd][taskid]["task title"]= get_input_for("task title", title, data)
+	try:
+		data[yy][mm][dd][taskid][subtaskid]
+		title = data[yy][mm][dd][taskid][subtaskid]["subtask title"]
+	except:
+		data[yy][mm][dd][taskid][subtaskid] = {}
+		title = ""
+	data[yy][mm][dd][taskid][subtaskid]["subtask title"] = get_input_for("subtask title", title, data)
+	data[yy][mm][dd][taskid][subtaskid]["start"] = get_input_for("start", "", data)
+
+#	if taskid in data[yy][mm][dd].keys():
+#		task["task title"] = get_input_for("task title", task["task title"], data)
+#	if task
+#	sid = get_taskid(task)
+#	subtaskid = "subtask-" + str(sid)
+#	if id <= len(task.keys()):
+#		task["task title"] = get_input_for("task title", task["task title"], data)
+#		td = task[subtaskid]
+#		if sid <= len(td.keys()):   ## edit existing data
+#			td["title"] = get_input_for("title", td["title"], data)
+#			td["start"] = get_input_for("start", td["start"], data)
+#			td["end"] = get_input_for("end", td["end"], data)
+#			td["type"] = get_input_for("type", td["type"], data)
+#			td["project"] = get_input_for("project", td["project"], data)
+#			td["link"] = get_input_for("link", td["link"], data)
+#			td["detail"] = get_input_for("detail", td["detail"], data)
+#			td["attachment"] = get_input_for("attachment", td["attachment"], data)
+#			td["status"] = get_input_for("status", td["status"], data)
+#		else:		
+#			td["title"] = get_input_for("title", "", data)
+#			td["start"] = get_input_for("start", "", data)
+#			td["end"] = get_input_for("end", "", data)
+#			td["type"] = get_input_for("type", "", data)
+#			td["project"] = get_input_for("project", "", data)
+#			td["link"] = get_input_for("link", "", data)
+#			td["detail"] = get_input_for("detail", "", data)
+#			td["attachment"] = get_input_for("attachment", "", data)
+#			td["status"] = get_input_for("status", "open", data)
+#	else:
+#		task["task title"] = get_input_for("task title", "", data)
+#		td = task[subtaskid]
+#		td["title"] = get_input_for("title", "", data)
+#		td["start"] = get_input_for("start", "", data)
+#		td["end"] = get_input_for("end", "", data)
+#		td["type"] = get_input_for("type", "", data)
+#		td["project"] = get_input_for("project", "", data)
+#		td["link"] = get_input_for("link", "", data)
+#		td["detail"] = get_input_for("detail", "", data)
+#		td["attachment"] = get_input_for("attachment", "", data)
+#		td["status"] = get_input_for("status", "open", data)
 
