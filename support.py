@@ -95,7 +95,25 @@ def get_taskid(d):
 			sys.exit(0)
 	return task_id
 
-def add_task(data, tid, stid, yy, mm, dd):
+def sorted_key_list(data):
+	sdata = {}
+	lst = []
+	for yy in sorted(data.keys(), key=int):
+		yyd = data[yy]
+		for mm in sorted(yyd.keys(), key=int):
+			mmd = yyd[mm]
+			for dd in sorted(mmd.keys(), key=int):
+				ddd = mmd[dd]
+				for task in sorted(ddd.keys()):
+					taskd = ddd[task]
+					for key in sorted(taskd.keys()):
+						if "subtask-" in key:
+							subtask = key 
+							subtaskd = taskd[subtask]
+							lst.append((yy,mm,dd,task,subtask))
+	return lst
+
+def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	#default =  time.strftime("%Y-%m-%d")
 	#date = get_input_for("date", default, data)
 	#(yy, mm, dd) = (str(parser.parse(date).year), str(parser.parse(date).month), 
@@ -123,57 +141,40 @@ def add_task(data, tid, stid, yy, mm, dd):
 	try:
 		data[yy][mm][dd][taskid]
 		title = data[yy][mm][dd][taskid]["task title"]
+		project = data[yy][mm][dd][taskid]["project"]
 	except:
 		data[yy][mm][dd][taskid]= {}
 		title = ""
-	data[yy][mm][dd][taskid]["task title"]= get_input_for("task title", title, data)
+		project = ""
+	task = data[yy][mm][dd][taskid]
+	task["project"]= get_input_for("project", project, data)
+	task["task title"]= get_input_for("task title", title, data)
 	try:
-		data[yy][mm][dd][taskid][subtaskid]
-		title = data[yy][mm][dd][taskid][subtaskid]["subtask title"]
+		subtask =task[subtaskid]
+		title = subtask["subtask title"]
+		start = subtask["start"]
+		end = subtask["end"]
+		type = subtask["type"]
+		link = subtask["link"]
+		detail = subtask["detail"]
+		attachment = subtask["attachment"]
+		status = subtask["status"]
 	except:
-		data[yy][mm][dd][taskid][subtaskid] = {}
+		subtask = task[subtaskid] = {}
 		title = ""
-	data[yy][mm][dd][taskid][subtaskid]["subtask title"] = get_input_for("subtask title", title, data)
-	data[yy][mm][dd][taskid][subtaskid]["start"] = get_input_for("start", "", data)
-
-#	if taskid in data[yy][mm][dd].keys():
-#		task["task title"] = get_input_for("task title", task["task title"], data)
-#	if task
-#	sid = get_taskid(task)
-#	subtaskid = "subtask-" + str(sid)
-#	if id <= len(task.keys()):
-#		task["task title"] = get_input_for("task title", task["task title"], data)
-#		td = task[subtaskid]
-#		if sid <= len(td.keys()):   ## edit existing data
-#			td["title"] = get_input_for("title", td["title"], data)
-#			td["start"] = get_input_for("start", td["start"], data)
-#			td["end"] = get_input_for("end", td["end"], data)
-#			td["type"] = get_input_for("type", td["type"], data)
-#			td["project"] = get_input_for("project", td["project"], data)
-#			td["link"] = get_input_for("link", td["link"], data)
-#			td["detail"] = get_input_for("detail", td["detail"], data)
-#			td["attachment"] = get_input_for("attachment", td["attachment"], data)
-#			td["status"] = get_input_for("status", td["status"], data)
-#		else:		
-#			td["title"] = get_input_for("title", "", data)
-#			td["start"] = get_input_for("start", "", data)
-#			td["end"] = get_input_for("end", "", data)
-#			td["type"] = get_input_for("type", "", data)
-#			td["project"] = get_input_for("project", "", data)
-#			td["link"] = get_input_for("link", "", data)
-#			td["detail"] = get_input_for("detail", "", data)
-#			td["attachment"] = get_input_for("attachment", "", data)
-#			td["status"] = get_input_for("status", "open", data)
-#	else:
-#		task["task title"] = get_input_for("task title", "", data)
-#		td = task[subtaskid]
-#		td["title"] = get_input_for("title", "", data)
-#		td["start"] = get_input_for("start", "", data)
-#		td["end"] = get_input_for("end", "", data)
-#		td["type"] = get_input_for("type", "", data)
-#		td["project"] = get_input_for("project", "", data)
-#		td["link"] = get_input_for("link", "", data)
-#		td["detail"] = get_input_for("detail", "", data)
-#		td["attachment"] = get_input_for("attachment", "", data)
-#		td["status"] = get_input_for("status", "open", data)
+		start = ""
+		end = ""
+		type = ""
+		link = ""
+		detail = ""
+		attachment = ""
+		status = ""
+	subtask["subtask title"] = get_input_for("subtask title", title, data)
+	subtask["start"] = get_input_for("start", start, data)
+	subtask["end"] = get_input_for("end", end, data)
+	subtask["type"] = get_input_for("type", type, data)
+	subtask["link"] = get_input_for("link", link, data)
+	subtask["detail"] = get_input_for("detail", detail, data)
+	subtask["attachment"] = get_input_for("attachment", attachment, data)
+	subtask["status"] = get_input_for("status", status, data)
 
