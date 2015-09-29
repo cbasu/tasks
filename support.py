@@ -78,22 +78,32 @@ def get_input_for(key, dflt_txt, d):
 	return raw_input(text)
 	
 def get_taskid(d):
-	id = len(d.keys())
-	if id == 0:
-		task_id = 1
-	else:
-		print "Existing tasks: "
-		for tid in d.keys():
-			print tid.split("-")[1], d[tid]["task title"]
-		dflt_txt = str(len(d.keys())+1)
-		readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
-		task_id = raw_input("Enter task no.")
-		try:
-			task_id = int(task_id)
-		except:
-			print "error"
-			sys.exit(0)
+	try:
+		id = len(d.keys())
+	except:
+		return 1
+	print "Existing tasks: "
+	for tid in d.keys():
+		print tid.split("-")[1], d[tid]["task title"]
+	dflt_txt = str(len(d.keys())+1)
+	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
+	task_id = raw_input("Enter task no.")
+	try:
+		task_id = int(task_id)
+	except:
+		print "error"
+		sys.exit(0)
 	return task_id
+
+def new_subtaskid(d):
+	sid = 1
+	try:
+		for k in d.keys():
+			if "subtask-" in k:
+				sid = sid + 1
+	except:
+		pass
+	return sid
 
 def sorted_key_list(data):
 	sdata = {}
@@ -123,8 +133,8 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	yy = str(yy)
 	mm = str(mm)
 	dd = str(dd)
-	taskid = "task-" + str(tid)
-	subtaskid = "subtask-" + str(stid)
+	taskid =  str(tid)
+	subtaskid = str(stid)
 
 	try:
 		data[yy]
@@ -142,19 +152,21 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		data[yy][mm][dd][taskid]
 		title = data[yy][mm][dd][taskid]["task title"]
 		project = data[yy][mm][dd][taskid]["project"]
+		type = data[yy][mm][dd][taskid]["type"]
 	except:
 		data[yy][mm][dd][taskid]= {}
 		title = ""
 		project = ""
+		type = ""
 	task = data[yy][mm][dd][taskid]
 	task["project"]= get_input_for("project", project, data)
 	task["task title"]= get_input_for("task title", title, data)
+	task["type"]= get_input_for("type", type, data)
 	try:
 		subtask =task[subtaskid]
 		title = subtask["subtask title"]
 		start = subtask["start"]
 		end = subtask["end"]
-		type = subtask["type"]
 		link = subtask["link"]
 		detail = subtask["detail"]
 		attachment = subtask["attachment"]
@@ -164,7 +176,6 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		title = ""
 		start = ""
 		end = ""
-		type = ""
 		link = ""
 		detail = ""
 		attachment = ""
@@ -172,9 +183,11 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	subtask["subtask title"] = get_input_for("subtask title", title, data)
 	subtask["start"] = get_input_for("start", start, data)
 	subtask["end"] = get_input_for("end", end, data)
-	subtask["type"] = get_input_for("type", type, data)
 	subtask["link"] = get_input_for("link", link, data)
 	subtask["detail"] = get_input_for("detail", detail, data)
 	subtask["attachment"] = get_input_for("attachment", attachment, data)
 	subtask["status"] = get_input_for("status", status, data)
+	f = open('data.txt','w')
+	f.write(json.dumps(data, indent=4))
+	f.close()
 

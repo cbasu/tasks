@@ -17,10 +17,8 @@ except:
 #print "add task"
 #
 
-edit_task_kernel(data, 1, 1, 2015, 12, 9)
+#edit_task_kernel(data, "task-1", "subtask-1", 2015, 12, 9)
+edit_task_kernel(data, "task-1", "subtask-2", 2015, 12, 9)
 
-f = open('data.txt','w')
-f.write(json.dumps(data, indent=4))
-f.close()
 
 

@@ -1,138 +1,66 @@
 {
     "2015": {
-        "9": {
-            "22": {
-                "task-1": {
-                    "project": "aaaaaaaaa", 
-                    "subtask-2": {
-                        "status": "", 
-                        "end": "", 
-                        "detail": "", 
-                        "start": "", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "13123242", 
-                        "type": ""
-                    }, 
-                    "task title": "dfhfgjhghjkh"
-                }
-            }, 
-            "23": {
-                "task-1": {
-                    "project": "bla", 
-                    "subtask-2": {
-                        "status": "", 
-                        "end": "", 
+        "12": {
+            "9": {
+                "task-2": {
+                    "project": "NA", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "end": "10", 
                         "detail": "", 
                         "start": "9", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "test1.1", 
-                        "type": ""
+                        "subtask title": "gfdgdd"
                     }, 
-                    "task title": "test1"
-                }
-            }
-        }, 
-        "10": {
-            "22": {
-                "task-1": {
-                    "project": "hfgnjmghnjg", 
-                    "subtask-2": {
-                        "status": "", 
-                        "end": "", 
-                        "detail": "", 
-                        "start": "", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "ss", 
-                        "type": ""
-                    }, 
-                    "task title": "214343453"
-                }
-            }
-        }, 
-        "12": {
-            "9": {
-                "task-1": {
-                    "project": "llkjljkhj", 
-                    "subtask-2": {
-                        "status": "", 
-                        "end": "", 
-                        "detail": "", 
-                        "start": "", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "3424rfd", 
-                        "type": ""
-                    }, 
+                    "task title": "new"
+                }, 
+                "task-3": {
+                    "project": "NA", 
+                    "type": "pers", 
                     "subtask-1": {
-                        "status": "", 
-                        "end": "", 
+                        "status": "close", 
+                        "end": "10", 
                         "detail": "", 
-                        "start": "", 
+                        "start": "9", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "ghjghhkjhkhj", 
-                        "type": ""
+                        "subtask title": "sdfsdgdgds"
                     }, 
-                    "task title": "rewrw"
-                }
-            }
-        }
-    }, 
-    "2016": {
-        "9": {
-            "22": {
+                    "task title": "test"
+                }, 
                 "task-1": {
-                    "project": "NSC", 
-                    "subtask-2": {
+                    "subtask-3": {
                         "status": "open", 
                         "end": "", 
                         "detail": "", 
+                        "start": "", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "fdgdsgsgsfgf"
+                    }, 
+                    "subtask-2": {
+                        "status": "open", 
+                        "end": "10", 
+                        "detail": "", 
                         "start": "9", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "task1.1", 
-                        "type": ""
+                        "subtask title": "sdsgdfgdfg"
                     }, 
-                    "task title": "task1"
-                }
-            }, 
-            "23": {
-                "task-1": {
-                    "project": "pers", 
-                    "subtask-2": {
-                        "status": "", 
-                        "end": "", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "end": "10", 
                         "detail": "", 
-                        "start": "", 
+                        "start": "9", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "task2.1", 
-                        "type": ""
+                        "subtask title": "check"
                     }, 
-                    "task title": "task2"
-                }
-            }
-        }
-    }, 
-    "2013": {
-        "12": {
-            "19": {
-                "task-1": {
-                    "project": "fhfgjgjhf", 
-                    "subtask-2": {
-                        "status": "", 
-                        "end": "", 
-                        "detail": "", 
-                        "start": "", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "sdfdsfs", 
-                        "type": ""
-                    }, 
-                    "task title": "dssd"
+                    "project": "NSC", 
+                    "task title": "test", 
+                    "type": "work"
                 }
             }
         }
