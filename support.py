@@ -82,9 +82,9 @@ def get_taskid(d):
 		id = len(d.keys())
 	except:
 		return 1
-	print "Existing tasks: "
+	print "Add subtask or create new task: "
 	for tid in d.keys():
-		print tid.split("-")[1], d[tid]["task title"]
+		print tid.split("-")[1], d[tid]["task title"], '-', d[tid]["project"]
 	dflt_txt = str(len(d.keys())+1)
 	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
 	task_id = raw_input("Enter task no.")
@@ -108,6 +108,8 @@ def new_subtaskid(d):
 def sorted_key_list(data):
 	sdata = {}
 	lst = []
+	types = []
+	statuses = []
 	for yy in sorted(data.keys(), key=int):
 		yyd = data[yy]
 		for mm in sorted(yyd.keys(), key=int):
@@ -121,7 +123,33 @@ def sorted_key_list(data):
 							subtask = key 
 							subtaskd = taskd[subtask]
 							lst.append((yy,mm,dd,task,subtask))
-	return lst
+							try:
+								statuses.append(subtaskd["status"])
+							except:
+								pass
+						elif key == "type":
+							types.append(taskd[key])
+	return lst, list(set(types)), list(set(statuses))
+
+def rm_task_kernel(data, tid, stid, yy, mm, dd):
+	del data[yy][mm][dd][tid][stid]
+	deltask = True
+	for k in data[yy][mm][dd][tid].keys():
+		if "subtask-" in k:
+			deltask = False
+	if deltask:
+		del data[yy][mm][dd][tid]
+	if len(data[yy][mm][dd].keys()) == 0:
+		del data[yy][mm][dd]
+	if len(data[yy][mm].keys()) == 0:
+		del data[yy][mm]
+	if len(data[yy].keys()) == 0:
+		del data[yy]
+	f = open('data.txt','w')
+	f.write(json.dumps(data, indent=4))
+	f.close()
+	
+
 
 def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	#default =  time.strftime("%Y-%m-%d")
@@ -135,6 +163,7 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	dd = str(dd)
 	taskid =  str(tid)
 	subtaskid = str(stid)
+	lastend = 9 
 
 	try:
 		data[yy]
@@ -146,6 +175,13 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		data[yy][mm] = {}
 	try:
 		data[yy][mm][dd]
+		for key_task in data[yy][mm][dd].keys():
+			for key_subtask in data[yy][mm][dd][key_task].keys():
+				try:
+					if lastend < int(data[yy][mm][dd][key_task][key_subtask]["end"]):
+						lastend = int(data[yy][mm][dd][key_task][key_subtask]["end"])
+				except:
+					pass
 	except:
 		data[yy][mm][dd] = {}
 	try:
@@ -174,17 +210,20 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	except:
 		subtask = task[subtaskid] = {}
 		title = ""
-		start = ""
-		end = ""
+		start = str(lastend)
+		end = str(lastend+1)
 		link = ""
-		detail = ""
+		detail = "no"
 		attachment = ""
-		status = ""
+		status = "open"
 	subtask["subtask title"] = get_input_for("subtask title", title, data)
 	subtask["start"] = get_input_for("start", start, data)
 	subtask["end"] = get_input_for("end", end, data)
 	subtask["link"] = get_input_for("link", link, data)
 	subtask["detail"] = get_input_for("detail", detail, data)
+	if subtask["detail"] == "yes":
+		strn="detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+		os.system("vim " + strn)	
 	subtask["attachment"] = get_input_for("attachment", attachment, data)
 	subtask["status"] = get_input_for("status", status, data)
 	f = open('data.txt','w')
