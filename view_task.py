@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from support import *
-from tabulate import tabulate
 
 flag = True
 status = "open"
@@ -42,6 +41,10 @@ while flag:
 				view_task.append([len(view_task), "Task :", td["task title"]])
 				view_task.append([len(view_task), "Project :", td["project"]])
 				view_task.append([len(view_task), "Type :", td["type"]])
+				try:
+					view_task.append([len(view_task), "Flex :", td[subtask]["flex"]])
+				except:
+					pass
 				view_task.append([len(view_task), "Sub task :", td[subtask]["subtask title"]])
 				view_task.append([len(view_task), "Date :", yy+"-"+mm+"-"+dd])	
 				view_task.append([len(view_task), "Start :", td[subtask]["start"]])

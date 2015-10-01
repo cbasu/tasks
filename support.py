@@ -14,6 +14,7 @@ from calendar import monthrange
 import readline
 import dateutil.parser as parser
 import collections
+from tabulate import tabulate
 
 #nested_dict = lambda: collections.defaultdict(nested_dict)
 
@@ -82,10 +83,15 @@ def get_taskid(d):
 		id = len(d.keys())
 	except:
 		return 1
+	tbl = []
+	lst = []
 	print "Add subtask or create new task: "
 	for tid in d.keys():
-		print tid.split("-")[1], d[tid]["task title"], '-', d[tid]["project"]
-	dflt_txt = str(len(d.keys())+1)
+		tbl.append([len(tbl), d[tid]["task title"], d[tid]["project"]])
+		lst.append(int(tid.split("-")[1]))
+		#print tid.split("-")[1], d[tid]["task title"], '-', d[tid]["project"]
+	print tabulate(tbl)
+	dflt_txt = str(len(d.keys()))
 	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
 	task_id = raw_input("Enter task no.")
 	try:
@@ -93,6 +99,10 @@ def get_taskid(d):
 	except:
 		print "error"
 		sys.exit(0)
+	if task_id < len(lst):
+		task_id = lst[task_id]
+	else:
+		task_id = len(lst) + 1
 	return task_id
 
 def new_subtaskid(d):
@@ -207,6 +217,10 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		detail = subtask["detail"]
 		attachment = subtask["attachment"]
 		status = subtask["status"]
+		try:
+			flex = subtask["flex"]
+		except:
+			pass
 	except:
 		subtask = task[subtaskid] = {}
 		title = ""
@@ -216,6 +230,7 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		detail = "no"
 		attachment = ""
 		status = "open"
+		flex = "normal"	
 	subtask["subtask title"] = get_input_for("subtask title", title, data)
 	subtask["start"] = get_input_for("start", start, data)
 	subtask["end"] = get_input_for("end", end, data)
@@ -226,6 +241,11 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		os.system("vim " + strn)	
 	subtask["attachment"] = get_input_for("attachment", attachment, data)
 	subtask["status"] = get_input_for("status", status, data)
+	try:
+		subtask["flex"] = get_input_for("flex", flex, data)
+	except:
+		pass
+	
 	f = open('data.txt','w')
 	f.write(json.dumps(data, indent=4))
 	f.close()
