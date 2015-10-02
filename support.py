@@ -195,19 +195,18 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	except:
 		data[yy][mm][dd] = {}
 	try:
-		data[yy][mm][dd][taskid]
-		title = data[yy][mm][dd][taskid]["task title"]
-		project = data[yy][mm][dd][taskid]["project"]
-		type = data[yy][mm][dd][taskid]["type"]
+		task = data[yy][mm][dd][taskid]
+		print "project: ", task["project"]
+		print "task title: ", task["task title"]
+		print "type: ", task["type"]
 	except:
-		data[yy][mm][dd][taskid]= {}
+		task = data[yy][mm][dd][taskid]= {}
 		title = ""
 		project = ""
 		type = ""
-	task = data[yy][mm][dd][taskid]
-	task["project"]= get_input_for("project", project, data)
-	task["task title"]= get_input_for("task title", title, data)
-	task["type"]= get_input_for("type", type, data)
+		task["project"]= get_input_for("project", project, data)
+		task["task title"]= get_input_for("task title", title, data)
+		task["type"]= get_input_for("type", type, data)
 	try:
 		subtask =task[subtaskid]
 		title = subtask["subtask title"]

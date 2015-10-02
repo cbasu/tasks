@@ -44,9 +44,9 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "end": "16", 
-                        "detail": "", 
+                        "detail": "yes", 
                         "start": "15", 
                         "link": "", 
                         "attachment": "", 
@@ -213,26 +213,11 @@
         }, 
         "10": {
             "1": {
-                "task-6": {
-                    "project": "NSC ", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "15", 
-                        "detail": "no", 
-                        "start": "14", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "test the totalview support"
-                    }, 
-                    "task title": "mpprun"
-                }, 
                 "task-4": {
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "13", 
                         "detail": "no", 
@@ -246,8 +231,18 @@
                 "task-5": {
                     "project": "NSC", 
                     "type": "work", 
-                    "subtask-1": {
+                    "subtask-2": {
                         "status": "open", 
+                        "flex": "in", 
+                        "end": "18", 
+                        "detail": "no", 
+                        "start": "17", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "subtask-1": {
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "14", 
                         "detail": "no", 
@@ -266,17 +261,27 @@
                         "end": "-", 
                         "detail": "yes", 
                         "start": "-", 
-                        "link": "", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15022e24132f079c", 
                         "attachment": "", 
                         "subtask title": "--"
                     }, 
-                    "task title": "lic, icici, sbi"
+                    "task title": "lic, icici, sbi etc"
                 }, 
                 "task-3": {
                     "project": "ISENES2", 
                     "type": "work", 
+                    "subtask-2": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "yes", 
+                        "start": "14", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "compilation issues"
+                    }, 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "12", 
                         "detail": "no", 
@@ -291,7 +296,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "end": "10", 
                         "detail": "", 
                         "start": "9", 
@@ -302,20 +307,151 @@
                     "task title": "mail"
                 }
             }, 
-            "10": {
+            "9": {
                 "task-1": {
-                    "project": "ddasdada", 
-                    "type": "dfsfsfs", 
+                    "project": "NSC", 
+                    "type": "work", 
                     "subtask-1": {
                         "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Ask torben about the next SAAB meetings whether to attend"
+                }
+            }, 
+            "2": {
+                "task-4": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10", 
+                        "detail": "yes", 
+                        "start": "9", 
+                        "link": "file:///home/cbasu/cbasu%20work/projects/EU_Timesheet_LiU_2015.xls", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "timesheet"
+                }, 
+                "task-5": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15", 
+                        "detail": "no", 
+                        "start": "13", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "test the totalview support"
+                    }, 
+                    "task title": "mpprun"
+                }, 
+                "task-2": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12", 
+                        "detail": "no", 
+                        "start": "10", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "issue submitted to Intel"
+                    }, 
+                    "task title": "compilation issues with XE 16"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "update trello pages"
+                }, 
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
                         "end": "10", 
                         "detail": "no", 
                         "start": "9", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "dsgfgdfgfhfhf"
+                        "subtask title": "--"
                     }, 
-                    "task title": "fsafsfs"
+                    "task title": "mail"
+                }
+            }, 
+            "22": {
+                "task-1": {
+                    "project": "SAAB", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:00", 
+                        "detail": "no", 
+                        "start": "13:30", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Code optimization meeting"
+                }
+            }, 
+            "19": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Intel_Parallel_Studio_XE_2016 \u2013 move the modules buildenv-intel/2016-1, impi/5.1.1, mkl/11.3, intel/16.0.0.109, advisor/2016.1.0.423501, itac/9.1.1.017 from hidden module"
+                }
+            }
+        }, 
+        "11": {
+            "1": {
+                "task-1": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "yes", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "lic, icici, sbi etc"
                 }
             }
         }

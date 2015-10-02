@@ -5,6 +5,7 @@ from support import *
 flag = True
 status = "open"
 type = "work"
+ref_dt = datetime.date.today()
 while flag:
 	os.system('clear') 
 	try:
@@ -18,16 +19,18 @@ while flag:
 	true_index = []
 	for index, (yy,mm,dd,task,subtask) in enumerate(lst):
 		td = data[yy][mm][dd][task]
+		new_dt = datetime.date(int(yy),int(mm),int(dd))
 		if type == "all" or td["type"] == type:
 			std = td[subtask]
 			ldate=yy+"-"+mm+"-"+dd
 			if status == "all" or std["status"] == status:
 				l = len(true_index)
-				tbl.append([l, std["status"], ldate, std["start"], std["end"], td["type"], td["project"], td["task title"], std["subtask title"]])
+				if abs(ref_dt - new_dt).days < 2:
+					tbl.append([l, std["status"], ldate, std["start"], std["end"], td["type"], td["project"], td["task title"][:20], std["subtask title"][:20]])
 				true_index.append(index)
 				
 
-	print tabulate(tbl, headers=['No.', 'status', 'date', 'start', 'end', 'type', 'project', 'task', 'subtask'])
+	print tabulate(tbl, headers=['No.', 'status', 'date', 'start', 'end', 'type', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
 	readline.set_startup_hook(lambda: readline.insert_text(""))
 	inp = raw_input("Enter ")
 	try:
@@ -38,38 +41,60 @@ while flag:
 				view_task = []
 				(yy,mm,dd,task,subtask) = lst[true_index[i]]
 				td = data[yy][mm][dd][task]
-				view_task.append([len(view_task), "Task :", td["task title"]])
-				view_task.append([len(view_task), "Project :", td["project"]])
-				view_task.append([len(view_task), "Type :", td["type"]])
-				try:
-					view_task.append([len(view_task), "Flex :", td[subtask]["flex"]])
-				except:
-					pass
-				view_task.append([len(view_task), "Sub task :", td[subtask]["subtask title"]])
-				view_task.append([len(view_task), "Date :", yy+"-"+mm+"-"+dd])	
-				view_task.append([len(view_task), "Start :", td[subtask]["start"]])
-				view_task.append([len(view_task), "End :", td[subtask]["end"]])
-				view_task.append([len(view_task), "status :", td[subtask]["status"]])
-				view_task.append([len(view_task), "Links :", td[subtask]["link"]])
-				view_task.append([len(view_task), "Attachment :", td[subtask]["attachment"]])
-				view_task.append([len(view_task), "Description :", td[subtask]["detail"]])
+				for k in td.keys():
+					if "subtask-" not in k:
+						view_task.append([len(view_task), k + " :", td[k]])
+				for k in td[subtask].keys():
+					view_task.append([len(view_task), k + " :", td[subtask][k]])
+
 				print tabulate(view_task)
 				readline.set_startup_hook(lambda: readline.insert_text(""))
-				inp1 = raw_input("Enter ")
-				if inp1 == "delete":
-					rm_task_kernel(data, task, subtask, yy, mm, dd)
-					inner_flag = False
-				elif inp1 == "close":
-					td[subtask]["status"] = "close"
-					f = open('data.txt','w')
-					f.write(json.dumps(data, indent=4))
-					f.close()
-					inner_flag = False
-				elif inp1 == "modify":
-					readline.set_startup_hook(lambda: readline.insert_text(""))
-					inp2 = raw_input("Enter number :")
-				elif inp1 == "back":
-					inner_flag = False
+				inner_flag2 = True
+				while inner_flag2:
+					inp1 = raw_input("Enter ")
+					try:
+						index = int(inp1)
+						if index in range(len(view_task)):
+							print tabulate(view_task[index:index+1])
+							if view_task[index][1] == "detail :" and view_task[index][2] == "yes":
+								strn="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask
+								os.system("less " + strn)
+					except:
+						if inp1 == "delete":
+							rm_task_kernel(data, task, subtask, yy, mm, dd)
+							inner_flag = False
+							inner_flag2 = False
+						elif inp1 == "close":
+							td[subtask]["status"] = "close"
+							f = open('data.txt','w')
+							f.write(json.dumps(data, indent=4))
+							f.close()
+							inner_flag = False
+							inner_flag2 = False
+						elif inp1 == "modify":
+							readline.set_startup_hook(lambda: readline.insert_text(""))
+							inp2 = raw_input("Enter number :")
+							try:
+								index = int(inp2)
+								xx = view_task[index][1].split(":")[0].strip()
+								if index in range(len(view_task)):
+									if xx in td.keys():
+										td[xx] = get_input_for(xx, td[xx], data)
+									elif xx in td[subtask].keys():
+										td[subtask][xx] = get_input_for(xx, td[subtask][xx], data)
+										if xx == "detail" and td[subtask][xx] == "yes":
+											strn="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask
+											os.system("vi " + strn)
+									f = open('data.txt','w')
+									f.write(json.dumps(data, indent=4))
+									f.close()
+									inner_flag2 = False
+							except:
+								pass
+									
+						elif inp1 == "back":
+							inner_flag = False
+							inner_flag2 = False
 			
 
 	except:
