@@ -13,17 +13,17 @@ def view_task_table(td, subtask):
 	print tabulate(view_task)
 	return view_task
 			
-def modify_task_kernel(view_task, inp2, td, data, subtask):
+def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 	try:
 		index = int(inp2)
-		xx = view_task[index][1].split(":")[0].strip()
-		if index in range(len(view_task)):
+		xx = vt[index][1].split(":")[0].strip()
+		if index in range(len(vt)):
 			if xx in td.keys():
 				td[xx] = get_input_for(xx, td[xx], data)
-			elif xx in td[subtask].keys():
-				td[subtask][xx] = get_input_for(xx, td[subtask][xx], data)
-				if xx == "detail" and td[subtask][xx] == "yes":
-					strn="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask
+			elif xx in td[stsk].keys():
+				td[stsk][xx] = get_input_for(xx, td[stsk][xx], data)
+				if xx == "detail" and td[stsk][xx] == "yes":
+					strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
 		f = open('data.txt','w')
 		f.write(json.dumps(data, indent=4))
@@ -45,17 +45,17 @@ def modify_task(inp, true_index, data):
 			view_task = view_task_table(td, subtask)
 			readline.set_startup_hook(lambda: readline.insert_text(""))
 			inp2 = raw_input("Enter number :")
-			return modify_task_kernel(view_task, inp2, td, data, subtask)
+			return modify_task_kernel(view_task, inp2, td, data, yy,mm,dd,task,subtask)
 	except:
 		return False
 
-def view_task_kernel(view_task, inp2, td, data, subtask):
+def view_task_kernel(vt, inp2, td, data, y,m,d,tsk, subtsk):
 	try:
 		index = int(inp2)
-		if index in range(len(view_task)):
-			print tabulate(view_task[index:index+1])
-			if view_task[index][1] == "detail :" and view_task[index][2] == "yes":
-				strn="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask
+		if index in range(len(vt)):
+			print tabulate(vt[index:index+1])
+			if vt[index][1] == "detail :" and vt[index][2] == "yes":
+				strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+subtsk
 				os.system("less " + strn)
 		return True
 	except:
@@ -74,7 +74,7 @@ def view_task(inp, true_index, data):
 			view_task = view_task_table(td, subtask)
 			readline.set_startup_hook(lambda: readline.insert_text(""))
 			inp2 = raw_input("Enter number :")
-			ret = view_task_kernel(view_task, inp2, td, data, subtask)
+			ret = view_task_kernel(view_task, inp2, td, data, yy,mm,dd,task, subtask)
 			raw_input("Enter to continue :") 
 			return ret
 	except:
@@ -225,10 +225,13 @@ while flag:
 	try:
 		nd = int(x1)
 		(start_index, end_index) = index_for_start_end_print(end_index + nd, 10, len(true_index))
-		
-
 	except:
-		if x1 == "search":
+		try:
+			del end_index
+			del start_index
+		except:
+			pass
+		if x1 == "show":
 			if inp.split()[1] == "all":
 				status = "all"
 				typ1 = "all"

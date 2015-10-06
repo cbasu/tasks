@@ -106,6 +106,38 @@
                     "task title": "mail"
                 }
             }, 
+            "15": {
+                "task-2": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "yes", 
+                        "start": "", 
+                        "link": "https://www.linkedin.com/jobs2/view/81606761?trk=vsrp_jobs_res_name&trkInfo=VSRPsearchId%3A585633471441185473490%2CVSRPtargetId%3A81606761%2CVSRPcmpt%3Aprimary", 
+                        "attachment": "", 
+                        "subtask title": "sent"
+                    }, 
+                    "task title": "Software Engineer for Wolfram SystemModeler"
+                }, 
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.linkedin.com/jobs2/view/69939542?trk=vsrp_jobs_res_name&trkInfo=VSRPsearchId%3A585633471441189052635%2CVSRPtargetId%3A69939542%2CVSRPcmpt%3Aprimary", 
+                        "attachment": "", 
+                        "subtask title": "sent via lindin"
+                    }, 
+                    "task title": "Technical Account Manager Tata Consultancy Services \u2013 Stockholm"
+                }
+            }, 
             "29": {
                 "task-6": {
                     "project": "ISENES2", 
@@ -120,6 +152,21 @@
                         "subtask title": "--"
                     }, 
                     "task title": "downloading the latest code"
+                }, 
+                "task-7": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "--", 
+                        "detail": "no", 
+                        "start": "--", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Technical Solutions Consultant"
                 }, 
                 "task-4": {
                     "project": "ISENES2", 
@@ -346,7 +393,7 @@
                     "project": "PRACE-4IP", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10", 
                         "detail": "yes", 
@@ -391,7 +438,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "-", 
                         "detail": "no", 
@@ -470,6 +517,21 @@
                 }
             }, 
             "9": {
+                "task-2": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "14:00", 
+                        "detail": "yes", 
+                        "start": "13:00", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1503738ef559847b", 
+                        "attachment": "", 
+                        "subtask title": "skype meeting"
+                    }, 
+                    "task title": "Software Engineer for Wolfram SystemModeler"
+                }, 
                 "task-1": {
                     "project": "NSC", 
                     "type": "work", 
@@ -501,6 +563,25 @@
                         "subtask title": "--"
                     }, 
                     "task title": "--"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending ", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }, 
