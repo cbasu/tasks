@@ -212,6 +212,40 @@
             }
         }, 
         "10": {
+            "22": {
+                "task-1": {
+                    "project": "SAAB", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:00", 
+                        "detail": "no", 
+                        "start": "13:30", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Code optimization meeting"
+                }
+            }, 
+            "19": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Intel_Parallel_Studio_XE_2016 \u2013 move the modules buildenv-intel/2016-1, impi/5.1.1, mkl/11.3, intel/16.0.0.109, advisor/2016.1.0.423501, itac/9.1.1.017 from hidden module"
+                }
+            }, 
             "1": {
                 "task-4": {
                     "project": "NSC", 
@@ -232,7 +266,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "in", 
                         "end": "18", 
                         "detail": "no", 
@@ -307,23 +341,6 @@
                     "task title": "mail"
                 }
             }, 
-            "9": {
-                "task-1": {
-                    "project": "NSC", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "-", 
-                        "detail": "no", 
-                        "start": "-", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "--"
-                    }, 
-                    "task title": "Ask torben about the next SAAB meetings whether to attend"
-                }
-            }, 
             "2": {
                 "task-4": {
                     "project": "PRACE-4IP", 
@@ -389,7 +406,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10", 
                         "detail": "no", 
@@ -401,24 +418,58 @@
                     "task title": "mail"
                 }
             }, 
-            "22": {
+            "5": {
                 "task-1": {
-                    "project": "SAAB", 
-                    "type": "work", 
+                    "project": "NSC", 
+                    "type": "vacation", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
-                        "end": "15:00", 
+                        "end": "17", 
                         "detail": "no", 
-                        "start": "13:30", 
+                        "start": "9", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "--"
                     }, 
-                    "task title": "Code optimization meeting"
+                    "task title": "--"
                 }
             }, 
-            "19": {
+            "7": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "vacation", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "--"
+                }
+            }, 
+            "6": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "vacation", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "--"
+                }
+            }, 
+            "9": {
                 "task-1": {
                     "project": "NSC", 
                     "type": "work", 
@@ -432,26 +483,72 @@
                         "attachment": "", 
                         "subtask title": "--"
                     }, 
-                    "task title": "Intel_Parallel_Studio_XE_2016 \u2013 move the modules buildenv-intel/2016-1, impi/5.1.1, mkl/11.3, intel/16.0.0.109, advisor/2016.1.0.423501, itac/9.1.1.017 from hidden module"
+                    "task title": "Ask torben about the next SAAB meetings whether to attend"
+                }
+            }, 
+            "8": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "vacation", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "--"
                 }
             }
         }, 
         "11": {
             "1": {
-                "task-1": {
+                "task-4": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10", 
+                        "detail": "yes", 
+                        "start": "9", 
+                        "link": "file:///home/cbasu/cbasu%20work/projects/EU_Timesheet_LiU_2015.xls", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "timesheet"
+                }, 
+                "task-2": {
                     "project": "NA", 
                     "type": "pers", 
                     "subtask-1": {
                         "status": "open", 
-                        "flex": "normal", 
                         "end": "-", 
                         "detail": "yes", 
+                        "start": "-", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15022e24132f079c", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "lic, icici, sbi etc"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
                         "start": "-", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "--"
                     }, 
-                    "task title": "lic, icici, sbi etc"
+                    "task title": "update trello pages"
                 }
             }
         }
