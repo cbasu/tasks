@@ -120,6 +120,7 @@ def sorted_key_list(data):
 	lst = []
 	types = []
 	statuses = []
+	projs = []
 	for yy in sorted(data.keys(), key=int):
 		yyd = data[yy]
 		for mm in sorted(yyd.keys(), key=int):
@@ -139,7 +140,9 @@ def sorted_key_list(data):
 								pass
 						elif key == "type":
 							types.append(taskd[key])
-	return lst, list(set(types)), list(set(statuses))
+						elif key == "project":
+							projs.append(taskd[key])
+	return lst, list(set(types)), list(set(statuses)), list(set(projs))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
 	del data[yy][mm][dd][tid][stid]
@@ -162,12 +165,6 @@ def rm_task_kernel(data, tid, stid, yy, mm, dd):
 
 
 def edit_task_kernel(data, tid, stid, yy, mm, dd):
-	#default =  time.strftime("%Y-%m-%d")
-	#date = get_input_for("date", default, data)
-	#(yy, mm, dd) = (str(parser.parse(date).year), str(parser.parse(date).month), 
-	#		str(parser.parse(date).day))
-	
-	#id = get_taskid(data[yy][mm][dd])
 	yy = str(yy)
 	mm = str(mm)
 	dd = str(dd)
@@ -204,9 +201,9 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		title = ""
 		project = ""
 		type = ""
-		task["project"]= get_input_for("project", project, data)
-		task["task title"]= get_input_for("task title", title, data)
-		task["type"]= get_input_for("type", type, data)
+		task["project"]= get_input_for("project", project, data).strip()
+		task["task title"]= get_input_for("task title", title, data).strip()
+		task["type"]= get_input_for("type", type, data).strip()
 	try:
 		subtask =task[subtaskid]
 		title = subtask["subtask title"]
@@ -230,18 +227,18 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		attachment = ""
 		status = "open"
 		flex = "normal"	
-	subtask["subtask title"] = get_input_for("subtask title", title, data)
-	subtask["start"] = get_input_for("start", start, data)
-	subtask["end"] = get_input_for("end", end, data)
-	subtask["link"] = get_input_for("link", link, data)
-	subtask["detail"] = get_input_for("detail", detail, data)
+	subtask["subtask title"] = get_input_for("subtask title", title, data).strip()
+	subtask["start"] = get_input_for("start", start, data).strip()
+	subtask["end"] = get_input_for("end", end, data).strip()
+	subtask["link"] = get_input_for("link", link, data).strip()
+	subtask["detail"] = get_input_for("detail", detail, data).strip()
 	if subtask["detail"] == "yes":
 		strn="detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
 		os.system("vim " + strn)	
-	subtask["attachment"] = get_input_for("attachment", attachment, data)
-	subtask["status"] = get_input_for("status", status, data)
+	subtask["attachment"] = get_input_for("attachment", attachment, data).strip()
+	subtask["status"] = get_input_for("status", status, data).strip()
 	try:
-		subtask["flex"] = get_input_for("flex", flex, data)
+		subtask["flex"] = get_input_for("flex", flex, data).strip()
 	except:
 		pass
 	

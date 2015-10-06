@@ -84,9 +84,9 @@
                 }, 
                 "task-1": {
                     "project": "NSC", 
-                    "type": "work ", 
+                    "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "end": "15", 
                         "detail": "", 
                         "start": "14", 
@@ -133,7 +133,7 @@
                         "start": "", 
                         "link": "https://www.linkedin.com/jobs2/view/69939542?trk=vsrp_jobs_res_name&trkInfo=VSRPsearchId%3A585633471441189052635%2CVSRPtargetId%3A69939542%2CVSRPcmpt%3Aprimary", 
                         "attachment": "", 
-                        "subtask title": "sent via lindin"
+                        "subtask title": "sent via linkdin"
                     }, 
                     "task title": "Technical Account Manager Tata Consultancy Services \u2013 Stockholm"
                 }
@@ -566,25 +566,6 @@
                 }
             }
         }, 
-        "8": {
-            "15": {
-                "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
-                    "subtask-1": {
-                        "status": "pending ", 
-                        "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
-                        "attachment": "", 
-                        "subtask title": "submitted"
-                    }, 
-                    "task title": "Research Scientist - London"
-                }
-            }
-        }, 
         "11": {
             "1": {
                 "task-4": {
@@ -630,6 +611,25 @@
                         "subtask title": "--"
                     }, 
                     "task title": "update trello pages"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }

@@ -19,9 +19,9 @@ def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 		xx = vt[index][1].split(":")[0].strip()
 		if index in range(len(vt)):
 			if xx in td.keys():
-				td[xx] = get_input_for(xx, td[xx], data)
+				td[xx] = get_input_for(xx, td[xx], data).strip()
 			elif xx in td[stsk].keys():
-				td[stsk][xx] = get_input_for(xx, td[stsk][xx], data)
+				td[stsk][xx] = get_input_for(xx, td[stsk][xx], data).strip()
 				if xx == "detail" and td[stsk][xx] == "yes":
 					strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
@@ -182,6 +182,7 @@ def index_for_start_end_print(end, win, leng):
 flag = True
 status = "open"
 typ1 = "work"
+proj = "all"
 ref_dt = datetime.date.today()
 while flag:
 	os.system('clear') 
@@ -191,7 +192,7 @@ while flag:
 	except:
 		print "error"
 		sys.exit(1)
-	lst, types, statuses = sorted_key_list(data)
+	lst, types, statuses, projs = sorted_key_list(data)
 	tbl = []
 	true_index = []
 	for index, (yy,mm,dd,task,subtask) in enumerate(lst):
@@ -201,21 +202,26 @@ while flag:
 			std = td[subtask]
 			ldate=yy+"-"+mm+"-"+dd
 			if status == "all" or std["status"] == status:
-				l = len(true_index)
-				tbl.append([l, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
-				true_index.append(index)
-				try:
-					end_index
-				except:
-					if new_dt > ref_dt: 
-						(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
+				if proj == "all" or proj == std["project"]:
+					l = len(true_index)
+					tbl.append([l, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
+					true_index.append(index)
+					try:
+						end_index
+					except:
+						if new_dt > ref_dt: 
+							(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
 	prstr = "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + status + '"' + " statuses"  			
 	print prstr
 	print tabulate(tbl[start_index:end_index], headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
 	readline.set_startup_hook(lambda: readline.insert_text(""))
-	inp = raw_input("Enter ")
+	t = tabCompleter()
+	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit"])
+	readline.set_completer_delims('\t')
+	readline.parse_and_bind("tab: complete")
+	readline.set_completer(t.listCompleter)
+	inp = raw_input("Enter command :").strip()
 
-	
 	
 	try:
 		x1 = inp.split()[0]
@@ -231,10 +237,44 @@ while flag:
 			del start_index
 		except:
 			pass
+		if x1 == "report":
+			readline.set_startup_hook(lambda: readline.insert_text(""))
+			t = tabCompleter()
+			t.createListCompleter(projs)
+			readline.set_completer_delims('\t')
+			readline.parse_and_bind("tab: complete")
+			readline.set_completer(t.listCompleter)
+			prj = raw_input("Enter project name :").strip()
+			line1 = "Report for project " + prj
+			line2 = ""
+			for i in range(len(line1)):
+				line2 = line2 + "="
+			print line1
+			print line2  
+			for y,yv in data.items():
+				for m,mv in yv.items():
+					for d,dv in mv.items():
+						for t,tv in dv.items():
+							if tv["project"] == prj:
+								rdate=y+"-"+m+"-"+d
+								print rdate
+								print "Task title :", tv["task title"]
+								for s,sv in tv.items():
+									if "subtask-" in s:
+										print "Subtask title :", sv["subtask title"]
+										print "Start time :", sv["start"]
+										print "End time :", sv["end"]
+										print "Status :", sv["status"]
+								print ""
+			raw_input()
+			
+		
 		if x1 == "show":
+			
 			if inp.split()[1] == "all":
 				status = "all"
 				typ1 = "all"
+				proj = "all"
 			elif inp.split()[1] in statuses:
 				status = inp.split()[1]
 			elif inp.split()[1] in types:
@@ -292,6 +332,4 @@ while flag:
 		elif inp == "quit":
 			flag = 0
 	
-#(yy,mm,dd,task,subtask) = lst[i]
-#edit_task_kernel(data, task, subtask, yy, mm, dd)
  
