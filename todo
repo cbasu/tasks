@@ -1,5 +1,5 @@
 
-
+2. 2015-09-07: the view screen should display 10 rows from current date. However if the no. is less than 10 then it should display 10 rows including after current date. -- done
 1. 2015-10-06: remove the last blank space at the end of items -- done
 
 

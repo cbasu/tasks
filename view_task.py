@@ -209,14 +209,18 @@ while flag:
 					try:
 						end_index
 					except:
-						if new_dt > ref_dt: 
+						if new_dt > ref_dt and l > 10:
 							(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
+	try:
+		end_index
+	except:
+		(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
 	prstr = "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + status + '"' + " statuses"  			
 	print prstr
 	print tabulate(tbl[start_index:end_index], headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
 	readline.set_startup_hook(lambda: readline.insert_text(""))
 	t = tabCompleter()
-	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit"])
+	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit", "new"])
 	readline.set_completer_delims('\t')
 	readline.parse_and_bind("tab: complete")
 	readline.set_completer(t.listCompleter)
@@ -265,6 +269,14 @@ while flag:
 										print "Start time :", sv["start"]
 										print "End time :", sv["end"]
 										print "Status :", sv["status"]
+										print "Detail :", sv["detail"]
+										if sv["detail"] == "yes":
+	 										rstr="detail/"+y+"-"+m+"-"+d+"-"+t+"-"+s
+											fp = open(rstr, "r")	
+											print fp.readline()
+											fp.close()
+											
+										
 								print ""
 			raw_input()
 			

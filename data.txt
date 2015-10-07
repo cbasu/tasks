@@ -483,6 +483,36 @@
                 }
             }, 
             "7": {
+                "task-2": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Order photos for Deep and Tatun"
+                }, 
+                "task-3": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "--", 
+                        "detail": "no", 
+                        "start": "--", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "Send some gift to Debai"
+                }, 
                 "task-1": {
                     "project": "NSC", 
                     "type": "vacation", 
@@ -532,9 +562,34 @@
                     }, 
                     "task title": "Software Engineer for Wolfram SystemModeler"
                 }, 
+                "task-3": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15023ca531bc2986", 
+                        "attachment": "", 
+                        "subtask title": "Talk with Niclas"
+                    }, 
+                    "task title": "NSC system details to Lilit"
+                }, 
                 "task-1": {
                     "project": "NSC", 
                     "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#label/nsc%2Finbox/15041236153e6fd1", 
+                        "attachment": "", 
+                        "subtask title": "Preparation for your salary talks with Anna"
+                    }, 
                     "subtask-1": {
                         "status": "open", 
                         "flex": "normal", 
@@ -543,9 +598,9 @@
                         "start": "-", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "--"
+                        "subtask title": "next SAAB meetings whether to attend"
                     }, 
-                    "task title": "Ask torben about the next SAAB meetings whether to attend"
+                    "task title": "Talk with Torben"
                 }
             }, 
             "8": {
