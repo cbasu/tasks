@@ -105,6 +105,36 @@ def get_taskid(d):
 		task_id = len(lst) + 1
 	return task_id
 
+def get_task_subtask_id(v, y, m, d, typ):
+	try:
+		t = v[y][m][d]
+		start_d = {}
+		view = []
+		lst = []
+		for k,t4d in t.items():
+			if t4d["type"] == typ:
+				for sk, st4d in t4d.items():
+					if "subtask-" in sk:
+						start_d[st4d["start"]] = (k,sk)
+		for start_time in sorted(start_d.keys(), key=int):
+			lst.append(start_d[start_time])
+		for (k,sk) in lst:
+			tmp = v[y][m][d][k]
+			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20] ])
+		print tabulate(view)
+
+	except:
+		print "No data exists"
+	dflt_txt = str(len(lst))
+	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
+	task_id = raw_input("Enter task no.")
+#	try:
+#		task_id = int(task_id)
+#	except:
+#		print "error"
+#		sys.exit(0)
+#	return task_id
+
 def new_subtaskid(d):
 	sid = 1
 	try:

@@ -259,6 +259,99 @@
             }
         }, 
         "10": {
+            "24": {
+                "task-1": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "decide whether to start again"
+                    }, 
+                    "task title": "Nordea liv konto"
+                }
+            }, 
+            "10": {
+                "task-1": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "check the ststus"
+                    }, 
+                    "task title": "ITR"
+                }
+            }, 
+            "13": {
+                "task-6": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "10", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }
+            }, 
+            "12": {
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "may be required -- torben will inform"
+                    }, 
+                    "task title": "talk on compiler wrapper, mpprun to SAAB"
+                }, 
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "yes", 
+                        "start": "", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "description of work done"
+                    }, 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "-", 
+                        "detail": "no", 
+                        "start": "-", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "The SAAB training event on 12 or 13 th Oct. No need to attend"
+                    }, 
+                    "task title": "salary talk"
+                }
+            }, 
             "22": {
                 "task-1": {
                     "project": "SAAB", 
@@ -288,9 +381,26 @@
                         "start": "-", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "--"
+                        "subtask title": "one issue found in the compilation of ifs."
                     }, 
                     "task title": "Intel_Parallel_Studio_XE_2016 \u2013 move the modules buildenv-intel/2016-1, impi/5.1.1, mkl/11.3, intel/16.0.0.109, advisor/2016.1.0.423501, itac/9.1.1.017 from hidden module"
+                }
+            }, 
+            "30": {
+                "task-1": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "13:10", 
+                        "detail": "no", 
+                        "start": "13:00", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "booking made"
+                    }, 
+                    "task title": "bil besiktning"
                 }
             }, 
             "1": {
@@ -338,7 +448,7 @@
                     "project": "NA", 
                     "type": "pers", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "end": "-", 
                         "detail": "yes", 
                         "start": "-", 
@@ -483,6 +593,21 @@
                 }
             }, 
             "7": {
+                "task-4": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "Jaco said no Sweidsh system has \"structured fund\". Sent the details to lilit."
+                    }, 
+                    "task title": "NSC system details to Lilit"
+                }, 
                 "task-2": {
                     "project": "NA", 
                     "type": "pers", 
@@ -534,7 +659,7 @@
                     "project": "NSC", 
                     "type": "vacation", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "17", 
                         "detail": "no", 
@@ -547,6 +672,86 @@
                 }
             }, 
             "9": {
+                "task-6": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "16", 
+                        "detail": "no", 
+                        "start": "15", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "10", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }, 
+                "task-7": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12", 
+                        "detail": "no", 
+                        "start": "11", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "installing some softwares on my laptop"
+                }, 
+                "task-4": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Software Engineer, Tools and Infrastructure"
+                }, 
+                "task-5": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "16", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "check the impi feature for profiling"
+                    }, 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15", 
+                        "detail": "no", 
+                        "start": "13", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "consider adding the impi feature for profiling"
+                    }, 
+                    "task title": "mpprun"
+                }, 
                 "task-2": {
                     "project": "chakri", 
                     "type": "pers", 
@@ -566,14 +771,14 @@
                     "project": "PRACE-4IP", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10", 
                         "detail": "no", 
                         "start": "9", 
                         "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15023ca531bc2986", 
                         "attachment": "", 
-                        "subtask title": "Talk with Niclas"
+                        "subtask title": "Talk with Niclas -- already sent after mail exchanges"
                     }, 
                     "task title": "NSC system details to Lilit"
                 }, 
@@ -581,24 +786,24 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
+                        "end": "11", 
+                        "detail": "yes", 
+                        "start": "10", 
                         "link": "https://mail.google.com/mail/u/0/?tab=wm#label/nsc%2Finbox/15041236153e6fd1", 
                         "attachment": "", 
                         "subtask title": "Preparation for your salary talks with Anna"
                     }, 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
-                        "end": "-", 
+                        "end": "11", 
                         "detail": "no", 
-                        "start": "-", 
+                        "start": "10", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "next SAAB meetings whether to attend"
+                        "subtask title": "The SAAB training event on 12 or 13 th Oct. No need to attend"
                     }, 
                     "task title": "Talk with Torben"
                 }
@@ -608,7 +813,7 @@
                     "project": "NSC", 
                     "type": "vacation", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "17", 
                         "detail": "no", 
@@ -618,6 +823,61 @@
                         "subtask title": "--"
                     }, 
                     "task title": "--"
+                }
+            }
+        }, 
+        "12": {
+            "3": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "SNIC all hands meeting"
+                }
+            }, 
+            "4": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "SNIC all hands meeting"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }, 
@@ -667,24 +927,94 @@
                     }, 
                     "task title": "update trello pages"
                 }
-            }
-        }, 
-        "8": {
-            "15": {
+            }, 
+            "2": {
                 "task-1": {
-                    "project": "chakri", 
+                    "project": "NA", 
                     "type": "pers", 
                     "subtask-1": {
-                        "status": "pending", 
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "8", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "take the letsdeal code"
+                    }, 
+                    "task title": "car service"
+                }
+            }, 
+            "23": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
                         "flex": "normal", 
                         "end": "", 
                         "detail": "no", 
                         "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "link": "www.liu.se/insidan/blanketter/personal/blanketter-pa-svenska/1.252599/Friskvrdsersattning.pdf", 
                         "attachment": "", 
-                        "subtask title": "submitted"
+                        "subtask title": "submit the bill"
                     }, 
-                    "task title": "Research Scientist - London"
+                    "task title": "Friskv\u00e5rdsers\u00e4ttning"
+                }
+            }
+        }
+    }, 
+    "2016": {
+        "2": {
+            "18": {
+                "task-1": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15028da637255079", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "Second General Assembly"
+                }
+            }, 
+            "17": {
+                "task-1": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15028da637255079", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "Second General Assembly"
+                }
+            }, 
+            "16": {
+                "task-1": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15028da637255079", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "Second General Assembly"
                 }
             }
         }

@@ -1,5 +1,15 @@
 
-2. 2015-09-07: the view screen should display 10 rows from current date. However if the no. is less than 10 then it should display 10 rows including after current date. -- done
-1. 2015-10-06: remove the last blank space at the end of items -- done
+4. 2015-09-09: add the plan feature. In the plan mode it should help in planning a days tasks.
+	-- do the date selection -- done
+	-- show the tasks in that day for a particular type -- done
+	-- sort the list with start time --done
+	-- make a function to put all the code -- done
+	-- add the funcationality to add subtask or add task. This functionality is to be added to get_task_subtask_id routine
+3. 2015-09-07: when showing all include the status and type columns in the print
+
+#Done:
+=====
+2. 2015-09-07: the view screen should display 10 rows from current date. However if the no. is less than 10 then it should display 10 rows including after current date.
+1. 2015-10-06: remove the last blank space at the end of items 
 
 

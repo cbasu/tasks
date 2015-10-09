@@ -3,6 +3,26 @@
 
 from support import *
 
+
+def get_the_date():
+	dt = datetime.date.today()
+	dateflag = True
+	while dateflag:
+		readline.set_startup_hook(lambda: readline.insert_text(""))
+		days = raw_input("Enter Date ("+str(dt)+") :")
+		
+		if not days.strip():
+			dateflag = False
+		else:
+			try:
+				dt = dt + datetime.timedelta(days=int(days))
+			except:
+				pass
+	yy = str(dt.year)
+	mm = str(dt.month)
+	dd = str(dt.day)
+	return (yy,mm,dd)
+
 def view_task_table(td, subtask):
 	view_task = []
 	for k in td.keys():
@@ -124,22 +144,7 @@ def copy_task(inp, true_index, data):
 			td = data[yy][mm][dd][task]
 	except:
 		return
-	dt = datetime.date.today()
-        dateflag = True
-        while dateflag:
-		readline.set_startup_hook(lambda: readline.insert_text(""))
-		days = raw_input("Enter target date ("+str(dt)+") :")
-		if not days.strip():
-			dateflag = False
-		else:
-			try: 
-				dt = dt + datetime.timedelta(days=int(days)) 
-			except: 
-				pass
-	print inp, dt
-	new_yy = str(dt.year)
-	new_mm = str(dt.month)
-	new_dd = str(dt.day)
+	(new_yy, new_mm, new_dd) = get_the_date()	
 	try:
 		data[new_yy]
 	except:
@@ -312,24 +317,7 @@ while flag:
 		elif x1 == "copy":
 			copy_task(inp, true_index, data)	
 		elif x1 == "new":
-			default =  time.strftime("%Y-%m-%d")
-			dt = datetime.date.today()
-			dateflag = True
-			while dateflag:
-				readline.set_startup_hook(lambda: readline.insert_text(""))
-				days = raw_input("Enter Date ("+str(dt)+") :")
-				
-				if not days.strip():
-					dateflag = False
-				else:
-					try:
-						dt = dt + datetime.timedelta(days=int(days))
-					except:
-						pass
-			yy = str(dt.year)
-			mm = str(dt.month)
-			dd = str(dt.day)
-
+			(yy,mm,dd) = get_the_date()
 			try:
 				tid = get_taskid(data[yy][mm][dd])
 			except:
@@ -341,6 +329,12 @@ while flag:
 				stid = 1
 			stid = "subtask-" + str(stid)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
+		elif x1 == "plan":
+			(py,pm,pd) = get_the_date()
+			get_task_subtask_id(data, py, pm, pd, typ1)
+
+			raw_input()
+
 		elif inp == "quit":
 			flag = 0
 	
