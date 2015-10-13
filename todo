@@ -1,4 +1,19 @@
 
+7. Add new_time routine in modify section -- done 
+
+6. 2015-09-12: In the following the status and the start and end time should be printed.
+
+Enter Date (2015-10-13) :
+Add subtask or create new task: 
+-  -----  ---
+0  lunch  NSC
+1  --     NSC
+-  -----  ---
+Enter task no.2project:  NSC
+
+--done
+
+
 5. 2015-09-12: The start and end time inputs should be changed. It will prompt to add minutes from the suggested start / end time. --done
 4. 2015-09-09: add the plan feature. In the plan mode it should help in planning a days tasks.
 	-- do the date selection -- done

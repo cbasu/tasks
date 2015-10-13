@@ -283,9 +283,9 @@
                     "subtask-1": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "", 
+                        "end": "9:0", 
                         "detail": "no", 
-                        "start": "", 
+                        "start": "9:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "check the ststus"
@@ -294,6 +294,36 @@
                 }
             }, 
             "13": {
+                "task-4": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "16:0", 
+                        "detail": "no", 
+                        "start": "14:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "compile netcdf, hdf5. done"
+                    }, 
+                    "task title": "compile"
+                }, 
+                "task-5": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "16:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "task management tool"
+                }, 
                 "task-2": {
                     "project": "NSC", 
                     "type": "work", 
@@ -308,6 +338,21 @@
                         "subtask title": ""
                     }, 
                     "task title": "lunch"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "14:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "talk with anna"
+                    }, 
+                    "task title": "support responsibility"
                 }, 
                 "task-1": {
                     "project": "NSC", 
@@ -375,7 +420,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "17:0", 
                         "detail": "no", 
@@ -422,9 +467,9 @@
                     "subtask-1": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "", 
+                        "end": "9:0", 
                         "detail": "no", 
-                        "start": "", 
+                        "start": "9:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "may be required -- torben will inform"
@@ -445,6 +490,83 @@
                         "subtask title": ""
                     }, 
                     "task title": "mail"
+                }
+            }, 
+            "15": {
+                "task-6": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "16:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }, 
+                "task-4": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
+                "task-5": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "16:0", 
+                        "detail": "no", 
+                        "start": "14:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "compile netcdf"
+                }, 
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "14:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "talk with PeterK. The code hangs but no error is shown. Close the tciket if OK"
+                    }, 
+                    "task title": "Old Intel tickets"
                 }, 
                 "task-1": {
                     "project": "NSC", 
@@ -452,24 +574,86 @@
                     "subtask-2": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "", 
+                        "end": "12:0", 
                         "detail": "yes", 
-                        "start": "", 
+                        "start": "10:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "description of work done"
                     }, 
-                    "subtask-1": {
-                        "status": "close", 
+                    "task title": "salary talk"
+                }
+            }, 
+            "14": {
+                "task-4": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
                         "flex": "normal", 
-                        "end": "-", 
+                        "end": "17:0", 
                         "detail": "no", 
-                        "start": "-", 
+                        "start": "16:0", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "The SAAB training event on 12 or 13 th Oct. No need to attend"
+                        "subtask title": "starting a parallel job with mpprun"
                     }, 
-                    "task title": "salary talk"
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "how to use perf report with mpprun"
+                    }, 
+                    "task title": "tutorials for NSC training activity"
+                }, 
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "new intel compilers have to be documented."
+                    }, 
+                    "task title": "update web documentation of intel tools"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
                 }
             }, 
             "22": {
@@ -838,9 +1022,9 @@
                     "subtask-1": {
                         "status": "pending", 
                         "flex": "normal", 
-                        "end": "", 
+                        "end": "9:0", 
                         "detail": "no", 
-                        "start": "", 
+                        "start": "9:0", 
                         "link": "https://www.google.com/about/careers/applications/#/", 
                         "attachment": "", 
                         "subtask title": "submitted"
@@ -878,9 +1062,9 @@
                     "subtask-1": {
                         "status": "pending", 
                         "flex": "normal", 
-                        "end": "14:00", 
+                        "end": "14:0", 
                         "detail": "yes", 
-                        "start": "13:00", 
+                        "start": "13:0", 
                         "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1503738ef559847b", 
                         "attachment": "", 
                         "subtask title": "skype meeting"
@@ -982,6 +1166,25 @@
                 }
             }
         }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
+                }
+            }
+        }, 
         "11": {
             "1": {
                 "task-4": {
@@ -1061,25 +1264,6 @@
                         "subtask title": "submit the bill"
                     }, 
                     "task title": "Friskv\u00e5rdsers\u00e4ttning"
-                }
-            }
-        }, 
-        "8": {
-            "15": {
-                "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
-                    "subtask-1": {
-                        "status": "pending", 
-                        "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
-                        "attachment": "", 
-                        "subtask title": "submitted"
-                    }, 
-                    "task title": "Research Scientist - London"
                 }
             }
         }

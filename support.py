@@ -66,7 +66,7 @@ def find_new(key, d):
 	print lst
 	return lst
 
-def start_time_for_new(d, yy, mm, dd):
+def last_task_end_time(d, yy, mm, dd):
 	lt = datetime.datetime(int(yy), int(mm), int(dd), 9, 0)
 	for key_task in d.keys():
 		for key_subtask in d[key_task].keys():
@@ -80,7 +80,7 @@ def start_time_for_new(d, yy, mm, dd):
 	t = lt.time()
 	return str(t.hour) + ":" + str(t.minute)
 
-def get_the_time(txt, d, yy, mm, dd, addt):
+def new_time(txt, d, yy, mm, dd, addt):
         try:
                 (h, m) = tuple(d.split(':'))
         except:
@@ -127,9 +127,10 @@ def get_taskid(d):
 	lst = []
 	print "Add subtask or create new task: "
 	for tid in d.keys():
-		tbl.append([len(tbl), d[tid]["task title"], d[tid]["project"]])
+		for stid in d[tid].keys():
+			if "subtask-" in stid:
+				tbl.append([len(lst), d[tid]["task title"], d[tid]["project"], d[tid][stid]["start"], d[tid][stid]["end"], d[tid][stid]["status"], d[tid]["type"]])
 		lst.append(int(tid.split("-")[1]))
-		#print tid.split("-")[1], d[tid]["task title"], '-', d[tid]["project"]
 	print tabulate(tbl)
 	dflt_txt = str(len(d.keys()))
 	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
@@ -145,22 +146,26 @@ def get_taskid(d):
 		task_id = len(lst) + 1
 	return task_id
 
-def get_task_subtask_id(v, y, m, d, typ):
+def get_task_subtask_id(v, y, m, d):
 	try:
 		t = v[y][m][d]
 		start_d = {}
 		view = []
 		lst = []
 		for k,t4d in t.items():
-			if t4d["type"] == typ:
-				for sk, st4d in t4d.items():
-					if "subtask-" in sk:
-						start_d[st4d["start"]] = (k,sk)
+			for sk, st4d in t4d.items():
+				if "subtask-" in sk:
+					try:
+						(hr, minute) = tuple(st4d["start"].split(':'))
+						tt = int(hr)*60 + int(minute)
+						start_d[str(tt)] = (k,sk)
+					except:
+						pass
 		for start_time in sorted(start_d.keys(), key=int):
 			lst.append(start_d[start_time])
 		for (k,sk) in lst:
 			tmp = v[y][m][d][k]
-			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20] ])
+			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20], tmp[sk]["status"], tmp["type"] ])
 		print tabulate(view)
 
 	except:
@@ -252,13 +257,6 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		data[yy][mm] = {}
 	try:
 		data[yy][mm][dd]
-		for key_task in data[yy][mm][dd].keys():
-			for key_subtask in data[yy][mm][dd][key_task].keys():
-				try:
-					if lastend < int(data[yy][mm][dd][key_task][key_subtask]["end"]):
-						lastend = int(data[yy][mm][dd][key_task][key_subtask]["end"])
-				except:
-					pass
 	except:
 		data[yy][mm][dd] = {}
 	try:
@@ -290,20 +288,15 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	except:
 		subtask = task[subtaskid] = {}
 		title = ""
-		#start = str(lastend)
-		start = start_time_for_new(data[yy][mm][dd], yy, mm, dd)
-		#end = str(lastend+1)
+		start = last_task_end_time(data[yy][mm][dd], yy, mm, dd)
 		link = ""
 		detail = "no"
 		attachment = ""
 		status = "open"
 		flex = "normal"	
 	subtask["subtask title"] = get_input_for("subtask title", title, data).strip()
-
-
-	
-	subtask["start"]  = get_the_time("Start ", start, yy, mm, dd, 0)
-	subtask["end"]  = get_the_time("End ", subtask["start"], yy, mm, dd, 60)
+	subtask["start"]  = new_time("Start ", start, yy, mm, dd, 0)
+	subtask["end"]  = new_time("End ", subtask["start"], yy, mm, dd, 60)
 	subtask["link"] = get_input_for("link", link, data).strip()
 	subtask["detail"] = get_input_for("detail", detail, data).strip()
 	if subtask["detail"] == "yes":

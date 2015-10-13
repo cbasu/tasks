@@ -41,7 +41,12 @@ def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 			if xx in td.keys():
 				td[xx] = get_input_for(xx, td[xx], data).strip()
 			elif xx in td[stsk].keys():
-				td[stsk][xx] = get_input_for(xx, td[stsk][xx], data).strip()
+				if xx == "start" :
+					td[stsk][xx] = new_time("Start ", td[stsk][xx], y, m, d, 0)
+				if xx == "end" :
+					td[stsk][xx] = new_time("End ", td[stsk][xx], y, m, d, 0)
+				else:
+					td[stsk][xx] = get_input_for(xx, td[stsk][xx], data).strip()
 				if xx == "detail" and td[stsk][xx] == "yes":
 					strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
@@ -331,7 +336,7 @@ while flag:
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
 		elif x1 == "plan":
 			(py,pm,pd) = get_the_date()
-			get_task_subtask_id(data, py, pm, pd, typ1)
+			get_task_subtask_id(data, py, pm, pd)
 
 			raw_input()
 
