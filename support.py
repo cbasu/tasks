@@ -66,6 +66,45 @@ def find_new(key, d):
 	print lst
 	return lst
 
+def start_time_for_new(d, yy, mm, dd):
+	lt = datetime.datetime(int(yy), int(mm), int(dd), 9, 0)
+	for key_task in d.keys():
+		for key_subtask in d[key_task].keys():
+			try:
+				(h, m) = tuple(d[key_task][key_subtask]["end"].split(':'))
+        			t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
+				if t > lt:
+					lt = t
+			except:
+				pass
+	t = lt.time()
+	return str(t.hour) + ":" + str(t.minute)
+
+def get_the_time(txt, d, yy, mm, dd, addt):
+        try:
+                (h, m) = tuple(d.split(':'))
+        except:
+                (h, m) = (9,0)
+
+        t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
+	t = t + datetime.timedelta(minutes=addt)
+            
+        timeflag = True
+        while timeflag:
+                st = str(t.time().hour) + ":" + str(t.time().minute)
+                readline.set_startup_hook(lambda: readline.insert_text(""))
+		print txt + st
+                newt = raw_input("Add minute :")
+                if not newt.strip():
+                        timeflag = False
+                else:
+                        try: 
+                                t = t + datetime.timedelta(minutes=int(newt))
+                        except:
+                                continue
+                                
+                        
+        return st
 
 
 def get_input_for(key, dflt_txt, d):
@@ -77,6 +116,7 @@ def get_input_for(key, dflt_txt, d):
 	readline.set_completer(t.listCompleter)
 	text=key + ": "
 	return raw_input(text)
+
 	
 def get_taskid(d):
 	try:
@@ -250,16 +290,20 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	except:
 		subtask = task[subtaskid] = {}
 		title = ""
-		start = str(lastend)
-		end = str(lastend+1)
+		#start = str(lastend)
+		start = start_time_for_new(data[yy][mm][dd], yy, mm, dd)
+		#end = str(lastend+1)
 		link = ""
 		detail = "no"
 		attachment = ""
 		status = "open"
 		flex = "normal"	
 	subtask["subtask title"] = get_input_for("subtask title", title, data).strip()
-	subtask["start"] = get_input_for("start", start, data).strip()
-	subtask["end"] = get_input_for("end", end, data).strip()
+
+
+	
+	subtask["start"]  = get_the_time("Start ", start, yy, mm, dd, 0)
+	subtask["end"]  = get_the_time("End ", subtask["start"], yy, mm, dd, 60)
 	subtask["link"] = get_input_for("link", link, data).strip()
 	subtask["detail"] = get_input_for("detail", detail, data).strip()
 	if subtask["detail"] == "yes":

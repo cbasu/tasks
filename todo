@@ -1,4 +1,5 @@
 
+5. 2015-09-12: The start and end time inputs should be changed. It will prompt to add minutes from the suggested start / end time. --done
 4. 2015-09-09: add the plan feature. In the plan mode it should help in planning a days tasks.
 	-- do the date selection -- done
 	-- show the tasks in that day for a particular type -- done

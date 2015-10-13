@@ -294,23 +294,128 @@
                 }
             }, 
             "13": {
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "flex-out", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "--"
+                }
+            }, 
+            "12": {
+                "task-8": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "14:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "NSC AE meeting"
+                }, 
+                "task-9": {
+                    "project": "NSC", 
+                    "type": "flex-in", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "18:0", 
+                        "detail": "no", 
+                        "start": "17:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "---"
+                }, 
                 "task-6": {
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
                         "status": "close", 
                         "flex": "normal", 
-                        "end": "10", 
+                        "end": "14:0", 
                         "detail": "no", 
-                        "start": "9", 
+                        "start": "13:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": ""
                     }, 
-                    "task title": "mail"
-                }
-            }, 
-            "12": {
+                    "task title": "Monday meeting"
+                }, 
+                "task-7": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "15:00", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1505c4165b63eb8b", 
+                        "attachment": "", 
+                        "subtask title": "the ticket can be closed ... talk with PeterK. His code is not giving any error but it is hanging"
+                    }, 
+                    "task title": "Old Intel tickets"
+                }, 
+                "task-4": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "task management tool"
+                }, 
+                "task-5": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
                 "task-2": {
                     "project": "NSC", 
                     "type": "work", 
@@ -325,6 +430,21 @@
                         "subtask title": "may be required -- torben will inform"
                     }, 
                     "task title": "talk on compiler wrapper, mpprun to SAAB"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "10:00", 
+                        "detail": "no", 
+                        "start": "9:00", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
                 }, 
                 "task-1": {
                     "project": "NSC", 
@@ -381,7 +501,7 @@
                         "start": "-", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "one issue found in the compilation of ifs."
+                        "subtask title": "one issue found in the compilation of ifs. Discussed in AE meeting (12/10). Will publish the modules"
                     }, 
                     "task title": "Intel_Parallel_Studio_XE_2016 \u2013 move the modules buildenv-intel/2016-1, impi/5.1.1, mkl/11.3, intel/16.0.0.109, advisor/2016.1.0.423501, itac/9.1.1.017 from hidden module"
                 }
@@ -533,7 +653,7 @@
                     "project": "ISENES2", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "pending", 
                         "flex": "normal", 
                         "end": "12", 
                         "detail": "no", 
@@ -676,7 +796,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "16", 
                         "detail": "no", 
@@ -701,7 +821,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "12", 
                         "detail": "no", 
@@ -741,7 +861,7 @@
                         "subtask title": "check the impi feature for profiling"
                     }, 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "15", 
                         "detail": "no", 
@@ -862,25 +982,6 @@
                 }
             }
         }, 
-        "8": {
-            "15": {
-                "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
-                    "subtask-1": {
-                        "status": "pending", 
-                        "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
-                        "attachment": "", 
-                        "subtask title": "submitted"
-                    }, 
-                    "task title": "Research Scientist - London"
-                }
-            }
-        }, 
         "11": {
             "1": {
                 "task-4": {
@@ -960,6 +1061,25 @@
                         "subtask title": "submit the bill"
                     }, 
                     "task title": "Friskv\u00e5rdsers\u00e4ttning"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }
