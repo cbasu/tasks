@@ -117,6 +117,16 @@ def get_input_for(key, dflt_txt, d):
 	text=key + ": "
 	return raw_input(text)
 
+def get_input_for_new(txt, deflt, lst):
+	readline.set_startup_hook(lambda: readline.insert_text(deflt))
+	t = tabCompleter()
+	t.createListCompleter(lst)
+	readline.set_completer_delims('\t')
+	readline.parse_and_bind("tab: complete")
+	readline.set_completer(t.listCompleter)
+	strng = "Enter " + txt + ": " 
+	return raw_input(strng)
+
 	
 def get_taskid(d):
 	try:
@@ -158,27 +168,44 @@ def get_task_subtask_id(v, y, m, d):
 					try:
 						(hr, minute) = tuple(st4d["start"].split(':'))
 						tt = int(hr)*60 + int(minute)
-						start_d[str(tt)] = (k,sk)
+						try:
+							start_d[str(tt)] = start_d[str(tt)] + [(k,sk)]
+						except:
+							start_d[str(tt)] = [(k,sk)]
 					except:
 						pass
 		for start_time in sorted(start_d.keys(), key=int):
-			lst.append(start_d[start_time])
+			for item in start_d[start_time]:
+				lst.append(item)
 		for (k,sk) in lst:
 			tmp = v[y][m][d][k]
 			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20], tmp[sk]["status"], tmp["type"] ])
 		print tabulate(view)
 
 	except:
-		print "No data exists"
-	dflt_txt = str(len(lst))
-	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
-	task_id = raw_input("Enter task no.")
-#	try:
-#		task_id = int(task_id)
-#	except:
-#		print "error"
-#		sys.exit(0)
-#	return task_id
+		pass
+	try:
+		dflt_txt = str(len(lst))
+		readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
+		flag = True
+		while flag:
+			idd = raw_input("Enter task no.")
+			try:
+				idd = int(idd)
+				flag = False
+			except:
+				pass
+		if idd < len(lst):
+			(tk, stk) = lst[idd]
+			stk = new_subtaskid(v[y][m][d][tk])
+		else:
+			tk = "task-" + str(len(lst) + 1)
+			stk = "subtask-1"
+	except:
+		tk = "task-1"
+		stk = "subtask-1"
+	return (tk, stk)
+
 
 def new_subtaskid(d):
 	sid = 1
@@ -196,6 +223,7 @@ def sorted_key_list(data):
 	types = []
 	statuses = []
 	projs = []
+	title = []
 	for yy in sorted(data.keys(), key=int):
 		yyd = data[yy]
 		for mm in sorted(yyd.keys(), key=int):
@@ -217,7 +245,9 @@ def sorted_key_list(data):
 							types.append(taskd[key])
 						elif key == "project":
 							projs.append(taskd[key])
-	return lst, list(set(types)), list(set(statuses)), list(set(projs))
+						elif key == "task title":
+							title.append(taskd[key])
+	return lst, list(set(types)), list(set(statuses)), list(set(projs)), list(set(title))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
 	del data[yy][mm][dd][tid][stid]

@@ -194,9 +194,10 @@ def index_for_start_end_print(end, win, leng):
 	
 
 flag = True
-status = "open"
+stat1 = "open"
 typ1 = "work"
-proj = "all"
+proj1 = "all"
+title1 = "all" 
 ref_dt = datetime.date.today()
 while flag:
 	os.system('clear') 
@@ -206,35 +207,37 @@ while flag:
 	except:
 		print "error"
 		sys.exit(1)
-	lst, types, statuses, projs = sorted_key_list(data)
+	lst, types, stats, projs, titles = sorted_key_list(data)
 	tbl = []
 	true_index = []
 	for index, (yy,mm,dd,task,subtask) in enumerate(lst):
 		td = data[yy][mm][dd][task]
 		new_dt = datetime.date(int(yy),int(mm),int(dd))
-		if typ1 == "all" or td["type"] == typ1:
+			
+		if td["type"] == typ1 or typ1 == "all":
 			std = td[subtask]
 			ldate=yy+"-"+mm+"-"+dd
-			if status == "all" or std["status"] == status:
-				if proj == "all" or proj == std["project"]:
-					l = len(true_index)
-					tbl.append([l, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
-					true_index.append(index)
-					try:
-						end_index
-					except:
-						if new_dt > ref_dt and l > 10:
-							(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
+			if td["project"] == proj1 or proj1 == "all":
+				if td["task title"] == title1 or title1 == "all":
+					if std["status"] == stat1 or stat1 == "all":
+						l = len(true_index)
+						tbl.append([l, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
+						true_index.append(index)
+						try:
+							end_index
+						except:
+							if new_dt > ref_dt and l > 10:
+								(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
 	try:
 		end_index
 	except:
 		(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
-	prstr = "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + status + '"' + " statuses"  			
+	prstr = "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + stat1 + '"' + " statuses"  			
 	print prstr
 	print tabulate(tbl[start_index:end_index], headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
 	readline.set_startup_hook(lambda: readline.insert_text(""))
 	t = tabCompleter()
-	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit", "new", "plan"])
+	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit", "new", ])
 	readline.set_completer_delims('\t')
 	readline.parse_and_bind("tab: complete")
 	readline.set_completer(t.listCompleter)
@@ -296,14 +299,10 @@ while flag:
 			
 		
 		if x1 == "show":
-			if inp.split()[1] == "all":
-				status = "all"
-				typ1 = "all"
-				proj = "all"
-			elif inp.split()[1] in statuses:
-				status = inp.split()[1]
-			elif inp.split()[1] in types:
-				typ1 = inp.split()[1]
+			typ1 = get_input_for_new("type", typ1, types + ["all"]).strip()
+			stat1 = get_input_for_new("status", stat1, stats + ["all"]).strip()
+			proj1 = get_input_for_new("project", proj1, projs + ["all"]).strip()
+			title1 = get_input_for_new("task title", title1, titles + ["all"]).strip()
 		elif x1 == "view":
 			viewflag = True
 			while viewflag:
@@ -326,22 +325,18 @@ while flag:
 			copy_task(inp, true_index, data)	
 		elif x1 == "new":
 			(yy,mm,dd) = get_the_date()
-			try:
-				tid = get_taskid(data[yy][mm][dd])
-			except:
-				tid = 1
-			tid = "task-" + str(tid)
-			try:
-				stid = new_subtaskid(data[yy][mm][dd][tid])
-			except:
-				stid = 1
-			stid = "subtask-" + str(stid)
+			(tid, stid) = get_task_subtask_id(data, yy, mm, dd)
+#			try:
+#				tid = get_taskid(data[yy][mm][dd])
+#			except:
+#				tid = 1
+#			tid = "task-" + str(tid)
+#			try:
+#				stid = new_subtaskid(data[yy][mm][dd][tid])
+#			except:
+#				stid = 1
+#			stid = "subtask-" + str(stid)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
-		elif x1 == "plan":
-			(py,pm,pd) = get_the_date()
-			get_task_subtask_id(data, py, pm, pd)
-
-			raw_input()
 
 		elif inp == "quit":
 			flag = 0

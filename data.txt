@@ -399,7 +399,7 @@
                         "attachment": "", 
                         "subtask title": ""
                     }, 
-                    "task title": "---"
+                    "task title": "mpprun"
                 }, 
                 "task-6": {
                     "project": "NSC", 
@@ -508,11 +508,26 @@
                     }, 
                     "task title": "mail"
                 }, 
+                "task-7": {
+                    "project": "NSC", 
+                    "type": "flex-in", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "18:0", 
+                        "detail": "no", 
+                        "start": "17:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "more developement"
+                    }, 
+                    "task title": "task management tool"
+                }, 
                 "task-4": {
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "13:0", 
                         "detail": "no", 
@@ -527,7 +542,7 @@
                     "project": "ISENES2", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "16:0", 
                         "detail": "no", 
@@ -542,7 +557,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10:0", 
                         "detail": "no", 
@@ -572,7 +587,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "12:0", 
                         "detail": "yes", 
@@ -604,7 +619,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "17:0", 
                         "detail": "no", 
@@ -674,6 +689,81 @@
                 }
             }, 
             "16": {
+                "task-8": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "16:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "think about how to present the tutorial, reveal, markdown, ...."
+                    }, 
+                    "task title": "tutorials for NSC training activity"
+                }, 
+                "task-6": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "16:0", 
+                        "detail": "no", 
+                        "start": "15:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }, 
+                "task-7": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
+                "task-4": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "grib etc"
+                    }, 
+                    "task title": "compilation"
+                }, 
+                "task-5": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "15:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "check CDON money refund"
+                }, 
                 "task-2": {
                     "project": "NSC", 
                     "type": "work", 
@@ -687,7 +777,22 @@
                         "attachment": "", 
                         "subtask title": "create a project webdoc on triolith. copy the git repo from /home/pla/code/webdoc.git"
                     }, 
-                    "task title": "tutorials for NSC training activity"
+                    "task title": "update web documentation of intel tools"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "contribute"
+                    }, 
+                    "task title": "gift for Krishnaveni"
                 }, 
                 "task-1": {
                     "project": "NSC", 
@@ -797,23 +902,6 @@
                         "subtask title": "booking made"
                     }, 
                     "task title": "bil besiktning"
-                }
-            }, 
-            "20": {
-                "task-1": {
-                    "project": "PRACE-4IP", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "12:0", 
-                        "detail": "no", 
-                        "start": "11:0", 
-                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1506513237f510d7", 
-                        "attachment": "", 
-                        "subtask title": ""
-                    }, 
-                    "task title": "telecon"
                 }
             }, 
             "1": {
@@ -989,6 +1077,23 @@
                 }
             }, 
             "5": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "vacation", 
+                    "subtask-1": {
+                        "status": "close", 
+                        "flex": "normal", 
+                        "end": "17", 
+                        "detail": "no", 
+                        "start": "9", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "--"
+                }
+            }, 
+            "8": {
                 "task-1": {
                     "project": "NSC", 
                     "type": "vacation", 
@@ -1221,21 +1326,21 @@
                     "task title": "Talk with Torben"
                 }
             }, 
-            "8": {
+            "20": {
                 "task-1": {
-                    "project": "NSC", 
-                    "type": "vacation", 
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
                     "subtask-1": {
-                        "status": "close", 
+                        "status": "open", 
                         "flex": "normal", 
-                        "end": "17", 
+                        "end": "12:0", 
                         "detail": "no", 
-                        "start": "9", 
-                        "link": "", 
+                        "start": "11:0", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1506513237f510d7", 
                         "attachment": "", 
-                        "subtask title": "--"
+                        "subtask title": ""
                     }, 
-                    "task title": "--"
+                    "task title": "telecon"
                 }
             }
         }, 
@@ -1289,6 +1394,25 @@
                         "subtask title": ""
                     }, 
                     "task title": "christmas dinner"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }, 
@@ -1388,25 +1512,6 @@
                         "subtask title": "submit the bill"
                     }, 
                     "task title": "Friskv\u00e5rdsers\u00e4ttning"
-                }
-            }
-        }, 
-        "8": {
-            "15": {
-                "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
-                    "subtask-1": {
-                        "status": "pending", 
-                        "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
-                        "attachment": "", 
-                        "subtask title": "submitted"
-                    }, 
-                    "task title": "Research Scientist - London"
                 }
             }
         }
