@@ -346,7 +346,7 @@
                         "status": "open", 
                         "flex": "normal", 
                         "end": "14:0", 
-                        "detail": "no", 
+                        "detail": "yes", 
                         "start": "13:0", 
                         "link": "", 
                         "attachment": "", 
@@ -465,7 +465,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "pending", 
                         "flex": "normal", 
                         "end": "9:0", 
                         "detail": "no", 
@@ -577,9 +577,9 @@
                         "end": "12:0", 
                         "detail": "yes", 
                         "start": "10:0", 
-                        "link": "", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#label/nsc%2Finbox/150619605ac4ef7b", 
                         "attachment": "", 
-                        "subtask title": "description of work done"
+                        "subtask title": "description of work done. Fill the format given by anna"
                     }, 
                     "task title": "salary talk"
                 }
@@ -598,23 +598,23 @@
                         "attachment": "", 
                         "subtask title": "starting a parallel job with mpprun"
                     }, 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "15:0", 
-                        "detail": "no", 
-                        "start": "13:0", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "how to use perf report with mpprun"
-                    }, 
                     "task title": "tutorials for NSC training activity"
                 }, 
                 "task-2": {
                     "project": "NSC", 
                     "type": "work", 
-                    "subtask-1": {
+                    "subtask-2": {
                         "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "created a new folder /software/apps/intel-devel-tools. This folder contains all the necessary README.NSC files."
+                    }, 
+                    "subtask-1": {
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "12:0", 
                         "detail": "no", 
@@ -629,7 +629,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "13:0", 
                         "detail": "no", 
@@ -644,7 +644,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10:0", 
                         "detail": "no", 
@@ -673,16 +673,93 @@
                     "task title": "Code optimization meeting"
                 }
             }, 
-            "19": {
+            "16": {
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "create a project webdoc on triolith. copy the git repo from /home/pla/code/webdoc.git"
+                    }, 
+                    "task title": "tutorials for NSC training activity"
+                }, 
                 "task-1": {
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "-", 
+                        "end": "10:0", 
                         "detail": "no", 
-                        "start": "-", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }
+            }, 
+            "19": {
+                "task-4": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "/home/cbasu/Downloads/cbasu_Bil_1_Input_salary talks_151012.docx", 
+                        "attachment": "", 
+                        "subtask title": "fill in the form sent by anna"
+                    }, 
+                    "task title": "salary talk"
+                }, 
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "one issue found in the compilation of ifs. Discussed in AE meeting (12/10). Will publish the modules"
@@ -691,6 +768,21 @@
                 }
             }, 
             "30": {
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "11:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "salary talk"
+                }, 
                 "task-1": {
                     "project": "NA", 
                     "type": "pers", 
@@ -705,6 +797,23 @@
                         "subtask title": "booking made"
                     }, 
                     "task title": "bil besiktning"
+                }
+            }, 
+            "20": {
+                "task-1": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "no", 
+                        "start": "11:0", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1506513237f510d7", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "telecon"
                 }
             }, 
             "1": {
@@ -822,11 +931,11 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "pending", 
                         "flex": "normal", 
-                        "end": "15", 
+                        "end": "15:0", 
                         "detail": "no", 
-                        "start": "13", 
+                        "start": "13:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "test the totalview support"
@@ -837,14 +946,14 @@
                     "project": "ISENES2", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "pending", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "12", 
                         "detail": "no", 
                         "start": "10", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "issue submitted to Intel"
+                        "subtask title": "issue submitted to Intel -- Intel has fixed the bug which will be released in the next release (update 1) -- 15/10"
                     }, 
                     "task title": "compilation issues with XE 16"
                 }, 
@@ -1037,9 +1146,9 @@
                     "subtask-2": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "17", 
+                        "end": "17:0", 
                         "detail": "no", 
-                        "start": "16", 
+                        "start": "16:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "check the impi feature for profiling"
@@ -1164,24 +1273,22 @@
                     }, 
                     "task title": "SNIC all hands meeting"
                 }
-            }
-        }, 
-        "8": {
-            "15": {
+            }, 
+            "16": {
                 "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
+                    "project": "NSC", 
+                    "type": "work", 
                     "subtask-1": {
-                        "status": "pending", 
+                        "status": "open", 
                         "flex": "normal", 
-                        "end": "", 
+                        "end": "20:0", 
                         "detail": "no", 
-                        "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "start": "17:0", 
+                        "link": "", 
                         "attachment": "", 
-                        "subtask title": "submitted"
+                        "subtask title": ""
                     }, 
-                    "task title": "Research Scientist - London"
+                    "task title": "christmas dinner"
                 }
             }
         }, 
@@ -1249,6 +1356,23 @@
                     "task title": "car service"
                 }
             }, 
+            "7": {
+                "task-1": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "9:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/150618cd52d63a2f", 
+                        "attachment": "", 
+                        "subtask title": "transfer the amount"
+                    }, 
+                    "task title": "Demand Cum Invoice for Flat No. ERJAP101000AF01701"
+                }
+            }, 
             "23": {
                 "task-1": {
                     "project": "NSC", 
@@ -1264,6 +1388,25 @@
                         "subtask title": "submit the bill"
                     }, 
                     "task title": "Friskv\u00e5rdsers\u00e4ttning"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }

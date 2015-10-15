@@ -146,7 +146,7 @@ def copy_task(inp, true_index, data):
 		ncp = int(ncp)
 		if ncp <= len(true_index): 
 			(yy,mm,dd,task,subtask) = lst[true_index[ncp]]
-			td = data[yy][mm][dd][task]
+			std = data[yy][mm][dd][task][subtask]
 	except:
 		return
 	(new_yy, new_mm, new_dd) = get_the_date()	
@@ -164,11 +164,15 @@ def copy_task(inp, true_index, data):
 		data[new_yy][new_mm][new_dd] =  {}
 	try:
 		data[new_yy][new_mm][new_dd][task]
-		xx = raw_input("Task Exists. Do you want to overwrite :")
-		if xx == "y":
-			data[new_yy][new_mm][new_dd][task] = td
 	except:
-		data[new_yy][new_mm][new_dd][task] =  td
+		data[new_yy][new_mm][new_dd][task] = {}
+	try:
+		data[new_yy][new_mm][new_dd][task][subtask]
+		xx = raw_input("Subtask Exists. Do you want to overwrite :")
+		if xx == "y":
+			data[new_yy][new_mm][new_dd][task][subtask] = std
+	except:
+		data[new_yy][new_mm][new_dd][task][subtask] =  std
 
 	if td[subtask]["detail"] == "yes":
 	 	strold="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask	
@@ -230,7 +234,7 @@ while flag:
 	print tabulate(tbl[start_index:end_index], headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
 	readline.set_startup_hook(lambda: readline.insert_text(""))
 	t = tabCompleter()
-	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit", "new"])
+	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit", "new", "plan"])
 	readline.set_completer_delims('\t')
 	readline.parse_and_bind("tab: complete")
 	readline.set_completer(t.listCompleter)
@@ -292,7 +296,6 @@ while flag:
 			
 		
 		if x1 == "show":
-			
 			if inp.split()[1] == "all":
 				status = "all"
 				typ1 = "all"
