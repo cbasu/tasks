@@ -343,14 +343,14 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "14:0", 
                         "detail": "yes", 
                         "start": "13:0", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "talk with anna"
+                        "subtask title": "talk with anna -- told that I can take this role"
                     }, 
                     "task title": "support responsibility"
                 }, 
@@ -497,7 +497,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "17:0", 
                         "detail": "no", 
@@ -572,14 +572,14 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "pending", 
                         "flex": "normal", 
                         "end": "14:0", 
                         "detail": "no", 
                         "start": "13:0", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "talk with PeterK. The code hangs but no error is shown. Close the tciket if OK"
+                        "subtask title": "talk with PeterK. The code hangs but no error is shown. Close the tciket if OK -- sent mail to peter on 19/10"
                     }, 
                     "task title": "Old Intel tickets"
                 }, 
@@ -708,7 +708,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "16:0", 
                         "detail": "no", 
@@ -723,7 +723,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "13:0", 
                         "detail": "no", 
@@ -733,21 +733,6 @@
                         "subtask title": ""
                     }, 
                     "task title": "lunch"
-                }, 
-                "task-4": {
-                    "project": "ISENES2", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "15:0", 
-                        "detail": "no", 
-                        "start": "13:0", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "grib etc"
-                    }, 
-                    "task title": "compilation"
                 }, 
                 "task-5": {
                     "project": "NA", 
@@ -767,15 +752,25 @@
                 "task-2": {
                     "project": "NSC", 
                     "type": "work", 
-                    "subtask-1": {
+                    "subtask-2": {
                         "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "creating scripts -- done : show in AE meeting"
+                    }, 
+                    "subtask-1": {
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "12:0", 
                         "detail": "no", 
                         "start": "10:0", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": "create a project webdoc on triolith. copy the git repo from /home/pla/code/webdoc.git"
+                        "subtask title": "create a project webdoc on triolith. copy the git repo from /home/pla/code/webdoc.git. Created a offline version."
                     }, 
                     "task title": "update web documentation of intel tools"
                 }, 
@@ -783,7 +778,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10:0", 
                         "detail": "no", 
@@ -798,7 +793,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10:0", 
                         "detail": "no", 
@@ -826,11 +821,26 @@
                     }, 
                     "task title": "lunch"
                 }, 
+                "task-5": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "15:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "grib, gribapi etc"
+                    }, 
+                    "task title": "compilation"
+                }, 
                 "task-2": {
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10:0", 
                         "detail": "no", 
@@ -1249,7 +1259,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-2": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "17:0", 
                         "detail": "no", 
@@ -1274,14 +1284,14 @@
                     "project": "chakri", 
                     "type": "pers", 
                     "subtask-1": {
-                        "status": "pending", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "14:0", 
                         "detail": "yes", 
                         "start": "13:0", 
                         "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/1503738ef559847b", 
                         "attachment": "", 
-                        "subtask title": "skype meeting"
+                        "subtask title": "skype meeting --- they have informed about the decision of not selecting me"
                     }, 
                     "task title": "Software Engineer for Wolfram SystemModeler"
                 }, 
@@ -1327,6 +1337,91 @@
                 }
             }, 
             "20": {
+                "task-6": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "16:0", 
+                        "detail": "no", 
+                        "start": "15:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "update web documentation of intel tools"
+                }, 
+                "task-4": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "13:0", 
+                        "detail": "no", 
+                        "start": "12:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "lunch"
+                }, 
+                "task-5": {
+                    "project": "ISENES2", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "no", 
+                        "start": "13:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "compilation"
+                }, 
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-2": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "no", 
+                        "start": "16:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "10:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "mail"
+                }, 
+                "task-3": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "11:0", 
+                        "detail": "no", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "check the impi feature for profiling"
+                    }, 
+                    "task title": "mpprun"
+                }, 
                 "task-1": {
                     "project": "PRACE-4IP", 
                     "type": "work", 

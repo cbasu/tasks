@@ -66,6 +66,29 @@ def find_new(key, d):
 	print lst
 	return lst
 
+def get_the_date(v):
+	dt = datetime.date.today()
+	dateflag = True
+	while dateflag:
+		os.system('clear') 
+		yy = str(dt.year)
+		mm = str(dt.month)
+		dd = str(dt.day)
+		readline.set_startup_hook(lambda: readline.insert_text(""))
+		print "New task :"
+		print "Existing tasks for " +str(dt) + " :"
+		display_days_task_sorted(v, yy, mm, dd)
+		days = raw_input("Add days to " + str(dt) + " :")
+		
+		if not days.strip():
+			dateflag = False
+		else:
+			try:
+				dt = dt + datetime.timedelta(days=int(days))
+			except:
+				pass
+	return (yy,mm,dd)
+
 def last_task_end_time(d, yy, mm, dd):
 	lt = datetime.datetime(int(yy), int(mm), int(dd), 9, 0)
 	for key_task in d.keys():
@@ -156,12 +179,12 @@ def get_taskid(d):
 		task_id = len(lst) + 1
 	return task_id
 
-def get_task_subtask_id(v, y, m, d):
+def display_days_task_sorted(v, y, m, d):
+	lst = []
 	try:
 		t = v[y][m][d]
 		start_d = {}
 		view = []
-		lst = []
 		for k,t4d in t.items():
 			for sk, st4d in t4d.items():
 				if "subtask-" in sk:
@@ -184,6 +207,15 @@ def get_task_subtask_id(v, y, m, d):
 
 	except:
 		pass
+	return lst
+
+def get_task_subtask_id(v):
+	(y, m, d) = get_the_date(v)
+	os.system('clear') 
+	print "New task :"
+	print "Existing tasks for " + str(y) + "-" + str(m) +"-" + str(d) + " :"
+	
+	lst = display_days_task_sorted(v, y, m, d)
 	try:
 		dflt_txt = str(len(lst))
 		readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
@@ -197,14 +229,14 @@ def get_task_subtask_id(v, y, m, d):
 				pass
 		if idd < len(lst):
 			(tk, stk) = lst[idd]
-			stk = new_subtaskid(v[y][m][d][tk])
+			stk = "subtask-" + str(new_subtaskid(v[y][m][d][tk]))
 		else:
 			tk = "task-" + str(len(lst) + 1)
 			stk = "subtask-1"
 	except:
 		tk = "task-1"
 		stk = "subtask-1"
-	return (tk, stk)
+	return (tk, stk, y, m, d)
 
 
 def new_subtaskid(d):

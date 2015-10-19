@@ -4,24 +4,6 @@
 from support import *
 
 
-def get_the_date():
-	dt = datetime.date.today()
-	dateflag = True
-	while dateflag:
-		readline.set_startup_hook(lambda: readline.insert_text(""))
-		days = raw_input("Enter Date ("+str(dt)+") :")
-		
-		if not days.strip():
-			dateflag = False
-		else:
-			try:
-				dt = dt + datetime.timedelta(days=int(days))
-			except:
-				pass
-	yy = str(dt.year)
-	mm = str(dt.month)
-	dd = str(dt.day)
-	return (yy,mm,dd)
 
 def view_task_table(td, subtask):
 	view_task = []
@@ -149,7 +131,9 @@ def copy_task(inp, true_index, data):
 			std = data[yy][mm][dd][task][subtask]
 	except:
 		return
-	(new_yy, new_mm, new_dd) = get_the_date()	
+	print "Fix this function"
+	sys.exit()
+	(new_yy, new_mm, new_dd) = get_the_date() ## this function has changed	
 	try:
 		data[new_yy]
 	except:
@@ -324,20 +308,9 @@ while flag:
 		elif x1 == "copy":
 			copy_task(inp, true_index, data)	
 		elif x1 == "new":
-			(yy,mm,dd) = get_the_date()
-			(tid, stid) = get_task_subtask_id(data, yy, mm, dd)
-#			try:
-#				tid = get_taskid(data[yy][mm][dd])
-#			except:
-#				tid = 1
-#			tid = "task-" + str(tid)
-#			try:
-#				stid = new_subtaskid(data[yy][mm][dd][tid])
-#			except:
-#				stid = 1
-#			stid = "subtask-" + str(stid)
+			#(yy,mm,dd) = get_the_date()
+			(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
-
 		elif inp == "quit":
 			flag = 0
 	
