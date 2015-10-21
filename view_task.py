@@ -21,14 +21,14 @@ def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 		xx = vt[index][1].split(":")[0].strip()
 		if index in range(len(vt)):
 			if xx in td.keys():
-				td[xx] = get_input_for(xx, td[xx], data).strip()
+				td[xx] = get_input_for(xx, td, data).strip()
 			elif xx in td[stsk].keys():
 				if xx == "start" :
-					td[stsk][xx] = new_time("Start ", td[stsk][xx], y, m, d, 0)
+					td[stsk][xx] = new_time("start", td[stsk], y, m, d, 0)
 				if xx == "end" :
-					td[stsk][xx] = new_time("End ", td[stsk][xx], y, m, d, 0)
+					td[stsk][xx] = new_time("end", td[stsk], y, m, d, 0)
 				else:
-					td[stsk][xx] = get_input_for(xx, td[stsk][xx], data).strip()
+					td[stsk][xx] = get_input_for(xx, td[stsk], data).strip()
 				if xx == "detail" and td[stsk][xx] == "yes":
 					strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
@@ -131,9 +131,7 @@ def copy_task(inp, true_index, data):
 			std = data[yy][mm][dd][task][subtask]
 	except:
 		return
-	print "Fix this function"
-	sys.exit()
-	(new_yy, new_mm, new_dd) = get_the_date() ## this function has changed	
+	(new_yy, new_mm, new_dd) = get_the_date("Copy task :", data) 
 	try:
 		data[new_yy]
 	except:
@@ -146,6 +144,12 @@ def copy_task(inp, true_index, data):
 		data[new_yy][new_mm][new_dd]
 	except:
 		data[new_yy][new_mm][new_dd] =  {}
+
+	day = data[new_yy][new_mm][new_dd]
+	for tid in day.keys():
+		if day[tid]["task title"] == data[yy][mm][dd][task]["task title"]:
+			print  day[tid]["task title"], data[yy][mm][dd][task]["task title"]
+	sys.exit() 
 	try:
 		data[new_yy][new_mm][new_dd][task]
 	except:
@@ -194,10 +198,9 @@ while flag:
 	lst, types, stats, projs, titles = sorted_key_list(data)
 	tbl = []
 	true_index = []
-	for index, (yy,mm,dd,task,subtask) in enumerate(lst):
+	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
 		td = data[yy][mm][dd][task]
 		new_dt = datetime.date(int(yy),int(mm),int(dd))
-			
 		if td["type"] == typ1 or typ1 == "all":
 			std = td[subtask]
 			ldate=yy+"-"+mm+"-"+dd
@@ -308,7 +311,6 @@ while flag:
 		elif x1 == "copy":
 			copy_task(inp, true_index, data)	
 		elif x1 == "new":
-			#(yy,mm,dd) = get_the_date()
 			(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
 		elif inp == "quit":

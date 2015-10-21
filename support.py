@@ -66,7 +66,7 @@ def find_new(key, d):
 	print lst
 	return lst
 
-def get_the_date(v):
+def get_the_date(txt, v):
 	dt = datetime.date.today()
 	dateflag = True
 	while dateflag:
@@ -75,9 +75,9 @@ def get_the_date(v):
 		mm = str(dt.month)
 		dd = str(dt.day)
 		readline.set_startup_hook(lambda: readline.insert_text(""))
-		print "New task :"
+		print txt
 		print "Existing tasks for " +str(dt) + " :"
-		display_days_task_sorted(v, yy, mm, dd)
+		display_daily_task_sorted(v, yy, mm, dd)
 		days = raw_input("Add days to " + str(dt) + " :")
 		
 		if not days.strip():
@@ -89,7 +89,8 @@ def get_the_date(v):
 				pass
 	return (yy,mm,dd)
 
-def last_task_end_time(d, yy, mm, dd):
+def last_task_end_time(v, yy, mm, dd):
+	d = v[yy][mm][dd]
 	lt = datetime.datetime(int(yy), int(mm), int(dd), 9, 0)
 	for key_task in d.keys():
 		for key_subtask in d[key_task].keys():
@@ -100,23 +101,21 @@ def last_task_end_time(d, yy, mm, dd):
 					lt = t
 			except:
 				pass
-	t = lt.time()
-	return str(t.hour) + ":" + str(t.minute)
+	#t = lt.time()
+	return lt   ###str(t.hour) + ":" + str(t.minute)
 
-def new_time(txt, d, yy, mm, dd, addt):
-        try:
-                (h, m) = tuple(d.split(':'))
-        except:
-                (h, m) = (9,0)
+def new_time(key, v, yy, mm, dd, offset):
+	try:
+		(h, m) = tuple(v[key].split(':'))
+        	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
+	except:
+		t = offset
 
-        t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
-	t = t + datetime.timedelta(minutes=addt)
-            
         timeflag = True
         while timeflag:
                 st = str(t.time().hour) + ":" + str(t.time().minute)
                 readline.set_startup_hook(lambda: readline.insert_text(""))
-		print txt + st
+		print key + ": " + st
                 newt = raw_input("Add minute :")
                 if not newt.strip():
                         timeflag = False
@@ -127,11 +126,23 @@ def new_time(txt, d, yy, mm, dd, addt):
                                 continue
                                 
                         
-        return st
+        return t
 
 
-def get_input_for(key, dflt_txt, d):
-	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
+def get_input_for(key, tt, d):
+	try:
+		st = tt[key]
+		readline.set_startup_hook(lambda: readline.insert_text(st))
+	except:
+		if key == "status":
+			readline.set_startup_hook(lambda: readline.insert_text("open"))
+		elif key == "flex":
+			readline.set_startup_hook(lambda: readline.insert_text("normal"))
+		elif key == "type":
+			readline.set_startup_hook(lambda: readline.insert_text("work"))
+		else:
+			readline.set_startup_hook(lambda: readline.insert_text(""))
+			
 	t = tabCompleter()
 	t.createListCompleter(list(set(find(key, d))))
 	readline.set_completer_delims('\t')
@@ -179,7 +190,7 @@ def get_taskid(d):
 		task_id = len(lst) + 1
 	return task_id
 
-def display_days_task_sorted(v, y, m, d):
+def daily_task_sorted(v, y, m, d):
 	lst = []
 	try:
 		t = v[y][m][d]
@@ -200,22 +211,30 @@ def display_days_task_sorted(v, y, m, d):
 		for start_time in sorted(start_d.keys(), key=int):
 			for item in start_d[start_time]:
 				lst.append(item)
-		for (k,sk) in lst:
-			tmp = v[y][m][d][k]
-			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20], tmp[sk]["status"], tmp["type"] ])
-		print tabulate(view)
-
 	except:
 		pass
 	return lst
 
+def display_daily_task_sorted(v, y, m, d):
+	lst = daily_task_sorted(v, y, m, d)
+	try:
+		view = []
+		for (k,sk) in lst:
+			tmp = v[y][m][d][k]
+			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20], tmp[sk]["status"], tmp["type"] ])
+		print tabulate(view)
+	except:
+		pass
+	return lst
+	
+
 def get_task_subtask_id(v):
-	(y, m, d) = get_the_date(v)
+	(y, m, d) = get_the_date("New Task :", v)
 	os.system('clear') 
 	print "New task :"
 	print "Existing tasks for " + str(y) + "-" + str(m) +"-" + str(d) + " :"
 	
-	lst = display_days_task_sorted(v, y, m, d)
+	lst = display_daily_task_sorted(v, y, m, d)
 	try:
 		dflt_txt = str(len(lst))
 		readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
@@ -262,23 +281,17 @@ def sorted_key_list(data):
 			mmd = yyd[mm]
 			for dd in sorted(mmd.keys(), key=int):
 				ddd = mmd[dd]
-				for task in sorted(ddd.keys()):
+
+				sorted_day = daily_task_sorted(data, yy, mm, dd)
+
+				for (task, subtask) in sorted_day:
 					taskd = ddd[task]
-					for key in sorted(taskd.keys()):
-						if "subtask-" in key:
-							subtask = key 
-							subtaskd = taskd[subtask]
-							lst.append((yy,mm,dd,task,subtask))
-							try:
-								statuses.append(subtaskd["status"])
-							except:
-								pass
-						elif key == "type":
-							types.append(taskd[key])
-						elif key == "project":
-							projs.append(taskd[key])
-						elif key == "task title":
-							title.append(taskd[key])
+					subtaskd = taskd[subtask]
+					lst.append((yy,mm,dd, task, subtask))
+					statuses.append(subtaskd["status"])
+					types.append(taskd["type"])
+					projs.append(taskd["project"])
+					title.append(taskd["task title"])
 	return lst, list(set(types)), list(set(statuses)), list(set(projs)), list(set(title))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
@@ -323,54 +336,33 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 		data[yy][mm][dd] = {}
 	try:
 		task = data[yy][mm][dd][taskid]
-		print "project: ", task["project"]
-		print "task title: ", task["task title"]
-		print "type: ", task["type"]
 	except:
 		task = data[yy][mm][dd][taskid]= {}
-		title = ""
-		project = ""
-		type = ""
-		task["project"]= get_input_for("project", project, data).strip()
-		task["task title"]= get_input_for("task title", title, data).strip()
-		task["type"]= get_input_for("type", type, data).strip()
 	try:
 		subtask =task[subtaskid]
-		title = subtask["subtask title"]
-		start = subtask["start"]
-		end = subtask["end"]
-		link = subtask["link"]
-		detail = subtask["detail"]
-		attachment = subtask["attachment"]
-		status = subtask["status"]
-		try:
-			flex = subtask["flex"]
-		except:
-			pass
 	except:
 		subtask = task[subtaskid] = {}
-		title = ""
-		start = last_task_end_time(data[yy][mm][dd], yy, mm, dd)
-		link = ""
-		detail = "no"
-		attachment = ""
-		status = "open"
-		flex = "normal"	
-	subtask["subtask title"] = get_input_for("subtask title", title, data).strip()
-	subtask["start"]  = new_time("Start ", start, yy, mm, dd, 0)
-	subtask["end"]  = new_time("End ", subtask["start"], yy, mm, dd, 60)
-	subtask["link"] = get_input_for("link", link, data).strip()
-	subtask["detail"] = get_input_for("detail", detail, data).strip()
+	startt = last_task_end_time(data, yy, mm, dd)	
+	task["project"]= get_input_for("project", task, data).strip()
+	task["task title"]= get_input_for("task title", task, data).strip()
+	task["type"]= get_input_for("type", task, data).strip()
+	subtask["subtask title"] = get_input_for("subtask title", subtask, data).strip()
+	startt  = new_time("start", subtask, yy, mm, dd, startt)
+	subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
+	endt = startt + datetime.timedelta(minutes=60)
+	endt  = new_time("end", subtask, yy, mm, dd, endt)
+	subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
+	subtask["link"] = get_input_for("link", subtask, data).strip()
+	subtask["detail"] = get_input_for("detail", subtask, data).strip()
 	if subtask["detail"] == "yes":
 		strn="detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
 		os.system("vim " + strn)	
-	subtask["attachment"] = get_input_for("attachment", attachment, data).strip()
-	subtask["status"] = get_input_for("status", status, data).strip()
-	try:
-		subtask["flex"] = get_input_for("flex", flex, data).strip()
-	except:
-		pass
+	subtask["attachment"] = get_input_for("attachment", subtask, data).strip()
+	subtask["status"] = get_input_for("status", subtask, data).strip()
+	subtask["flex"] = get_input_for("flex", subtask, data).strip()
+
 	
+
 	f = open('data.txt','w')
 	f.write(json.dumps(data, indent=4))
 	f.close()
