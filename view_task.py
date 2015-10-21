@@ -4,7 +4,6 @@
 from support import *
 
 
-
 def view_task_table(td, subtask):
 	view_task = []
 	for k in td.keys():
@@ -32,9 +31,10 @@ def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 				if xx == "detail" and td[stsk][xx] == "yes":
 					strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
-		f = open('data.txt','w')
-		f.write(json.dumps(data, indent=4))
-		f.close()
+		file_write(db_name(), data)
+#		f = open('data.txt','w')
+#		f.write(json.dumps(data, indent=4))
+#		f.close()
 		return True
 	except:
 		return False
@@ -99,9 +99,11 @@ def close_task(inp, true_index, data):
 			(yy,mm,dd,task,subtask) = lst[true_index[nclose]]
 			td = data[yy][mm][dd][task]
 			td[subtask]["status"] = "close"
-			f = open('data.txt','w')
-			f.write(json.dumps(data, indent=4))
-			f.close()
+			file_write(db_name(), data)
+
+#			f = open('data.txt','w')
+#			f.write(json.dumps(data, indent=4))
+#			f.close()
 	except:
 		pass
 
@@ -166,9 +168,10 @@ def copy_task(inp, true_index, data):
 	 	strold="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask	
 	 	strnew="detail/"+new_yy+"-"+new_mm+"-"+new_dd+"-"+task+"-"+subtask	
 		os.system("cp " +  strold + " " + strnew)
-	f = open('data.txt','w')
-	f.write(json.dumps(data, indent=4))
-	f.close()
+	file_write(db_name(), data)
+#	f = open('data.txt','w')
+#	f.write(json.dumps(data, indent=4))
+#	f.close()
 
 def index_for_start_end_print(end, win, leng):
 	if end > leng:
@@ -180,6 +183,7 @@ def index_for_start_end_print(end, win, leng):
 		start = 0
 	return (start, end)
 	
+db_init()
 
 flag = True
 stat1 = "open"
@@ -190,7 +194,7 @@ ref_dt = datetime.date.today()
 while flag:
 	os.system('clear') 
 	try:
-		json_data=open("data.txt").read()
+		json_data=open(db_name()).read()
 		data = json.loads(json_data)
 	except:
 		print "error"

@@ -32,7 +32,18 @@ class tabCompleter(object):
 			else:
 				return [c + " " for c in ll if c.startswith(line)][state]
 		self.listCompleter = listCompleter
+def db_init():
+	global db_file_name 
+	global db_folder
+	db_file_name = "data.txt"
 
+def db_name():
+	return db_file_name
+
+def file_write(name, d):
+	f = open(name,'w')
+	f.write(json.dumps(d, indent=4))
+	f.close()
 
 def find(key, dictionary): 
 	for k, v in dictionary.iteritems():
@@ -308,9 +319,11 @@ def rm_task_kernel(data, tid, stid, yy, mm, dd):
 		del data[yy][mm]
 	if len(data[yy].keys()) == 0:
 		del data[yy]
-	f = open('data.txt','w')
-	f.write(json.dumps(data, indent=4))
-	f.close()
+	
+	file_write(db_name(), data)
+#	f = open('data.txt','w')
+#	f.write(json.dumps(data, indent=4))
+#	f.close()
 	
 
 
@@ -361,9 +374,5 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	subtask["status"] = get_input_for("status", subtask, data).strip()
 	subtask["flex"] = get_input_for("flex", subtask, data).strip()
 
-	
-
-	f = open('data.txt','w')
-	f.write(json.dumps(data, indent=4))
-	f.close()
+	file_write(db_name(), data)
 
