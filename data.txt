@@ -277,6 +277,21 @@
                 }
             }, 
             "26": {
+                "task-8": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "", 
+                        "start": "16:0", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15084a4b65ed1578", 
+                        "attachment": "", 
+                        "subtask title": "create a wiki page and send link to all"
+                    }, 
+                    "task title": "QR"
+                }, 
                 "task-6": {
                     "project": "NSC", 
                     "type": "work", 
@@ -632,7 +647,7 @@
                         "status": "open", 
                         "flex": "normal", 
                         "end": "12:0", 
-                        "detail": "", 
+                        "detail": "yes", 
                         "start": "10:0", 
                         "link": "", 
                         "attachment": "", 
@@ -1849,6 +1864,25 @@
                 }
             }
         }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
+                }
+            }
+        }, 
         "11": {
             "1": {
                 "task-4": {
@@ -1894,6 +1928,23 @@
                         "subtask title": "--"
                     }, 
                     "task title": "update trello pages"
+                }
+            }, 
+            "23": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "www.liu.se/insidan/blanketter/personal/blanketter-pa-svenska/1.252599/Friskvrdsersattning.pdf", 
+                        "attachment": "", 
+                        "subtask title": "submit the bill"
+                    }, 
+                    "task title": "Friskv\u00e5rdsers\u00e4ttning"
                 }
             }, 
             "2": {
@@ -1945,40 +1996,21 @@
                     "task title": "Demand Cum Invoice for Flat No. ERJAP101000AF01701"
                 }
             }, 
-            "23": {
+            "6": {
                 "task-1": {
-                    "project": "NSC", 
+                    "project": "PRACE-4IP", 
                     "type": "work", 
                     "subtask-1": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "www.liu.se/insidan/blanketter/personal/blanketter-pa-svenska/1.252599/Friskvrdsersattning.pdf", 
+                        "end": "11:0", 
+                        "detail": "", 
+                        "start": "10:0", 
+                        "link": "https://mail.google.com/mail/u/0/?tab=wm#inbox/15084a4b65ed1578", 
                         "attachment": "", 
-                        "subtask title": "submit the bill"
+                        "subtask title": "send the QR"
                     }, 
-                    "task title": "Friskv\u00e5rdsers\u00e4ttning"
-                }
-            }
-        }, 
-        "8": {
-            "15": {
-                "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
-                    "subtask-1": {
-                        "status": "pending", 
-                        "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
-                        "attachment": "", 
-                        "subtask title": "submitted"
-                    }, 
-                    "task title": "Research Scientist - London"
+                    "task title": "QR"
                 }
             }
         }

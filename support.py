@@ -239,8 +239,12 @@ def display_daily_task_sorted(v, y, m, d):
 	return lst
 
 def next_task_id(v):
+	maxid = 0
 	for key in v.keys():
-		print key.split("-")[1]	
+		i = int(key.split("-")[1])
+		if i > maxid:
+			maxid = i
+	return "task-" + str(maxid+1)
 
 def get_task_subtask_id(v):
 	(y, m, d) = get_the_date("New Task :", v)
@@ -264,8 +268,8 @@ def get_task_subtask_id(v):
 			(tk, stk) = lst[idd]
 			stk = "subtask-" + str(new_subtaskid(v[y][m][d][tk]))
 		else:
-			next_task_id(v[y][m][d])
-			tk = "task-" + str(len(lst) + 1)
+			tk = next_task_id(v[y][m][d])
+			#tk = "task-" + str(len(lst) + 1)
 			stk = "subtask-1"
 	except:
 		tk = "task-1"

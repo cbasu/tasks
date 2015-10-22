@@ -1,6 +1,6 @@
 12.
 2015-10-22
-some bug in get_task_subtask_id
+some bug in get_task_subtask_id -- new taskids are sometimes wrong. -- done
 
 
 11.
