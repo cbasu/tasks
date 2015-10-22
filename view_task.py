@@ -169,9 +169,6 @@ def copy_task(inp, true_index, data):
 	 	strnew="detail/"+new_yy+"-"+new_mm+"-"+new_dd+"-"+task+"-"+subtask	
 		os.system("cp " +  strold + " " + strnew)
 	file_write(db_name(), data)
-#	f = open('data.txt','w')
-#	f.write(json.dumps(data, indent=4))
-#	f.close()
 
 def index_for_start_end_print(end, win, leng):
 	if end > leng:

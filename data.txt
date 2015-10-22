@@ -292,6 +292,21 @@
                     }, 
                     "task title": "mail"
                 }, 
+                "task-7": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "12:0", 
+                        "detail": "", 
+                        "start": "11:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "telecon"
+                }, 
                 "task-4": {
                     "project": "NSC", 
                     "type": "work", 
@@ -333,24 +348,9 @@
                         "start": "10:0", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": ""
+                        "subtask title": "talk to torben about updates on web documentation and mpprun, talk to PeterK about intel support case"
                     }, 
-                    "task title": "talk to torben about updates on web documentation and mpprun"
-                }, 
-                "task-3": {
-                    "project": "NSC", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "12:0", 
-                        "detail": "", 
-                        "start": "11:0", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "sent a mail to PeterK. Ask him if the code ha any issues"
-                    }, 
-                    "task title": "Intel support case"
+                    "task title": "discussion"
                 }, 
                 "task-1": {
                     "project": "NSC", 
@@ -614,7 +614,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "10:0", 
                         "detail": "", 
@@ -704,6 +704,21 @@
                 }
             }, 
             "28": {
+                "task-2": {
+                    "project": "PRACE-4IP", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "11:0", 
+                        "detail": "", 
+                        "start": "10:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "timesheet"
+                }, 
                 "task-1": {
                     "project": "NSC", 
                     "type": "work", 
@@ -1882,15 +1897,30 @@
                 }
             }, 
             "2": {
+                "task-2": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "9:0", 
+                        "detail": "", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "contribution for Jeff's gift"
+                }, 
                 "task-1": {
                     "project": "NA", 
                     "type": "pers", 
                     "subtask-1": {
                         "status": "open", 
                         "flex": "normal", 
-                        "end": "", 
+                        "end": "8:0", 
                         "detail": "no", 
-                        "start": "8", 
+                        "start": "8:0", 
                         "link": "", 
                         "attachment": "", 
                         "subtask title": "take the letsdeal code"
