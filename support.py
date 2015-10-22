@@ -384,3 +384,68 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 
 	file_write(db_name(), data)
 
+def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
+	yy = str(yy)
+	mm = str(mm)
+	dd = str(dd)
+	taskid =  str(tid)
+	subtaskid = str(stid)
+
+	ny = str(ny)
+	nm = str(nm)
+	nd = str(nd)
+	ntid = str(ntid)
+	nstid = str(nstid)
+
+	lastend = 9 
+
+	try:
+		data[ny]
+	except:	
+		data[ny] = {}
+	try:
+		data[ny][nm]
+	except:
+		data[ny][nm] = {}
+	try:
+		data[ny][nm][nd]
+	except:
+		data[ny][nm][nd] = {}
+	try:
+		task = data[ny][nm][nd][ntid]
+	except:
+		task = data[ny][nm][nd][ntid]= {}
+		task["project"] = data[yy][mm][dd][taskid]["project"]
+		task["task title"] = data[yy][mm][dd][taskid]["task title"]
+		task["type"] =  data[yy][mm][dd][taskid]["type"] 
+	try:
+		subtask = task[nstid]
+	except:
+		subtask = task[nstid] = {}
+		subtask["subtask title"] = data[yy][mm][dd][taskid][subtaskid]["subtask title"]
+
+	print "project :", task["project"]
+	print "task title :", task["task title"]
+	print "type :", task["type"]
+	print "subtask title:", subtask["subtask title"]
+	startt  = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
+	subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
+	print "start:", subtask["start"]
+	endt  = new_time("end", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
+	subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
+	print "end:", subtask["end"]
+	subtask["link"] = data[yy][mm][dd][taskid][subtaskid]["link"]
+	print "link:", subtask["link"]
+	subtask["detail"] = data[yy][mm][dd][taskid][subtaskid]["detail"]
+	if subtask["detail"] == "yes":
+		strold="detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+		strnew="detail/"+ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
+		os.system("cp " + strold + " " + strnew)	
+	subtask["attachment"] = data[yy][mm][dd][taskid][subtaskid]["attachment"]
+	print "attachment:", subtask["attachment"]
+	subtask["status"] = data[yy][mm][dd][taskid][subtaskid]["status"]
+	print "status:", subtask["status"]
+	subtask["flex"] = data[yy][mm][dd][taskid][subtaskid]["flex"]
+	print "flex:", subtask["flex"]
+
+	file_write(db_name(), data)

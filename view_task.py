@@ -133,42 +133,9 @@ def copy_task(inp, true_index, data):
 			std = data[yy][mm][dd][task][subtask]
 	except:
 		return
-	(new_yy, new_mm, new_dd) = get_the_date("Copy task :", data) 
-	try:
-		data[new_yy]
-	except:
-		data[new_yy] = {}
-	try:
-		data[new_yy][new_mm]
-	except:
-		data[new_yy][new_mm]= {}
-	try:
-		data[new_yy][new_mm][new_dd]
-	except:
-		data[new_yy][new_mm][new_dd] =  {}
 
-	day = data[new_yy][new_mm][new_dd]
-	for tid in day.keys():
-		if day[tid]["task title"] == data[yy][mm][dd][task]["task title"]:
-			print  day[tid]["task title"], data[yy][mm][dd][task]["task title"]
-	sys.exit() 
-	try:
-		data[new_yy][new_mm][new_dd][task]
-	except:
-		data[new_yy][new_mm][new_dd][task] = {}
-	try:
-		data[new_yy][new_mm][new_dd][task][subtask]
-		xx = raw_input("Subtask Exists. Do you want to overwrite :")
-		if xx == "y":
-			data[new_yy][new_mm][new_dd][task][subtask] = std
-	except:
-		data[new_yy][new_mm][new_dd][task][subtask] =  std
-
-	if td[subtask]["detail"] == "yes":
-	 	strold="detail/"+yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask	
-	 	strnew="detail/"+new_yy+"-"+new_mm+"-"+new_dd+"-"+task+"-"+subtask	
-		os.system("cp " +  strold + " " + strnew)
-	file_write(db_name(), data)
+	(ntid, nstid, ny, nm, nd) = get_task_subtask_id(data)
+	copy_task_kernel(data, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd)
 
 def index_for_start_end_print(end, win, leng):
 	if end > leng:

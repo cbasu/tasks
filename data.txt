@@ -595,6 +595,36 @@
                 }
             }, 
             "22": {
+                "task-6": {
+                    "project": "SAAB", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "16:30", 
+                        "detail": "no", 
+                        "start": "13:30", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "--"
+                    }, 
+                    "task title": "Code optimization meeting"
+                }, 
+                "task-7": {
+                    "project": "", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "17:0", 
+                        "detail": "", 
+                        "start": "17:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "order photos for deep & tatun"
+                }, 
                 "task-4": {
                     "project": "NSC", 
                     "type": "work", 
@@ -654,21 +684,6 @@
                         "subtask title": "make the file for discussion in the AE meeting"
                     }, 
                     "task title": "mpprun"
-                }, 
-                "task-1": {
-                    "project": "SAAB", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "15:00", 
-                        "detail": "no", 
-                        "start": "13:30", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "--"
-                    }, 
-                    "task title": "Code optimization meeting"
                 }
             }, 
             "23": {
@@ -897,7 +912,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "pending", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "15:0", 
                         "detail": "no", 
@@ -1204,23 +1219,6 @@
                     "task title": "--"
                 }
             }, 
-            "10": {
-                "task-1": {
-                    "project": "NA", 
-                    "type": "pers", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "9:0", 
-                        "detail": "no", 
-                        "start": "9:0", 
-                        "link": "", 
-                        "attachment": "", 
-                        "subtask title": "check the ststus"
-                    }, 
-                    "task title": "ITR"
-                }
-            }, 
             "13": {
                 "task-4": {
                     "project": "ISENES2", 
@@ -1500,7 +1498,7 @@
                     "project": "NSC", 
                     "type": "work", 
                     "subtask-1": {
-                        "status": "pending", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "14:0", 
                         "detail": "no", 
@@ -1649,14 +1647,14 @@
                     "project": "NA", 
                     "type": "pers", 
                     "subtask-1": {
-                        "status": "open", 
+                        "status": "close", 
                         "flex": "normal", 
                         "end": "15:0", 
                         "detail": "no", 
                         "start": "15:0", 
                         "link": "", 
                         "attachment": "", 
-                        "subtask title": ""
+                        "subtask title": "seems ok"
                     }, 
                     "task title": "check CDON money refund"
                 }, 
@@ -1846,6 +1844,23 @@
                     "task title": "SNIC all hands meeting"
                 }
             }, 
+            "21": {
+                "task-1": {
+                    "project": "NA", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "9:0", 
+                        "detail": "no", 
+                        "start": "9:0", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": "check the ststus"
+                    }, 
+                    "task title": "ITR"
+                }
+            }, 
             "16": {
                 "task-1": {
                     "project": "NSC", 
@@ -1864,26 +1879,41 @@
                 }
             }
         }, 
-        "8": {
-            "15": {
+        "11": {
+            "25": {
                 "task-1": {
-                    "project": "chakri", 
-                    "type": "pers", 
+                    "project": "SAAB", 
+                    "type": "work", 
                     "subtask-1": {
-                        "status": "pending", 
+                        "status": "open", 
+                        "flex": "normal", 
+                        "end": "15:0", 
+                        "detail": "", 
+                        "start": "13:30", 
+                        "link": "", 
+                        "attachment": "", 
+                        "subtask title": ""
+                    }, 
+                    "task title": "Code optimization meeting"
+                }
+            }, 
+            "23": {
+                "task-1": {
+                    "project": "NSC", 
+                    "type": "work", 
+                    "subtask-1": {
+                        "status": "open", 
                         "flex": "normal", 
                         "end": "", 
                         "detail": "no", 
                         "start": "", 
-                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "link": "www.liu.se/insidan/blanketter/personal/blanketter-pa-svenska/1.252599/Friskvrdsersattning.pdf", 
                         "attachment": "", 
-                        "subtask title": "submitted"
+                        "subtask title": "submit the bill"
                     }, 
-                    "task title": "Research Scientist - London"
+                    "task title": "Friskv\u00e5rdsers\u00e4ttning"
                 }
-            }
-        }, 
-        "11": {
+            }, 
             "1": {
                 "task-4": {
                     "project": "PRACE-4IP", 
@@ -1928,23 +1958,6 @@
                         "subtask title": "--"
                     }, 
                     "task title": "update trello pages"
-                }
-            }, 
-            "23": {
-                "task-1": {
-                    "project": "NSC", 
-                    "type": "work", 
-                    "subtask-1": {
-                        "status": "open", 
-                        "flex": "normal", 
-                        "end": "", 
-                        "detail": "no", 
-                        "start": "", 
-                        "link": "www.liu.se/insidan/blanketter/personal/blanketter-pa-svenska/1.252599/Friskvrdsersattning.pdf", 
-                        "attachment": "", 
-                        "subtask title": "submit the bill"
-                    }, 
-                    "task title": "Friskv\u00e5rdsers\u00e4ttning"
                 }
             }, 
             "2": {
@@ -2011,6 +2024,25 @@
                         "subtask title": "send the QR"
                     }, 
                     "task title": "QR"
+                }
+            }
+        }, 
+        "8": {
+            "15": {
+                "task-1": {
+                    "project": "chakri", 
+                    "type": "pers", 
+                    "subtask-1": {
+                        "status": "pending", 
+                        "flex": "normal", 
+                        "end": "", 
+                        "detail": "no", 
+                        "start": "", 
+                        "link": "https://www.google.com/about/careers/applications/#/", 
+                        "attachment": "", 
+                        "subtask title": "submitted"
+                    }, 
+                    "task title": "Research Scientist - London"
                 }
             }
         }
