@@ -44,7 +44,9 @@ def db_init(path):
     		os.makedirs(path)
 
 	if not os.path.isfile(db_file_name):
-		open(db_file_name, 'w').close() 
+		f = open(db_file_name, 'w') 
+		f.write("{ }")
+		f.close()
 		
 	db_folder = os.path.dirname(os.path.realpath(db_file_name))
 	detail = db_folder + "/detail" 

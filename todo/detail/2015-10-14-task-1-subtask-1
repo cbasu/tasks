@@ -1,0 +1,11 @@
+Enter command :plan
+Enter Date (2015-10-14) :6
+Enter Date (2015-10-20) :
+No data exists
+Traceback (most recent call last):
+  File "./view_task.py", line 339, in <module>
+    get_task_subtask_id(data, py, pm, pd)
+  File "/home/cbasu/cbasu work/tasks/support.py", line 173, in get_task_subtask_id
+    dflt_txt = str(len(lst))
+UnboundLocalError: local variable 'lst' referenced before assignment
+
