@@ -32,13 +32,30 @@ class tabCompleter(object):
 			else:
 				return [c + " " for c in ll if c.startswith(line)][state]
 		self.listCompleter = listCompleter
-def db_init():
+def db_init(path):
 	global db_file_name 
 	global db_folder
-	db_file_name = "data.txt"
+	if not os.path.exists(path):
+    		os.makedirs(path)
+		
+	db_file_name = str(path) + "/data.txt"
+
+	if not os.path.exists(path):
+    		os.makedirs(path)
+
+	if not os.path.isfile(db_file_name):
+		open(db_file_name, 'w').close() 
+		
+	db_folder = os.path.dirname(os.path.realpath(db_file_name))
+	detail = db_folder + "/detail" 
+	if not os.path.exists(detail):
+    		os.makedirs(detail)
 
 def db_name():
 	return db_file_name
+
+def db_path():
+	return "'%s'" % db_folder
 
 def file_write(name, d):
 	f = open(name,'w')
@@ -314,6 +331,10 @@ def sorted_key_list(data):
 	return lst, list(set(types)), list(set(statuses)), list(set(projs)), list(set(title))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
+	if data[yy][mm][dd][tid][stid]["detail"] == "yes":
+		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+		os.system("rm " + strn)	
+		
 	del data[yy][mm][dd][tid][stid]
 	deltask = True
 	for k in data[yy][mm][dd][tid].keys():
@@ -329,9 +350,6 @@ def rm_task_kernel(data, tid, stid, yy, mm, dd):
 		del data[yy]
 	
 	file_write(db_name(), data)
-#	f = open('data.txt','w')
-#	f.write(json.dumps(data, indent=4))
-#	f.close()
 	
 
 
@@ -376,7 +394,7 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	subtask["link"] = get_input_for("link", subtask, data).strip()
 	subtask["detail"] = get_input_for("detail", subtask, data).strip()
 	if subtask["detail"] == "yes":
-		strn="detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
 		os.system("vim " + strn)	
 	subtask["attachment"] = get_input_for("attachment", subtask, data).strip()
 	subtask["status"] = get_input_for("status", subtask, data).strip()
@@ -438,8 +456,8 @@ def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
 	print "link:", subtask["link"]
 	subtask["detail"] = data[yy][mm][dd][taskid][subtaskid]["detail"]
 	if subtask["detail"] == "yes":
-		strold="detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-		strnew="detail/"+ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
+		strold = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+		strnew = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
 		os.system("cp " + strold + " " + strnew)	
 	subtask["attachment"] = data[yy][mm][dd][taskid][subtaskid]["attachment"]
 	print "attachment:", subtask["attachment"]

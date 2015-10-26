@@ -2,6 +2,7 @@
 
 
 from support import *
+import subprocess
 
 
 def view_task_table(td, subtask):
@@ -29,12 +30,9 @@ def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 				else:
 					td[stsk][xx] = get_input_for(xx, td[stsk], data).strip()
 				if xx == "detail" and td[stsk][xx] == "yes":
-					strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
+					strn = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
 		file_write(db_name(), data)
-#		f = open('data.txt','w')
-#		f.write(json.dumps(data, indent=4))
-#		f.close()
 		return True
 	except:
 		return False
@@ -62,7 +60,7 @@ def view_task_kernel(vt, inp2, td, data, y,m,d,tsk, subtsk):
 		if index in range(len(vt)):
 			print tabulate(vt[index:index+1])
 			if vt[index][1] == "detail :" and vt[index][2] == "yes":
-				strn="detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+subtsk
+				strn = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+subtsk
 				os.system("less " + strn)
 		return True
 	except:
@@ -101,9 +99,6 @@ def close_task(inp, true_index, data):
 			td[subtask]["status"] = "close"
 			file_write(db_name(), data)
 
-#			f = open('data.txt','w')
-#			f.write(json.dumps(data, indent=4))
-#			f.close()
 	except:
 		pass
 
@@ -146,8 +141,12 @@ def index_for_start_end_print(end, win, leng):
 	if start < 0:
 		start = 0
 	return (start, end)
-	
-db_init()
+
+try:
+	db_init(sys.argv[1])	
+except:
+	print "Error: pass the database name"	
+	sys.exit()
 
 flag = True
 stat1 = "open"
@@ -166,6 +165,7 @@ while flag:
 	lst, types, stats, projs, titles = sorted_key_list(data)
 	tbl = []
 	true_index = []
+	l = 0
 	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
 		td = data[yy][mm][dd][task]
 		new_dt = datetime.date(int(yy),int(mm),int(dd))
@@ -243,7 +243,7 @@ while flag:
 										print "Status :", sv["status"]
 										print "Detail :", sv["detail"]
 										if sv["detail"] == "yes":
-	 										rstr="detail/"+y+"-"+m+"-"+d+"-"+t+"-"+s
+	 										rstr = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+t+"-"+s
 											fp = open(rstr, "r")	
 											print fp.readline()
 											fp.close()
@@ -281,6 +281,44 @@ while flag:
 		elif x1 == "new":
 			(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
+			readline.set_startup_hook(lambda: readline.insert_text("no"))
+			read = raw_input("Do you want to export to google calender: ")	
+			if read == "yes":
+				cmd = []
+				cmd.append("gcalcli")
+				cmd.append("--calendar")
+				readline.set_startup_hook(lambda: readline.insert_text(""))
+				t = tabCompleter()
+				t.createListCompleter(["calender", "NSC absences", "NSC shared calender"])
+				readline.set_completer_delims('\t')
+				readline.parse_and_bind("tab: complete")
+				readline.set_completer(t.listCompleter)
+				calender = raw_input("Name of calender: ").strip()
+				cmd.append(calender)
+				cmd.append("--title")
+				data[yy][mm][dd][tid][stid]["subtask title"]
+				cmd.append(data[yy][mm][dd][tid][stid]["subtask title"])
+				cmd.append("--where")
+				cmd.append("''")
+				cmd.append("--when")
+				dt = str(mm)+ "/" + str(dd) + "/" + str(yy) + " " + data[yy][mm][dd][tid][stid]["start"]
+				cmd.append(dt)
+				cmd.append("--duration")
+				(h1, m1) = tuple(data[yy][mm][dd][tid][stid]["start"].split(':'))
+				(h2, m2) = tuple(data[yy][mm][dd][tid][stid]["end"].split(':'))
+				dur = str((int(h2) - int(h1)) * 60 + (int(m2) -int(m1)))
+				cmd.append(dur)
+				cmd.append("--description")
+				cmd.append("''")
+				cmd.append("--reminder")
+				cmd.append("0")
+				cmd.append("add")
+				job = subprocess.Popen(cmd)
+        			job.wait()
+				raw_input("Press enter to continue")
+
+				
+				# 'NSC absences' --title 'Analysis of Algorithms Final' --where '' --when '10/26/2015 12:00' --duration 60 --description '' --reminder 0 add
 		elif inp == "quit":
 			flag = 0
 	
