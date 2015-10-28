@@ -2,7 +2,6 @@
 
 
 from support import *
-import subprocess
 
 
 def view_task_table(td, subtask):
@@ -25,13 +24,13 @@ def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
 			elif xx in td[stsk].keys():
 				if xx == "start" :
 					td[stsk][xx] = new_time("start", td[stsk], y, m, d, 0)
-				if xx == "end" :
+				elif xx == "end" :
 					td[stsk][xx] = new_time("end", td[stsk], y, m, d, 0)
-				else:
-					td[stsk][xx] = get_input_for(xx, td[stsk], data).strip()
-				if xx == "detail" and td[stsk][xx] == "yes":
+				elif xx == "detail" and td[stsk][xx] == "yes":
 					strn = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
 					os.system("vi " + strn)
+				else:
+					td[stsk][xx] = get_input_for(xx, td[stsk], data).strip()
 		file_write(db_name(), data)
 		return True
 	except:
@@ -149,8 +148,24 @@ except:
 	sys.exit()
 
 flag = True
+try:
+	json_data=open(db_name()).read()
+	data = json.loads(json_data)
+except:
+	print "error"
+	sys.exit(1)
+lst, types, stats, projs, titles = sorted_key_list(data)
+types.append("all")
+readline.set_startup_hook(lambda: readline.insert_text(""))
+t = tabCompleter()
+t.createListCompleter(types)
+readline.set_completer_delims('\t')
+readline.parse_and_bind("tab: complete")
+readline.set_completer(t.listCompleter)
+typ1 = raw_input("Enter task type: ").strip()
+
 stat1 = "open"
-typ1 = "work"
+#typ1 = "work"
 proj1 = "all"
 title1 = "all" 
 ref_dt = datetime.date.today()
@@ -282,43 +297,9 @@ while flag:
 			(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
 			readline.set_startup_hook(lambda: readline.insert_text("no"))
-			read = raw_input("Do you want to export to google calender: ")	
+			read = raw_input("Do you want to export to google calender: ")
 			if read == "yes":
-				cmd = []
-				cmd.append("gcalcli")
-				cmd.append("--calendar")
-				readline.set_startup_hook(lambda: readline.insert_text(""))
-				t = tabCompleter()
-				t.createListCompleter(["calender", "NSC absences", "NSC shared calender"])
-				readline.set_completer_delims('\t')
-				readline.parse_and_bind("tab: complete")
-				readline.set_completer(t.listCompleter)
-				calender = raw_input("Name of calender: ").strip()
-				cmd.append(calender)
-				cmd.append("--title")
-				data[yy][mm][dd][tid][stid]["subtask title"]
-				cmd.append(data[yy][mm][dd][tid][stid]["subtask title"])
-				cmd.append("--where")
-				cmd.append("''")
-				cmd.append("--when")
-				dt = str(mm)+ "/" + str(dd) + "/" + str(yy) + " " + data[yy][mm][dd][tid][stid]["start"]
-				cmd.append(dt)
-				cmd.append("--duration")
-				(h1, m1) = tuple(data[yy][mm][dd][tid][stid]["start"].split(':'))
-				(h2, m2) = tuple(data[yy][mm][dd][tid][stid]["end"].split(':'))
-				dur = str((int(h2) - int(h1)) * 60 + (int(m2) -int(m1)))
-				cmd.append(dur)
-				cmd.append("--description")
-				cmd.append("''")
-				cmd.append("--reminder")
-				cmd.append("0")
-				cmd.append("add")
-				job = subprocess.Popen(cmd)
-        			job.wait()
-				raw_input("Press enter to continue")
-
-				
-				# 'NSC absences' --title 'Analysis of Algorithms Final' --where '' --when '10/26/2015 12:00' --duration 60 --description '' --reminder 0 add
+				export_gcal(data, yy, mm, dd, tid, stid)
 		elif inp == "quit":
 			flag = 0
 	

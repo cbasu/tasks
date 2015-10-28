@@ -2,6 +2,7 @@
 
 import os
 import sys
+import subprocess
 import readline
 import glob
 
@@ -63,6 +64,40 @@ def file_write(name, d):
 	f = open(name,'w')
 	f.write(json.dumps(d, indent=4))
 	f.close()
+
+def export_gcal(v, y, m, d, tid, sid):	
+	cmd = []
+	cmd.append("gcalcli")
+	cmd.append("--calendar")
+	readline.set_startup_hook(lambda: readline.insert_text(""))
+	t = tabCompleter()
+	t.createListCompleter(["calender", "NSC absences", "NSC shared calender"])
+	readline.set_completer_delims('\t')
+	readline.parse_and_bind("tab: complete")
+	readline.set_completer(t.listCompleter)
+	calender = raw_input("Name of calender: ").strip()
+	cmd.append(calender)
+	cmd.append("--title")
+	v[y][m][d][tid][sid]["subtask title"]
+	cmd.append(v[y][m][d][tid][sid]["subtask title"])
+	cmd.append("--where")
+	cmd.append("''")
+	cmd.append("--when")
+	dt = str(m)+ "/" + str(d) + "/" + str(y) + " " + v[y][m][d][tid][sid]["start"]
+	cmd.append(dt)
+	cmd.append("--duration")
+	(h1, m1) = tuple(v[y][m][d][tid][sid]["start"].split(':'))
+	(h2, m2) = tuple(v[y][m][d][tid][sid]["end"].split(':'))
+	dur = str((int(h2) - int(h1)) * 60 + (int(m2) -int(m1)))
+	cmd.append(dur)
+	cmd.append("--description")
+	cmd.append("''")
+	cmd.append("--reminder")
+	cmd.append("0")
+	cmd.append("add")
+	job = subprocess.Popen(cmd)
+	job.wait()
+	raw_input("Press enter to continue")
 
 def find(key, dictionary): 
 	for k, v in dictionary.iteritems():
@@ -132,14 +167,21 @@ def last_task_end_time(v, yy, mm, dd):
 			except:
 				pass
 	#t = lt.time()
-	return lt   ###str(t.hour) + ":" + str(t.minute)
+	return str(lt.time().hour) + ":" + str(lt.time().minute) ## lt
+
+def add_time(yy, mm, dd, start, minute):
+	(h, m) = tuple(start.split(':'))
+        t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
+        t = t + datetime.timedelta(minutes=int(minute))
+	return str(t.time().hour) + ":" + str(t.time().minute)
 
 def new_time(key, v, yy, mm, dd, offset):
 	try:
 		(h, m) = tuple(v[key].split(':'))
         	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
 	except:
-		t = offset
+		(h, m) = tuple(offset.split(':'))
+        	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
 
         timeflag = True
         while timeflag:
@@ -156,7 +198,7 @@ def new_time(key, v, yy, mm, dd, offset):
                                 continue
                                 
                         
-        return t
+	return str(t.time().hour) + ":" + str(t.time().minute)
 
 
 def get_input_for(key, tt, d):
@@ -388,11 +430,12 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	task["task title"]= get_input_for("task title", task, data).strip()
 	task["type"]= get_input_for("type", task, data).strip()
 	subtask["subtask title"] = get_input_for("subtask title", subtask, data).strip()
-	startt  = new_time("start", subtask, yy, mm, dd, startt)
-	subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
-	endt = startt + datetime.timedelta(minutes=60)
-	endt  = new_time("end", subtask, yy, mm, dd, endt)
-	subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
+	subtask["start"] = new_time("start", subtask, yy, mm, dd, startt)
+	#subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
+	endt = add_time(yy, mm, dd, startt, 60)
+	#endt = startt + datetime.timedelta(minutes=60)
+	subtask["end"] = new_time("end", subtask, yy, mm, dd, endt)
+	#subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
 	subtask["link"] = get_input_for("link", subtask, data).strip()
 	subtask["detail"] = get_input_for("detail", subtask, data).strip()
 	if subtask["detail"] == "yes":
@@ -448,11 +491,12 @@ def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
 	print "task title :", task["task title"]
 	print "type :", task["type"]
 	print "subtask title:", subtask["subtask title"]
-	startt  = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
-	subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
+	#startt  = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
+	#subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
+	subtask["start"] = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
 	print "start:", subtask["start"]
-	endt  = new_time("end", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
-	subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
+	subtask["end"]  = new_time("end", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
+	#subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
 	print "end:", subtask["end"]
 	subtask["link"] = data[yy][mm][dd][taskid][subtaskid]["link"]
 	print "link:", subtask["link"]
