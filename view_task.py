@@ -294,6 +294,8 @@ while flag:
 		elif x1 == "copy":
 			copy_task(inp, true_index, data)	
 		elif x1 == "new":
+			#prj = get_input_for("project", task, data).strip()
+			#task_title = get_input_for("task title", task, data).strip()
 			(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
 			edit_task_kernel(data, tid, stid, yy, mm, dd)
 			readline.set_startup_hook(lambda: readline.insert_text("no"))

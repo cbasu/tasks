@@ -175,6 +175,16 @@ def add_time(yy, mm, dd, start, minute):
         t = t + datetime.timedelta(minutes=int(minute))
 	return str(t.time().hour) + ":" + str(t.time().minute)
 
+def duration_time(tsk):
+	
+	FMT = '%H:%M'
+	try:
+		tdelta = datetime.datetime.strptime(tsk["end"], FMT) - datetime.datetime.strptime(tsk["start"], FMT)
+		return int(tdelta.seconds) / 60
+	except:
+		print "error in duration_time"
+		sys.exit(1)
+
 def new_time(key, v, yy, mm, dd, offset):
 	try:
 		(h, m) = tuple(v[key].split(':'))
@@ -431,11 +441,8 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	task["type"]= get_input_for("type", task, data).strip()
 	subtask["subtask title"] = get_input_for("subtask title", subtask, data).strip()
 	subtask["start"] = new_time("start", subtask, yy, mm, dd, startt)
-	#subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
-	endt = add_time(yy, mm, dd, startt, 60)
-	#endt = startt + datetime.timedelta(minutes=60)
+	endt = add_time(yy, mm, dd, subtask["start"], 60)
 	subtask["end"] = new_time("end", subtask, yy, mm, dd, endt)
-	#subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
 	subtask["link"] = get_input_for("link", subtask, data).strip()
 	subtask["detail"] = get_input_for("detail", subtask, data).strip()
 	if subtask["detail"] == "yes":
@@ -491,11 +498,12 @@ def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
 	print "task title :", task["task title"]
 	print "type :", task["type"]
 	print "subtask title:", subtask["subtask title"]
-	#startt  = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
-	#subtask["start"]  = str(startt.time().hour) + ":" + str(startt.time().minute)
 	subtask["start"] = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
 	print "start:", subtask["start"]
-	subtask["end"]  = new_time("end", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
+	dur = duration_time(data[yy][mm][dd][taskid][subtaskid])
+	endt = add_time(yy, mm, dd, subtask["start"], dur)
+	subtask["end"] = new_time("end", subtask, ny, nm, nd, endt)
+	#subtask["end"]  = new_time("end", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
 	#subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
 	print "end:", subtask["end"]
 	subtask["link"] = data[yy][mm][dd][taskid][subtaskid]["link"]
