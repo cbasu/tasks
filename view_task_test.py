@@ -131,34 +131,65 @@ def copy_task(inp, true_index, data):
 	(ntid, nstid, ny, nm, nd) = get_task_subtask_id(data)
 	copy_task_kernel(data, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd)
 
-def display(data, incr):
+
+def display_range(data, lst, true_index, start, end):
 	tbl = []
+	if start < 0:
+		start = 0
+	if end < 0:
+		end = 0
+	for i, index in enumerate(true_index[start:end+1]):
+		(yy,mm,dd,task, subtask) = lst[index]
+		td = data[yy][mm][dd][task]
+		std = td[subtask]
+		ldate=yy+"-"+mm+"-"+dd
+		tbl.append([start+i, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
+	prstr = "Showing " + '"'+ td["type"] + '"' + " tasks with " + '"' + std["status"] + '"' + " statuses"  			
+	print prstr
+	print tabulate(tbl, headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
+		
+
+
+def init_start_end_index(data, lst, typ, stat, proj, title, dt, rng=0):
 	true_index = []
 	l = 0
-	ref_dt = datetime.date.today()
-	lst, types, stats, projs, titles = sorted_key_list(data)
-	typ1 = get_input_for_new("type", "work", types + ["all"]).strip()
-	stat1 = get_input_for_new("status", "open", stats + ["all"]).strip()
-	proj1 = get_input_for_new("project", "all", projs + ["all"]).strip()
-	title1 = get_input_for_new("task title", "all", titles + ["all"]).strip()
+	end = 0
+	start = 0
 	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
 		td = data[yy][mm][dd][task]
 		new_dt = datetime.date(int(yy),int(mm),int(dd))
-		if td["type"] == typ1 or typ1 == "all":
+		if td["type"] == typ or typ == "all":
 			std = td[subtask]
-			ldate=yy+"-"+mm+"-"+dd
-			if td["project"] == proj1 or proj1 == "all":
-				if td["task title"] == title1 or title1 == "all":
-					if std["status"] == stat1 or stat1 == "all":
+			if td["project"] == proj or proj == "all":
+				if td["task title"] == title or title == "all":
+					if std["status"] == stat or stat == "all":
 						l = len(true_index)
-						tbl.append([l, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
 						true_index.append(index)
-						if new_dt > ref_dt:
-							(start, end) = index_for_start_end_print(l, 10, len(true_index))
+						if new_dt == dt:
+							start = l
+						elif new_dt <= dt :
+							end = l
+						
+	if rng != 0:
+		start = end - rng
+		if start < 0:
+			start = 0
+	return (start, end, true_index)
 							
-	prstr = "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + stat1 + '"' + " statuses"  			
-	print prstr
-	print tabulate(tbl[start+incr:end+incr+1], headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
+
+	
+def display(data, lst, start, end, true_index):
+
+	display_flag = True
+	while display_flag:
+		display_range(data, lst, true_index, start, end)
+		try:
+			incr = int(raw_input("Add number :").strip())
+			start = start + incr
+			end = end + incr
+		except:
+			display_flag = False	
+	
 
 def index_for_start_end_print(end, win, leng):
 	if end > leng:
@@ -188,10 +219,10 @@ types.append("all")
 readline.set_startup_hook(lambda: readline.insert_text(""))
 t = tabCompleter()
 t.createListCompleter(types)
-readline.set_completer_delims('\t')
-readline.parse_and_bind("tab: complete")
-readline.set_completer(t.listCompleter)
-typ1 = raw_input("Enter task type: ").strip()
+#readline.set_completer_delims('\t')
+#readline.parse_and_bind("tab: complete")
+#readline.set_completer(t.listCompleter)
+#typ1 = raw_input("Enter task type: ").strip()
 
 stat1 = "open"
 #typ1 = "work"
@@ -199,8 +230,10 @@ proj1 = "all"
 title1 = "all" 
 ref_dt = datetime.date.today()
 command = "show"
+ref_dt = datetime.date.today()
 while flag:
 	os.system('clear') 
+	lst, types, stats, projs, titles = sorted_key_list(data)
 	try:
 		json_data=open(db_name()).read()
 		data = json.loads(json_data)
@@ -209,15 +242,23 @@ while flag:
 		sys.exit(1)
 	lst, types, stats, projs, titles = sorted_key_list(data)
 	if command == "show":
-		display_flag = True
-		incr = 0
-		while display_flag:
-			display(data, incr)
-			try:
-				incr = incr + int(raw_input("Enter subcommand :").strip())
-			except:
-				display_flag = False	
-			
+		typ1 = get_input_for_new("type", "work", types + ["all"]).strip()
+		stat1 = get_input_for_new("status", "open", stats + ["all"]).strip()
+		proj1 = get_input_for_new("project", "all", projs + ["all"]).strip()
+		title1 = get_input_for_new("task title", "all", titles + ["all"]).strip()
+
+		(start, end, true_index) = init_start_end_index(data, lst, typ1, stat1, proj1, title1, ref_dt, 10)
+		display(data, lst, start, end, true_index)
+	elif command == "new":
+		(start, end, true_index) = init_start_end_index(data, lst, "all", "all", "all", "all", ref_dt)
+		display(data, lst, start, end, true_index)
+		
+		(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
+		edit_task_kernel(data, tid, stid, yy, mm, dd)
+		readline.set_startup_hook(lambda: readline.insert_text("no"))
+		read = raw_input("Do you want to export to google calender: ")
+		if read == "yes":
+			export_gcal(data, yy, mm, dd, tid, stid)
 	command = raw_input("Enter command :").strip()
 #	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
 #		td = data[yy][mm][dd][task]
