@@ -132,7 +132,7 @@ def copy_task(inp, true_index, data):
 	copy_task_kernel(data, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd)
 
 
-def display_range(data, lst, true_index, start, end):
+def display_range(data, lst, true_index, start, end, start_offset=0):
 	tbl = []
 	if start < 0:
 		start = 0
@@ -143,12 +143,9 @@ def display_range(data, lst, true_index, start, end):
 		td = data[yy][mm][dd][task]
 		std = td[subtask]
 		ldate=yy+"-"+mm+"-"+dd
-		tbl.append([start+i, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
-	prstr = "Showing " + '"'+ td["type"] + '"' + " tasks with " + '"' + std["status"] + '"' + " statuses"  			
-	print prstr
+		tbl.append([start+i-start_offset, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
 	print tabulate(tbl, headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
 		
-
 
 def init_start_end_index(data, lst, typ, stat, proj, title, dt, rng=0):
 	true_index = []
@@ -165,15 +162,24 @@ def init_start_end_index(data, lst, typ, stat, proj, title, dt, rng=0):
 					if std["status"] == stat or stat == "all":
 						l = len(true_index)
 						true_index.append(index)
-						if new_dt == dt:
+						if dt > new_dt:
 							start = l
-						elif new_dt <= dt :
+						elif new_dt == dt :
 							end = l
 						
-	if rng != 0:
+	if rng == 0:
+		start = start + 1
+	else:
+		if end < rng:
+			if len(lst) > rng:
+				end = rng
+			else:
+				end = len(lst)
 		start = end - rng
-		if start < 0:
-			start = 0
+
+	if start < 0:
+		start = 0
+
 	return (start, end, true_index)
 							
 
@@ -248,17 +254,60 @@ while flag:
 		title1 = get_input_for_new("task title", "all", titles + ["all"]).strip()
 
 		(start, end, true_index) = init_start_end_index(data, lst, typ1, stat1, proj1, title1, ref_dt, 10)
+		print "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + stat1 + '"' + " statuses"  			
 		display(data, lst, start, end, true_index)
 	elif command == "new":
-		(start, end, true_index) = init_start_end_index(data, lst, "all", "all", "all", "all", ref_dt)
-		display(data, lst, start, end, true_index)
+		dateflag = True
 		
-		(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
-		edit_task_kernel(data, tid, stid, yy, mm, dd)
-		readline.set_startup_hook(lambda: readline.insert_text("no"))
-		read = raw_input("Do you want to export to google calender: ")
-		if read == "yes":
-			export_gcal(data, yy, mm, dd, tid, stid)
+		while dateflag:
+			os.system('clear') 
+			yy = str(ref_dt.year)
+			mm = str(ref_dt.month)
+			dd = str(ref_dt.day)
+			readline.set_startup_hook(lambda: readline.insert_text(""))
+			print "New Task"
+			print "Existing tasks for " +str(ref_dt) + " :"
+			(start, end, true_index) = init_start_end_index(data, lst, "all", "all", "all", "all", ref_dt)
+			display_range(data, lst, true_index, start, end, start)
+			days = raw_input("Add days to " + str(ref_dt) + " :")
+			
+			if not days.strip():
+				dateflag = False
+			else:
+				try:
+					ref_dt = ref_dt + datetime.timedelta(days=int(days))
+				except:
+					pass
+		print yy,mm,dd
+		try:
+			dflt_txt = str(end - start + 1)
+			readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
+			flag = True
+			while flag:
+				idd = raw_input("Enter task no.")
+				try:
+					idd = int(idd) 
+					flag = False
+				except:
+					pass
+			if idd < len(lst):
+				(tk, stk) = lst[idd]
+				stk = "subtask-" + str(new_subtaskid(v[y][m][d][tk]))
+			else:
+				tk = next_task_id(v[y][m][d])
+				#tk = "task-" + str(len(lst) + 1)
+				stk = "subtask-1"
+		except:
+			tk = "task-1"
+			stk = "subtask-1"
+		print (tk, stk, y, m, d)
+		
+		#(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
+		#edit_task_kernel(data, tid, stid, yy, mm, dd)
+		#readline.set_startup_hook(lambda: readline.insert_text("no"))
+		#read = raw_input("Do you want to export to google calender: ")
+		#if read == "yes":
+		#	export_gcal(data, yy, mm, dd, tid, stid)
 	command = raw_input("Enter command :").strip()
 #	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
 #		td = data[yy][mm][dd][task]

@@ -143,6 +143,7 @@ def get_the_date(txt, v):
 		print txt
 		print "Existing tasks for " +str(dt) + " :"
 		display_daily_task_sorted(v, yy, mm, dd)
+		display_range(data, lst, true_index, start, end, start)
 		days = raw_input("Add days to " + str(dt) + " :")
 		
 		if not days.strip():
