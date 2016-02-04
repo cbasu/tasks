@@ -85,7 +85,7 @@ def export_gcal(v, y, m, d, tid, sid):
 	cmd.append("--when")
 	dt = str(m)+ "/" + str(d) + "/" + str(y) + " " + v[y][m][d][tid][sid]["start"]
 	cmd.append(dt)
-	cmd.append("--duration")
+	#cmd.append("--duration")
 	(h1, m1) = tuple(v[y][m][d][tid][sid]["start"].split(':'))
 	(h2, m2) = tuple(v[y][m][d][tid][sid]["end"].split(':'))
 	dur = str((int(h2) - int(h1)) * 60 + (int(m2) -int(m1)))
@@ -95,6 +95,7 @@ def export_gcal(v, y, m, d, tid, sid):
 	cmd.append("--reminder")
 	cmd.append("0")
 	cmd.append("add")
+	#print cmd
 	job = subprocess.Popen(cmd)
 	job.wait()
 	raw_input("Press enter to continue")
