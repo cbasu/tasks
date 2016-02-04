@@ -1,308 +1,374 @@
 #!/usr/bin/env python
 
-
 from support import *
 
+def copy_task(d, task, subtask, yy, mm, dd):
+	ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, d, 1)
+	copy_task_kernel(screen, d, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
 
-def view_task_table(td, subtask):
-	view_task = []
-	for k in td.keys():
-               if "subtask-" not in k: 
-			view_task.append([len(view_task), k + " :", td[k]])
-        for k in td[subtask].keys():
-                view_task.append([len(view_task), k + " :", td[subtask][k]])
-	print tabulate(view_task)
-	return view_task
+def add_newtask(wl, d):
+	var = 1
+	curses.echo()
+	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, 1) 
+	ypos = edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos)
+	while var == 1:
+		y = wr_win(wl, ypos, 1, 'Do you want to close the window: ', n)
+		key = wl.getch()
+		if key == ord("y"):
+			var = 0
+	curses.noecho() 
+
+
+def modify_task_new(wl, d, yy, mm, dd, tid, stid):
+	wl.clear()
+	wl.refresh()
+	title = "view/modify task"
+	c = None
+	t = d[yy][mm][dd][tid]
+	st = t[stid]
+	strn = db_path() + "/detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+	
+	key = []
+	tmp_t = []
+	key.append("project")
+	key.append("type")
+	key.append("task title")
+	key.append("subtask title")
+	key.append("status")
+	key.append("flex")
+	key.append("start")
+	key.append("end")
+	key.append("link")
+	key.append("detail")
+	key.append("attachment")
+	tmp_t.append(t["project"])
+	tmp_t.append(t["type"])
+	tmp_t.append(t["task title"])
+	tmp_t.append(st["subtask title"])
+	tmp_t.append(st["status"])
+	tmp_t.append(st["flex"])
+	tmp_t.append(st["start"])
+	tmp_t.append(st["end"])
+	tmp_t.append(st["link"])
+	tmp_t.append(st["detail"])
+	tmp_t.append(st["attachment"])
+
+	row = 0
+	y1 = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT) ## Title
+	while c != ord('q') :
+		y = y1+2
+		for i, opt in enumerate(key):
+		      stn = key[i]+":"
+		      stn = stn.ljust(17) + tmp_t[i]
+		      if i  == row:
+			  y = wr_win(wl, y, 1, stn, h)
+			  (yh, xh) = wl.getyx()
+		      else:
+			  y = wr_win(wl, y, 1, stn, n)
+
+		y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q): ", n)
+		c = wl.getch()
+		if c == curses.KEY_DOWN:
+			l = len(key)
+			if row < l-1:
+			      row = row + 1
+			else:
+			      row = l - 1
+		elif c == curses.KEY_UP:
+			if row > 0:
+			      row = row - 1
+			else:
+			    row = 0
+		elif c == ord('\n'):
+			curses.echo() 
+			wl.move(yh, 1)
+			stn = key[row]+":"
+			stn = stn.ljust(17)
+			tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row])
+			if key[row] == "detail" and tmp_t[row] == "yes":
+			      os.system("gvim " +  strn)
+			curses.noecho()
+		elif c == ord('x'):
+			for i,k in enumerate(key):
+			      if k in ["project", "type", "task title"]:
+				    t[k] = tmp_t[i]
+			      else:
+				    st[k] = tmp_t[i] 
+			      if k == "detail" and tmp_t[i] == "no":
+				    os.system("rm -f " + strn)
+			file_write(db_name(), d)
 			
-def modify_task_kernel(vt, inp2, td, data, y,m,d,tsk,stsk):
-	try:
-		index = int(inp2)
-		xx = vt[index][1].split(":")[0].strip()
-		if index in range(len(vt)):
-			if xx in td.keys():
-				td[xx] = get_input_for(xx, td, data).strip()
-			elif xx in td[stsk].keys():
-				if xx == "start" :
-					td[stsk][xx] = new_time("start", td[stsk], y, m, d, 0)
-				elif xx == "end" :
-					td[stsk][xx] = new_time("end", td[stsk], y, m, d, 0)
-				elif xx == "detail" and td[stsk][xx] == "yes":
-					strn = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+stsk
-					os.system("vi " + strn)
-				else:
-					td[stsk][xx] = get_input_for(xx, td[stsk], data).strip()
-		file_write(db_name(), data)
-		return True
-	except:
-		return False
+			if os.path.isfile(strn+".tmp"):
+			      os.system("mv " + strn+".tmp" + " " + strn)
+			break
 
-def modify_task(inp, true_index, data):	
-	try:
-		nmod = int(inp.split()[1])
-	except:
-		nmod = raw_input("Enter task No. :")
-	try:
-		nmod = int(nmod)
-		if nmod <= len(true_index): 
-			(yy,mm,dd,task,subtask) = lst[true_index[nmod]]
-			td = data[yy][mm][dd][task]
-			view_task = view_task_table(td, subtask)
-			readline.set_startup_hook(lambda: readline.insert_text(""))
-			inp2 = raw_input("Enter number :")
-			return modify_task_kernel(view_task, inp2, td, data, yy,mm,dd,task,subtask)
-	except:
-		return False
 
-def view_task_kernel(vt, inp2, td, data, y,m,d,tsk, subtsk):
-	try:
-		index = int(inp2)
-		if index in range(len(vt)):
-			print tabulate(vt[index:index+1])
-			if vt[index][1] == "detail :" and vt[index][2] == "yes":
-				strn = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+tsk+"-"+subtsk
-				os.system("less " + strn)
-		return True
-	except:
-		return False
 
-def view_task(inp, true_index, data):	
-	try:
-		nview = int(inp.split()[1])
-	except:
-		nview = raw_input("Enter task No. :")
-	try:
-		nview = int(nview)
-		if nview <= len(true_index): 
-			(yy,mm,dd,task,subtask) = lst[true_index[nview]]
-			td = data[yy][mm][dd][task]
-			view_task = view_task_table(td, subtask)
-			readline.set_startup_hook(lambda: readline.insert_text(""))
-			inp2 = raw_input("Enter number :")
-			ret = view_task_kernel(view_task, inp2, td, data, yy,mm,dd,task, subtask)
-			raw_input("Enter to continue :") 
-			return ret
-	except:
-		return False
-		
-
-def close_task(inp, true_index, data):	
-	try:
-		nclose = int(inp.split()[1])
-	except:
-		nclose = raw_input("Enter task No. :")
-	try:
-		nclose = int(nclose)
-		if nclose <= len(true_index): 
-			(yy,mm,dd,task,subtask) = lst[true_index[nclose]]
-			td = data[yy][mm][dd][task]
-			td[subtask]["status"] = "close"
+def action(wl, x, y, comm, ind, d):
+	msg = ""
+	textstyle = n
+	msg = "select the task to " + comm + " and type y: "
+	wr_win(wl, ymax-6, startx, msg, textstyle)
+	if comm == "new":				
+		msg = "for new task type y : "
+		wr_win(wl, ymax-6, startx, msg, textstyle)
+	elif comm == "search":
+		msg = "not yet implemented "
+		wr_win(wl, ymax-6, startx, msg, textstyle)
+	elif comm == "move":
+		msg = "not yet implemented "
+		wr_win(wl, ymax-6, startx, msg, textstyle)
+	
+	inp = screen.getch()
+	if inp == ord("y"):
+		(yy,mm,dd,task,subtask) = ind
+		t = d[yy][mm][dd][task]
+		wl.addstr(y,len(msg)+x, "%s" % ('y'), n)
+		#if comm == "view":
+		#	view_task_new(wl, t, t[subtask])
+		if comm == "view/modify":
+			modify_task_new(wl, d, yy, mm, dd, task, subtask)
+		elif comm == "new":
+			add_newtask(wl, d)
+		elif comm == "delete":
+			rm_task_kernel(d, task, subtask, yy, mm, dd)
+		elif comm == "copy":
+			copy_task(d, task, subtask, yy, mm, dd)
+		elif comm == "close":
+			t[subtask]["status"] = "close"
 			file_write(db_name(), data)
 
+	return inp
+
+def one_line(i, yy, mm, dd, t, st):
+	b = " "
+	s = str(i) + b + yy + "-"
+	if int(mm) < 10:
+	  s1 = "0" + mm + "-"
+	else:
+	  s1 = mm + "-"
+	if int(dd) < 10:
+	  s1 = s1 + "0" + dd
+	else:
+	  s1 = s1 + dd
+	s = s + s1 + b 
+	tarr = st["start"].split(":")
+	if int(tarr[0]) < 10:
+	  s1 = "0" + tarr[0] + ":"
+	else:
+	  s1 = tarr[0] + ":"
+	if int(tarr[1]) < 10:
+	  s1 = s1 + "0" + tarr[1]
+	else:
+	  s1 = s1 + tarr[1]
+	s = s + s1 + b
+	tarr = st["end"].split(":")
+	if int(tarr[0]) < 10:
+	  s1 = "0" + tarr[0] + ":"
+	else:
+	  s1 = tarr[0] + ":"
+	if int(tarr[1]) < 10:
+	  s1 = s1 + "0" + tarr[1]
+	else:
+	  s1 = s1 + tarr[1]
+	s = s + s1 + b
+	
+	s = s + t["project"].ljust(10)
+	s = s + b + filter(lambda x: x in string.printable, t["task title"][:15]).ljust(15)
+	s = s + b + filter(lambda x: x in string.printable, st["subtask title"][:20])
+
+	return s
+
+def show_list(dat, typ, prj, title, stat):
+	lst, types, stats, projs, titles = sorted_key_list(data)
+	tbl = []
+	table_index = []
+	l = 0
+	b = " "
+	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
+		td = data[yy][mm][dd][task]
+		new_dt = datetime.date(int(yy),int(mm),int(dd))
+		if td["type"] == typ or typ == "all":
+			std = td[subtask]
+			if td["project"] == prj or prj == "all":
+				if td["task title"] == title or title == "all":
+					if std["status"] == stat or stat == "all":
+						l = len(table_index)
+						tbl.append(one_line(l, yy, mm, dd, td, std))
+						table_index.append(index)
+	return tbl, table_index, lst
+
+def list_range(r, l):
+	w = 10
+	f = r / w
+	s = f * w
+	e = (f+1) * w
+	if e > l: e = l
+	return range(s, e)	
+	
+def main_list(wl, dat, menu, menu_command, typ, stat, row, act, prj, title):
+	wl.clear()
+	rows, row_index, true_index = show_list(dat, typ, prj, title, stat)
+	wl.border(0)
+	wr_win(wl, 2, startx, "Title", curses.A_STANDOUT) ## Title
+	count1 = len(menu)
+	ycurser, xcurser = wl.getyx()
+	menu1y = ymax-2
+	menu1x = startx
+	try:
+		for key in menu:
+			textstyle = n
+			if typ == key:
+				textstyle = h
+			wr_win(screen, menu1y, menu1x, key, textstyle)
+			menu1x = menu1x + len(key) + 2
 	except:
 		pass
-
-def rm_task(inp, true_index, data):	
+	menu2x = startx
+	menu2y = 5
 	try:
-		ndel = int(inp.split()[1])
+		for key1 in menu[typ]:
+			textstyle = n
+			if stat == key1:
+				textstyle = h
+			wr_win(screen, menu2y, menu2x, key1, textstyle)
+			menu2x = menu2x + len(key1) + 2
 	except:
-		ndel = raw_input("Enter task No. :")
+		pass			
+	menu3x = startx
+	menu3y = 7
 	try:
-		ndel = int(ndel)
-		if ndel <= len(true_index): 
-			(yy,mm,dd,task,subtask) = lst[true_index[ndel]]
-			td = data[yy][mm][dd][task]
-			rm_task_kernel(data, task, subtask, yy, mm, dd)
+		for line in list_range(row, len(rows)):
+			textstyle = n
+			if row == line:
+				textstyle = h
+			wr_win(screen, menu3y, menu3x, rows[line], textstyle)
+			menu3y = menu3y  + 1
 	except:
 		pass
-
-def copy_task(inp, true_index, data):	
+	menu4x = startx
+	menu4y = ymax-4
 	try:
-		ncp = int(inp.split()[1])
+		#for key3 in menu_action:
+		for key3 in menu_command:
+			textstyle = n
+			if act == key3:
+				textstyle = h
+			wr_win(screen, menu4y, menu4x, key3, textstyle)
+			menu4x = menu4x  + len(key3) + 2 
 	except:
-		ncp = raw_input("Enter source task No. :")
+		pass
+	return  row, true_index[row_index[row]], len(rows)
+
+
+# This function displays the appropriate menu and returns the option selected
+def runmenu(dat, menu, menu_command, parent):
+	new = {}
+	
+	if parent is None:
+		lastoption = "Exit"
+	else:
+		lastoption = "Return to %s menu" % parent['title']
+
+	typ = "work"
+	stat = "open"
+	row = 0
+	act = "new"
+	prj = "all"
+	title = "all"
+
+	x = None 
+	while x != ESC :   ## escape = 27
+
+		row, t_i, nrow =  main_list(screen, dat, menu, menu_command, typ, stat, row, act, prj, title)
+		x = action(screen, startx, ymax-6, act, t_i, dat)
+		if x == ord('\t'):
+			stat = "open"
+			row = 0
+			act = "new"
+			lst = menu.keys()
+			ind = lst.index(typ) + 1
+			if ind == len(menu): ind = 0
+			typ = lst[ind]
+		elif x == curses.KEY_BTAB:
+			stat = "open"
+			row = 0
+			act = "new"
+			lst = menu.keys()
+			ind = lst.index(typ) - 1
+			if ind < 0 : ind = len(menu) - 1
+			typ = lst[ind]
+		elif x == curses.KEY_RIGHT:
+			row = 0
+			act = "new"
+			lst = menu[typ].keys()
+			ind = lst.index(stat) + 1
+			if ind ==  len(menu[typ]): ind = 0
+			stat = lst[ind]
+		elif x == curses.KEY_LEFT:
+			row = 0
+			act = "new"
+			lst = menu[typ].keys()
+			ind = lst.index(stat) - 1
+			if ind < 0: ind = len(menu[typ]) - 1
+			stat = lst[ind]
+		elif x == curses.KEY_UP:
+			row = row - 1
+			if row < 0: row = 0
+		elif x == curses.KEY_DOWN:
+			row = row + 1
+			if row ==  nrow: row = nrow -1
+		elif x == curses.KEY_SRIGHT:
+			lst = menu_command
+			ind = lst.index(act) + 1
+			if ind ==  len(menu_command): ind = 0
+			act = lst[ind]
+		elif x == curses.KEY_SLEFT:
+			lst = menu_command
+			ind = lst.index(act) - 1
+			if ind < 0: ind = len(menu_command) - 1
+			act = lst[ind]
+		
+
+# This function calls showmenu and then acts on the selected item
+def processmenu(dat, menu, menu_command, parent=None):
+	runmenu(dat, menu, menu_command, parent)
+
+if __name__ == '__main__':
 	try:
-		ncp = int(ncp)
-		if ncp <= len(true_index): 
-			(yy,mm,dd,task,subtask) = lst[true_index[ncp]]
-			std = data[yy][mm][dd][task][subtask]
+		db_init(sys.argv[1])	
 	except:
-		return
-
-	(ntid, nstid, ny, nm, nd) = get_task_subtask_id(data)
-	copy_task_kernel(data, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd)
-
-def index_for_start_end_print(end, win, leng):
-	if end > leng:
-		end = leng
-	elif end < 0 :
-		end = 0
-	start = end - win
-	if start < 0:
-		start = 0
-	return (start, end)
-
-try:
-	db_init(sys.argv[1])	
-except:
-	print "Error: pass the database name"	
-	sys.exit()
-
-flag = True
-try:
-	json_data=open(db_name()).read()
-	data = json.loads(json_data)
-except:
-	print "error"
-	sys.exit(1)
-lst, types, stats, projs, titles = sorted_key_list(data)
-types.append("all")
-readline.set_startup_hook(lambda: readline.insert_text(""))
-t = tabCompleter()
-t.createListCompleter(types)
-readline.set_completer_delims('\t')
-readline.parse_and_bind("tab: complete")
-readline.set_completer(t.listCompleter)
-typ1 = raw_input("Enter task type: ").strip()
-
-stat1 = "open"
-#typ1 = "work"
-proj1 = "all"
-title1 = "all" 
-ref_dt = datetime.date.today()
-while flag:
-	os.system('clear') 
+		print "Error: pass the database name"	
+		sys.exit()
+	flag = True
 	try:
 		json_data=open(db_name()).read()
 		data = json.loads(json_data)
 	except:
 		print "error"
 		sys.exit(1)
-	lst, types, stats, projs, titles = sorted_key_list(data)
-	tbl = []
-	true_index = []
-	l = 0
-	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
-		td = data[yy][mm][dd][task]
-		new_dt = datetime.date(int(yy),int(mm),int(dd))
-		if td["type"] == typ1 or typ1 == "all":
-			std = td[subtask]
-			ldate=yy+"-"+mm+"-"+dd
-			if td["project"] == proj1 or proj1 == "all":
-				if td["task title"] == title1 or title1 == "all":
-					if std["status"] == stat1 or stat1 == "all":
-						l = len(true_index)
-						tbl.append([l, ldate, std["start"], std["end"], td["project"], td["task title"][:20], std["subtask title"][:20]])
-						true_index.append(index)
-						try:
-							end_index
-						except:
-							if new_dt > ref_dt and l > 10:
-								(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
-	try:
-		end_index
-	except:
-		(start_index, end_index) = index_for_start_end_print(l, 10, len(true_index))
-	prstr = "Showing " + '"'+ typ1 + '"' + " tasks with " + '"' + stat1 + '"' + " statuses"  			
-	print prstr
-	print tabulate(tbl[start_index:end_index], headers=['No.', 'date', 'start', 'end', 'project', 'task', 'subtask'], tablefmt="fancy_grid")
-	readline.set_startup_hook(lambda: readline.insert_text(""))
-	t = tabCompleter()
-	t.createListCompleter(["show", "view", "modify", "delete", "close", "copy", "report", "quit", "new", ])
-	readline.set_completer_delims('\t')
-	readline.parse_and_bind("tab: complete")
-	readline.set_completer(t.listCompleter)
-	inp = raw_input("Enter command :").strip()
 
+	# Main program
+	menu = {}
+	menu_action = {}
+
+	for typ in ["work", "pers", "all"]:
+	      menu[typ] = {}
+	      for stat in ["open", "close", "pending", "all"]:
+		    menu[typ][stat] = {}
 	
-	try:
-		x1 = inp.split()[0]
-	except:
-		continue	
-	
-	try:
-		nd = int(x1)
-		(start_index, end_index) = index_for_start_end_print(end_index + nd, 10, len(true_index))
-	except:
-		try:
-			del end_index
-			del start_index
-		except:
-			pass
-		if x1 == "report":
-			readline.set_startup_hook(lambda: readline.insert_text(""))
-			t = tabCompleter()
-			t.createListCompleter(projs)
-			readline.set_completer_delims('\t')
-			readline.parse_and_bind("tab: complete")
-			readline.set_completer(t.listCompleter)
-			prj = raw_input("Enter project name :").strip()
-			line1 = "Report for project " + prj
-			line2 = ""
-			for i in range(len(line1)):
-				line2 = line2 + "="
-			print line1
-			print line2  
-			for y,yv in data.items():
-				for m,mv in yv.items():
-					for d,dv in mv.items():
-						for t,tv in dv.items():
-							if tv["project"] == prj:
-								rdate=y+"-"+m+"-"+d
-								print rdate
-								print "Task title :", tv["task title"]
-								for s,sv in tv.items():
-									if "subtask-" in s:
-										print "Subtask title :", sv["subtask title"]
-										print "Start time :", sv["start"]
-										print "End time :", sv["end"]
-										print "Status :", sv["status"]
-										print "Detail :", sv["detail"]
-										if sv["detail"] == "yes":
-	 										rstr = db_path() + "/detail/"+y+"-"+m+"-"+d+"-"+t+"-"+s
-											fp = open(rstr, "r")	
-											print fp.readline()
-											fp.close()
-											
-										
-								print ""
-			raw_input()
-			
-		
-		if x1 == "show":
-			typ1 = get_input_for_new("type", typ1, types + ["all"]).strip()
-			stat1 = get_input_for_new("status", stat1, stats + ["all"]).strip()
-			proj1 = get_input_for_new("project", proj1, projs + ["all"]).strip()
-			title1 = get_input_for_new("task title", title1, titles + ["all"]).strip()
-		elif x1 == "view":
-			viewflag = True
-			while viewflag:
-				os.system('clear') 
-				print "Task details"
-				print "============"
-				viewflag = view_task(inp, true_index, data)
-		elif x1 == "modify":
-			modflag = True
-			while modflag:
-				os.system('clear') 
-				print "Task details"
-				print "============"
-				modflag = modify_task(inp, true_index, data)
-		elif x1 == "close":
-			close_task(inp, true_index, data)	
-		elif x1 == "delete":
-			rm_task(inp, true_index, data)	
-		elif x1 == "copy":
-			copy_task(inp, true_index, data)	
-		elif x1 == "new":
-			#prj = get_input_for("project", task, data).strip()
-			#task_title = get_input_for("task title", task, data).strip()
-			(tid, stid, yy, mm, dd) = get_task_subtask_id(data)
-			edit_task_kernel(data, tid, stid, yy, mm, dd)
-			readline.set_startup_hook(lambda: readline.insert_text("no"))
-			read = raw_input("Do you want to export to google calender: ")
-			if read == "yes":
-				export_gcal(data, yy, mm, dd, tid, stid)
-		elif inp == "quit":
-			flag = 0
-	
- 
+	menu_command = ["new", "close", "delete", "view/modify", "copy", "move", "search"]
+
+	menu_action["new"] = {}
+	menu_action["close"] = {}
+	#menu_action["view"] = {}
+	menu_action["delete"] = {}
+	menu_action["view/modify"] = {}
+	menu_action["copy"] = {}
+	menu_action["move"] = {}
+	menu_action["search"] = {}
+
+	init_screen()
+	processmenu(data, menu, menu_command)
+	os.system('clear')
+	curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.

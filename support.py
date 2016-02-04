@@ -17,9 +17,39 @@ import dateutil.parser as parser
 import collections
 from tabulate import tabulate
 
-#nested_dict = lambda: collections.defaultdict(nested_dict)
+#from time import sleep
+import curses
+import ctypes
+from copy import deepcopy
+from operator import itemgetter
+import string
+
+
+ESC = 27
+BACKSPACE = 263    #127
+TAB = 9
+
+MENU = "menu"
+COMMAND = "command"
+EXITMENU = "exitmenu"
+startx = 4
+screen = curses.initscr()
+ymax, xmax = screen.getmaxyx()
+# Change this to use different colors when highlighting
+curses.start_color() # Lets you use colors when highlighting selected menu option
+curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair #1, it does black text with white background
+h = curses.color_pair(1) #h is the coloring for a highlighted menu option
+n = curses.A_NORMAL #n is the coloring for a non highlighted menu option
 
 data = { } 
+
+def init_screen():
+	global h, n, ESC, MENU, COMMAND, EXITMENU, startx, screen, ymax, xmax
+	curses.noecho() 
+	curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
+	screen.keypad(1) # Capture input from keypad
+	screen.immedok(True)
+
 
 class tabCompleter(object):
 	def pathCompleter(self,text,state):
@@ -85,7 +115,7 @@ def export_gcal(v, y, m, d, tid, sid):
 	cmd.append("--when")
 	dt = str(m)+ "/" + str(d) + "/" + str(y) + " " + v[y][m][d][tid][sid]["start"]
 	cmd.append(dt)
-	#cmd.append("--duration")
+	cmd.append("--duration")
 	(h1, m1) = tuple(v[y][m][d][tid][sid]["start"].split(':'))
 	(h2, m2) = tuple(v[y][m][d][tid][sid]["end"].split(':'))
 	dur = str((int(h2) - int(h1)) * 60 + (int(m2) -int(m1)))
@@ -95,7 +125,6 @@ def export_gcal(v, y, m, d, tid, sid):
 	cmd.append("--reminder")
 	cmd.append("0")
 	cmd.append("add")
-	#print cmd
 	job = subprocess.Popen(cmd)
 	job.wait()
 	raw_input("Press enter to continue")
@@ -132,21 +161,29 @@ def find_new(key, d):
 	print lst
 	return lst
 
-def get_the_date(txt, v):
+def wr_win(win, ypos, xpos, txt, higlight):
+	#ym, xm = win.getmaxyx()
+	#win.addstr(ypos, xpos, "%s" % (" "*(xm-2)), n) ##write a blank line first
+	txt1 = filter(lambda x: x in string.printable, txt)
+	win.addstr(ypos, xpos, "%s" % (txt1), higlight)
+	win.clrtoeol()
+	win.refresh()
+	return ypos+1
+
+def get_the_date(wl, txt, v, y):
 	dt = datetime.date.today()
 	dateflag = True
 	while dateflag:
-		os.system('clear') 
+		wl.clear()
+		ypos = y
 		yy = str(dt.year)
 		mm = str(dt.month)
 		dd = str(dt.day)
-		readline.set_startup_hook(lambda: readline.insert_text(""))
-		print txt
-		print "Existing tasks for " +str(dt) + " :"
-		display_daily_task_sorted(v, yy, mm, dd)
-		display_range(data, lst, true_index, start, end, start)
-		days = raw_input("Add days to " + str(dt) + " :")
-		
+		ypos = wr_win(wl, ypos, 1, txt, n)
+		ypos = wr_win(wl, ypos, 1, "Existing tasks for " +str(dt) + " :", n)
+		lst, ypos = display_daily_task_sorted(wl, v, yy, mm, dd, ypos+1)
+		ypos = wr_win(wl, ypos, 1, "", n)
+		days, ypos = curses_raw_input(wl, ypos, 1, "Add days to " + str(dt) + " :")
 		if not days.strip():
 			dateflag = False
 		else:
@@ -154,7 +191,7 @@ def get_the_date(txt, v):
 				dt = dt + datetime.timedelta(days=int(days))
 			except:
 				pass
-	return (yy,mm,dd)
+	return (yy,mm,dd), lst, ypos
 
 def last_task_end_time(v, yy, mm, dd):
 	d = v[yy][mm][dd]
@@ -187,7 +224,7 @@ def duration_time(tsk):
 		print "error in duration_time"
 		sys.exit(1)
 
-def new_time(key, v, yy, mm, dd, offset):
+def new_time(wl, key, v, yy, mm, dd, offset, ypos):
 	try:
 		(h, m) = tuple(v[key].split(':'))
         	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
@@ -196,11 +233,11 @@ def new_time(key, v, yy, mm, dd, offset):
         	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
 
         timeflag = True
+	ypos1 = ypos
         while timeflag:
                 st = str(t.time().hour) + ":" + str(t.time().minute)
-                readline.set_startup_hook(lambda: readline.insert_text(""))
-		print key + ": " + st
-                newt = raw_input("Add minute :")
+		ypos = wr_win(wl, ypos1, 1, key + ": " + st, n)
+		newt, ypos = curses_raw_input(wl, ypos, 1, "Add minute :")
                 if not newt.strip():
                         timeflag = False
                 else:
@@ -210,30 +247,18 @@ def new_time(key, v, yy, mm, dd, offset):
                                 continue
                                 
                         
-	return str(t.time().hour) + ":" + str(t.time().minute)
+	return str(t.time().hour) + ":" + str(t.time().minute), ypos
 
 
-def get_input_for(key, tt, d):
+def get_input_for(wl, key, tt, d, ypos):
 	try:
 		st = tt[key]
-		readline.set_startup_hook(lambda: readline.insert_text(st))
 	except:
-		if key == "status":
-			readline.set_startup_hook(lambda: readline.insert_text("open"))
-		elif key == "flex":
-			readline.set_startup_hook(lambda: readline.insert_text("normal"))
-		elif key == "type":
-			readline.set_startup_hook(lambda: readline.insert_text("work"))
-		else:
-			readline.set_startup_hook(lambda: readline.insert_text(""))
-			
-	t = tabCompleter()
-	t.createListCompleter(list(set(find(key, d))))
-	readline.set_completer_delims('\t')
-	readline.parse_and_bind("tab: complete")
-	readline.set_completer(t.listCompleter)
+		st = ""
+	lst = list(set(find(key, d)))	
 	text=key + ": "
-	return raw_input(text)
+	stt, ypos = curses_raw_input(wl, ypos, 1, text, st, lst)
+	return stt.strip(), ypos
 
 def get_input_for_new(txt, deflt, lst):
 	readline.set_startup_hook(lambda: readline.insert_text(deflt))
@@ -299,17 +324,20 @@ def daily_task_sorted(v, y, m, d):
 		pass
 	return lst
 
-def display_daily_task_sorted(v, y, m, d):
+def display_daily_task_sorted(wl, v, y, m, d, ypos):
 	lst = daily_task_sorted(v, y, m, d)
+	b = "\t"
 	try:
 		view = []
 		for (k,sk) in lst:
 			tmp = v[y][m][d][k]
+			st = str(len(view)) + b + tmp[sk]["start"] + b + tmp[sk]["end"] + b + tmp["task title"][:20] + b + tmp[sk]["subtask title"][:20] + b + tmp[sk]["status"] + b + tmp["type"]
+			ypos = wr_win(wl, ypos, 1, st, n)
 			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20], tmp[sk]["status"], tmp["type"] ])
-		print tabulate(view)
+		#print tabulate(view)
 	except:
 		pass
-	return lst
+	return lst, ypos
 
 def next_task_id(v):
 	maxid = 0
@@ -319,19 +347,16 @@ def next_task_id(v):
 			maxid = i
 	return "task-" + str(maxid+1)
 
-def get_task_subtask_id(v):
-	(y, m, d) = get_the_date("New Task :", v)
-	os.system('clear') 
-	print "New task :"
-	print "Existing tasks for " + str(y) + "-" + str(m) +"-" + str(d) + " :"
-	
-	lst = display_daily_task_sorted(v, y, m, d)
+def get_task_subtask_id(wl, v, ypos):
+	(y, m, d), lst, ypos = get_the_date(wl, "New Task :", v, ypos)
+	tk =""
+	stk = ""
 	try:
 		dflt_txt = str(len(lst))
-		readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
 		flag = True
+		ypos1 = ypos
 		while flag:
-			idd = raw_input("Enter task no.")
+			idd, ypos = curses_raw_input(wl, ypos1, 1, "Enter task no. :", dflt_txt)
 			try:
 				idd = int(idd)
 				flag = False
@@ -347,7 +372,8 @@ def get_task_subtask_id(v):
 	except:
 		tk = "task-1"
 		stk = "subtask-1"
-	return (tk, stk, y, m, d)
+		
+	return ypos, (tk, stk, y, m, d)
 
 
 def new_subtaskid(d):
@@ -409,7 +435,7 @@ def rm_task_kernel(data, tid, stid, yy, mm, dd):
 	
 
 
-def edit_task_kernel(data, tid, stid, yy, mm, dd):
+def edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos):
 	yy = str(yy)
 	mm = str(mm)
 	dd = str(dd)
@@ -438,25 +464,26 @@ def edit_task_kernel(data, tid, stid, yy, mm, dd):
 	except:
 		subtask = task[subtaskid] = {}
 	startt = last_task_end_time(data, yy, mm, dd)	
-	task["project"]= get_input_for("project", task, data).strip()
-	task["task title"]= get_input_for("task title", task, data).strip()
-	task["type"]= get_input_for("type", task, data).strip()
-	subtask["subtask title"] = get_input_for("subtask title", subtask, data).strip()
-	subtask["start"] = new_time("start", subtask, yy, mm, dd, startt)
+	task["project"], ypos = get_input_for(wl, "project", task, data, ypos)
+	task["task title"], ypos = get_input_for(wl, "task title", task, data, ypos)
+	task["type"], ypos = get_input_for(wl, "type", task, data, ypos)
+	subtask["subtask title"], ypos = get_input_for(wl, "subtask title", subtask, data, ypos)
+	subtask["start"], ypos = new_time(wl, "start", subtask, yy, mm, dd, startt, ypos)
 	endt = add_time(yy, mm, dd, subtask["start"], 60)
-	subtask["end"] = new_time("end", subtask, yy, mm, dd, endt)
-	subtask["link"] = get_input_for("link", subtask, data).strip()
-	subtask["detail"] = get_input_for("detail", subtask, data).strip()
+	subtask["end"], ypos = new_time(wl, "end", subtask, yy, mm, dd, endt, ypos)
+	subtask["link"], ypos = get_input_for(wl, "link", subtask, data, ypos)
+	subtask["detail"], ypos = get_input_for(wl, "detail", subtask, data, ypos)
 	if subtask["detail"] == "yes":
 		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-		os.system("vim " + strn)	
-	subtask["attachment"] = get_input_for("attachment", subtask, data).strip()
-	subtask["status"] = get_input_for("status", subtask, data).strip()
-	subtask["flex"] = get_input_for("flex", subtask, data).strip()
+		os.system("gvim " + strn)	
+	subtask["attachment"], ypos = get_input_for(wl, "attachment", subtask, data, ypos)
+	subtask["status"], ypos = get_input_for(wl, "status", subtask, data, ypos)
+	subtask["flex"], ypos = get_input_for(wl, "flex", subtask, data, ypos)
 
 	file_write(db_name(), data)
+	return ypos
 
-def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
+def copy_task_kernel(wl, data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos):
 	yy = str(yy)
 	mm = str(mm)
 	dd = str(dd)
@@ -469,8 +496,8 @@ def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
 	ntid = str(ntid)
 	nstid = str(nstid)
 
-	lastend = 9 
-
+#	lastend = 9 
+#
 	try:
 		data[ny]
 	except:	
@@ -496,30 +523,89 @@ def copy_task_kernel(data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd):
 		subtask = task[nstid] = {}
 		subtask["subtask title"] = data[yy][mm][dd][taskid][subtaskid]["subtask title"]
 
-	print "project :", task["project"]
-	print "task title :", task["task title"]
-	print "type :", task["type"]
-	print "subtask title:", subtask["subtask title"]
-	subtask["start"] = new_time("start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
-	print "start:", subtask["start"]
+	ypos = wr_win(wl, ypos, 1, "Project :" + task["project"], n)
+	ypos = wr_win(wl, ypos, 1, "Task title :" + task["task title"], n)
+	ypos = wr_win(wl, ypos, 1, "Task type :" + task["type"], n)
+	ypos = wr_win(wl, ypos, 1, "Subtask title :" + subtask["subtask title"], n)
 	dur = duration_time(data[yy][mm][dd][taskid][subtaskid])
-	endt = add_time(yy, mm, dd, subtask["start"], dur)
-	subtask["end"] = new_time("end", subtask, ny, nm, nd, endt)
-	#subtask["end"]  = new_time("end", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0)
-	#subtask["end"]  = str(endt.time().hour) + ":" + str(endt.time().minute)
-	print "end:", subtask["end"]
+	subtask["start"], ypos = new_time(wl, "start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0, ypos)
+	ypos = wr_win(wl, ypos, 1, "start :" + subtask["start"], n)
+	endt = add_time(ny, nm, nd, subtask["start"], dur)
+	subtask["end"], ypos = new_time(wl, "end", subtask, ny, nm, nd, endt, ypos)
+	ypos = wr_win(wl, ypos, 1, "end :" + subtask["end"], n)
 	subtask["link"] = data[yy][mm][dd][taskid][subtaskid]["link"]
-	print "link:", subtask["link"]
 	subtask["detail"] = data[yy][mm][dd][taskid][subtaskid]["detail"]
 	if subtask["detail"] == "yes":
 		strold = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
 		strnew = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
 		os.system("cp " + strold + " " + strnew)	
 	subtask["attachment"] = data[yy][mm][dd][taskid][subtaskid]["attachment"]
-	print "attachment:", subtask["attachment"]
 	subtask["status"] = data[yy][mm][dd][taskid][subtaskid]["status"]
-	print "status:", subtask["status"]
 	subtask["flex"] = data[yy][mm][dd][taskid][subtaskid]["flex"]
-	print "flex:", subtask["flex"]
-
 	file_write(db_name(), data)
+	check, ypos = curses_raw_input(wl, ypos, 1, "Do you want to quit :")
+
+def curses_del_text(wl, ys, xs, ye, xe):
+	for y in range(ys, ye):
+		wr_win(wl, y, xs, "", n)
+	
+
+def curses_tab_completion(wl, st, key_words):
+	yM, xM = wl.getmaxyx()
+	h = 6
+	ym = yM - h
+	xm = xM
+	strng = ""
+	nmatch = 0
+	shift = 0
+	stt = st
+	curses_del_text(wl, ym, 1, yM, xM)
+	
+	y = wr_win(wl, ym, 1, "Existing values", n)
+	
+	for key in key_words:
+		if key.startswith(st):
+			strng = strng + "," + key
+			key_match = key
+			nmatch += 1
+	num = len(strng) / (xM - 2)
+	rem = len(strng) % (xM - 2)
+	if (num > h - 2):
+		num = h - 2
+		last_line="Too many options ... narrow the search"
+	else:
+		last_line=strng[num*(xM - 2):num*(xM - 2)+rem]
+	for i in range(1, num):
+		end = i * (xM - 2)
+		start = end - (xM - 2)
+		y = wr_win(wl, y, 1, strng[start:end], n)
+	y = wr_win(wl, y, 1, last_line, n)
+	
+	if nmatch == 1:
+		shift = len(key_match) - len(st)
+		stt = key_match
+	return stt 
+	
+
+def curses_raw_input(wl, ypos, xpos, txt, dfl_inp="", key_words=[]):
+	#curses.noecho() 
+	loop = True
+	st = dfl_inp
+	y = wr_win(wl, ypos, 1, txt + st, n)
+	while loop:
+		c = wl.getch()
+		if c == ord("\n"):
+			loop = False
+		elif c == BACKSPACE:
+			st = st[:-1]
+		elif c == TAB:
+			st = curses_tab_completion(wl, st, key_words)
+		else:
+			try:
+			      #chr(c) in string.printable:
+			      st = st + chr(c)
+			except:
+			      pass
+		y = wr_win(wl, ypos, 1, txt + st, n)
+	return st, y		
+
