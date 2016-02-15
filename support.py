@@ -37,6 +37,8 @@ screen = curses.initscr()
 ymax, xmax = screen.getmaxyx()
 # Change this to use different colors when highlighting
 curses.start_color() # Lets you use colors when highlighting selected menu option
+curses.use_default_colors()
+curses.can_change_color() == False
 curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_WHITE) # Sets up color pair #1, it does black text with white background
 h = curses.color_pair(1) #h is the coloring for a highlighted menu option
 n = curses.A_NORMAL #n is the coloring for a non highlighted menu option

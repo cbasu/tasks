@@ -2,10 +2,6 @@
 
 from support import *
 
-def copy_task(d, task, subtask, yy, mm, dd):
-	ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, d, 1)
-	copy_task_kernel(screen, d, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
-
 def add_newtask(wl, d):
 	var = 1
 	curses.echo()
@@ -124,19 +120,8 @@ def action(wl, x, y, comm, ind, d):
 		(yy,mm,dd,task,subtask) = ind
 		t = d[yy][mm][dd][task]
 		wl.addstr(y,len(msg)+x, "%s" % ('y'), n)
-		#if comm == "view":
-		#	view_task_new(wl, t, t[subtask])
-		if comm == "view/modify":
-			modify_task_new(wl, d, yy, mm, dd, task, subtask)
-		elif comm == "new":
+		if comm == "new":
 			add_newtask(wl, d)
-		elif comm == "delete":
-			rm_task_kernel(d, task, subtask, yy, mm, dd)
-		elif comm == "copy":
-			copy_task(d, task, subtask, yy, mm, dd)
-		elif comm == "close":
-			t[subtask]["status"] = "close"
-			file_write(db_name(), data)
 
 	return inp
 
@@ -279,7 +264,6 @@ def runmenu(dat, menu, menu_command, parent):
 
 	x = None 
 	while x != ESC :   ## escape = 27
-
 		row, t_i, nrow =  main_list(screen, dat, menu, menu_command, typ, stat, row, act, prj, title)
 		x = action(screen, startx, ymax-6, act, t_i, dat)
 		if x == ord('\t'):
@@ -303,14 +287,14 @@ def runmenu(dat, menu, menu_command, parent):
 			act = "new"
 			lst = menu[typ].keys()
 			ind = lst.index(stat) + 1
-			if ind ==  len(menu[typ]): ind = 0
+			if ind > len(menu[typ])-1: ind = 0
 			stat = lst[ind]
 		elif x == curses.KEY_LEFT:
 			row = 0
 			act = "new"
 			lst = menu[typ].keys()
 			ind = lst.index(stat) - 1
-			if ind < 0: ind = len(menu[typ]) - 1
+			if ind < 0: ind = 0  #len(menu[typ]) - 1
 			stat = lst[ind]
 		elif x == curses.KEY_UP:
 			row = row - 1
@@ -328,6 +312,24 @@ def runmenu(dat, menu, menu_command, parent):
 			ind = lst.index(act) - 1
 			if ind < 0: ind = len(menu_command) - 1
 			act = lst[ind]
+		elif x == ord('\n'):
+			(yy,mm,dd,task,subtask) = t_i
+			modify_task_new(screen, dat, yy, mm, dd, task, subtask)
+		elif x == ord('d'):
+			(yy,mm,dd,task,subtask) = t_i
+			if dat[yy][mm][dd][task][subtask]["status"] == "deleted":
+			      rm_task_kernel(dat, task, subtask, yy, mm, dd)
+			else:
+			      dat[yy][mm][dd][task][subtask]["status"] = "deleted"
+			file_write(db_name(), dat)
+		elif x == ord('s'):
+			(yy,mm,dd,task,subtask) = t_i
+			ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1)
+			copy_task_kernel(screen, dat, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
+		elif x == ord('c'):
+			(yy,mm,dd,task,subtask) = t_i
+			dat[yy][mm][dd][task][subtask]["status"] = "close"
+			file_write(db_name(), dat)
 		
 
 # This function calls showmenu and then acts on the selected item
@@ -357,14 +359,9 @@ if __name__ == '__main__':
 	      for stat in ["open", "close", "pending", "all"]:
 		    menu[typ][stat] = {}
 	
-	menu_command = ["new", "close", "delete", "view/modify", "copy", "move", "search"]
+	menu_command = ["new", "move", "search"]
 
 	menu_action["new"] = {}
-	menu_action["close"] = {}
-	#menu_action["view"] = {}
-	menu_action["delete"] = {}
-	menu_action["view/modify"] = {}
-	menu_action["copy"] = {}
 	menu_action["move"] = {}
 	menu_action["search"] = {}
 
