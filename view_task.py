@@ -99,32 +99,6 @@ def modify_task_new(wl, d, yy, mm, dd, tid, stid):
 			break
 
 
-
-def action(wl, x, y, comm, ind, d):
-	msg = ""
-	textstyle = n
-	msg = "select the task to " + comm + " and type y: "
-	wr_win(wl, ymax-6, startx, msg, textstyle)
-	if comm == "new":				
-		msg = "for new task type y : "
-		wr_win(wl, ymax-6, startx, msg, textstyle)
-	elif comm == "search":
-		msg = "not yet implemented "
-		wr_win(wl, ymax-6, startx, msg, textstyle)
-	elif comm == "move":
-		msg = "not yet implemented "
-		wr_win(wl, ymax-6, startx, msg, textstyle)
-	
-	inp = screen.getch()
-	if inp == ord("y"):
-		(yy,mm,dd,task,subtask) = ind
-		t = d[yy][mm][dd][task]
-		wl.addstr(y,len(msg)+x, "%s" % ('y'), n)
-		if comm == "new":
-			add_newtask(wl, d)
-
-	return inp
-
 def one_line(i, yy, mm, dd, t, st):
 	b = " "
 	s = str(i) + b + yy + "-"
@@ -191,7 +165,7 @@ def list_range(r, l):
 	if e > l: e = l
 	return range(s, e)	
 	
-def main_list(wl, dat, menu, menu_command, typ, stat, row, act, prj, title):
+def main_list(wl, dat, menu, typ, stat, row, act, prj, title):
 	wl.clear()
 	rows, row_index, true_index = show_list(dat, typ, prj, title, stat)
 	wl.border(0)
@@ -233,21 +207,12 @@ def main_list(wl, dat, menu, menu_command, typ, stat, row, act, prj, title):
 		pass
 	menu4x = startx
 	menu4y = ymax-4
-	try:
-		#for key3 in menu_action:
-		for key3 in menu_command:
-			textstyle = n
-			if act == key3:
-				textstyle = h
-			wr_win(screen, menu4y, menu4x, key3, textstyle)
-			menu4x = menu4x  + len(key3) + 2 
-	except:
-		pass
+
 	return  row, true_index[row_index[row]], len(rows)
 
 
 # This function displays the appropriate menu and returns the option selected
-def runmenu(dat, menu, menu_command, parent):
+def runmenu(dat, menu, parent):
 	new = {}
 	
 	if parent is None:
@@ -263,9 +228,14 @@ def runmenu(dat, menu, menu_command, parent):
 	title = "all"
 
 	x = None 
-	while x != ESC :   ## escape = 27
-		row, t_i, nrow =  main_list(screen, dat, menu, menu_command, typ, stat, row, act, prj, title)
-		x = action(screen, startx, ymax-6, act, t_i, dat)
+	while x != ord("q") : 
+		try:
+		      row, t_i, nrow =  main_list(screen, dat, menu, typ, stat, row, act, prj, title)
+		except:
+		      pass
+		msg1 = "commands - d(elete), c(lose), y(ank), n(ew), q(uit): "
+		wr_win(screen, ymax-4, startx, msg1, n)
+		x = screen.getch()
 		if x == ord('\t'):
 			stat = "open"
 			row = 0
@@ -294,7 +264,7 @@ def runmenu(dat, menu, menu_command, parent):
 			act = "new"
 			lst = menu[typ].keys()
 			ind = lst.index(stat) - 1
-			if ind < 0: ind = 0  #len(menu[typ]) - 1
+			if ind < 0: len(menu[typ]) - 1
 			stat = lst[ind]
 		elif x == curses.KEY_UP:
 			row = row - 1
@@ -302,27 +272,13 @@ def runmenu(dat, menu, menu_command, parent):
 		elif x == curses.KEY_DOWN:
 			row = row + 1
 			if row ==  nrow: row = nrow -1
-		elif x == curses.KEY_SRIGHT:
-			lst = menu_command
-			ind = lst.index(act) + 1
-			if ind ==  len(menu_command): ind = 0
-			act = lst[ind]
-		elif x == curses.KEY_SLEFT:
-			lst = menu_command
-			ind = lst.index(act) - 1
-			if ind < 0: ind = len(menu_command) - 1
-			act = lst[ind]
 		elif x == ord('\n'):
 			(yy,mm,dd,task,subtask) = t_i
 			modify_task_new(screen, dat, yy, mm, dd, task, subtask)
 		elif x == ord('d'):
 			(yy,mm,dd,task,subtask) = t_i
-			if dat[yy][mm][dd][task][subtask]["status"] == "deleted":
-			      rm_task_kernel(dat, task, subtask, yy, mm, dd)
-			else:
-			      dat[yy][mm][dd][task][subtask]["status"] = "deleted"
-			file_write(db_name(), dat)
-		elif x == ord('s'):
+			rm_task_kernel(dat, task, subtask, yy, mm, dd)
+		elif x == ord('y'):
 			(yy,mm,dd,task,subtask) = t_i
 			ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1)
 			copy_task_kernel(screen, dat, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
@@ -330,11 +286,12 @@ def runmenu(dat, menu, menu_command, parent):
 			(yy,mm,dd,task,subtask) = t_i
 			dat[yy][mm][dd][task][subtask]["status"] = "close"
 			file_write(db_name(), dat)
-		
+		elif x == ord('n'):
+			add_newtask(screen, dat)
 
 # This function calls showmenu and then acts on the selected item
-def processmenu(dat, menu, menu_command, parent=None):
-	runmenu(dat, menu, menu_command, parent)
+def processmenu(dat, menu, parent=None):
+	runmenu(dat, menu, parent)
 
 if __name__ == '__main__':
 	try:
@@ -352,20 +309,13 @@ if __name__ == '__main__':
 
 	# Main program
 	menu = {}
-	menu_action = {}
 
 	for typ in ["work", "pers", "all"]:
 	      menu[typ] = {}
 	      for stat in ["open", "close", "pending", "all"]:
 		    menu[typ][stat] = {}
-	
-	menu_command = ["new", "move", "search"]
-
-	menu_action["new"] = {}
-	menu_action["move"] = {}
-	menu_action["search"] = {}
 
 	init_screen()
-	processmenu(data, menu, menu_command)
+	processmenu(data, menu)
 	os.system('clear')
 	curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
