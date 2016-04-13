@@ -2,141 +2,7 @@
 
 from support import *
 
-def add_newtask(wl, d):
-	var = 1
-	curses.echo()
-	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, 1) 
-	ypos = edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos)
-	while var == 1:
-		y = wr_win(wl, ypos, 1, 'Do you want to close the window: ', n)
-		key = wl.getch()
-		if key == ord("y"):
-			var = 0
-	curses.noecho() 
 
-
-def modify_task_new(wl, d, yy, mm, dd, tid, stid):
-	wl.clear()
-	wl.refresh()
-	title = "view/modify task"
-	c = None
-	t = d[yy][mm][dd][tid]
-	st = t[stid]
-	strn = db_path() + "/detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-	
-	key = []
-	tmp_t = []
-	key.append("project")
-	key.append("type")
-	key.append("task title")
-	key.append("subtask title")
-	key.append("status")
-	key.append("flex")
-	key.append("start")
-	key.append("end")
-	key.append("link")
-	key.append("detail")
-	key.append("attachment")
-	tmp_t.append(t["project"])
-	tmp_t.append(t["type"])
-	tmp_t.append(t["task title"])
-	tmp_t.append(st["subtask title"])
-	tmp_t.append(st["status"])
-	tmp_t.append(st["flex"])
-	tmp_t.append(st["start"])
-	tmp_t.append(st["end"])
-	tmp_t.append(st["link"])
-	tmp_t.append(st["detail"])
-	tmp_t.append(st["attachment"])
-
-	row = 0
-	y1 = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT) ## Title
-	while c != ord('q') :
-		y = y1+2
-		for i, opt in enumerate(key):
-		      stn = key[i]+":"
-		      stn = stn.ljust(17) + tmp_t[i]
-		      if i  == row:
-			  y = wr_win(wl, y, 1, stn, h)
-			  (yh, xh) = wl.getyx()
-		      else:
-			  y = wr_win(wl, y, 1, stn, n)
-
-		y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q): ", n)
-		c = wl.getch()
-		if c == curses.KEY_DOWN:
-			l = len(key)
-			if row < l-1:
-			      row = row + 1
-			else:
-			      row = l - 1
-		elif c == curses.KEY_UP:
-			if row > 0:
-			      row = row - 1
-			else:
-			    row = 0
-		elif c == ord('\n'):
-			curses.echo() 
-			wl.move(yh, 1)
-			stn = key[row]+":"
-			stn = stn.ljust(17)
-			tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row])
-			if key[row] == "detail" and tmp_t[row] == "yes":
-			      os.system("gvim " +  strn)
-			curses.noecho()
-		elif c == ord('x'):
-			for i,k in enumerate(key):
-			      if k in ["project", "type", "task title"]:
-				    t[k] = tmp_t[i]
-			      else:
-				    st[k] = tmp_t[i] 
-			      if k == "detail" and tmp_t[i] == "no":
-				    os.system("rm -f " + strn)
-			file_write(db_name(), d)
-			
-			if os.path.isfile(strn+".tmp"):
-			      os.system("mv " + strn+".tmp" + " " + strn)
-			break
-
-
-def one_line(i, yy, mm, dd, t, st):
-	b = " "
-	s = str(i) + b + yy + "-"
-	if int(mm) < 10:
-	  s1 = "0" + mm + "-"
-	else:
-	  s1 = mm + "-"
-	if int(dd) < 10:
-	  s1 = s1 + "0" + dd
-	else:
-	  s1 = s1 + dd
-	s = s + s1 + b 
-	tarr = st["start"].split(":")
-	if int(tarr[0]) < 10:
-	  s1 = "0" + tarr[0] + ":"
-	else:
-	  s1 = tarr[0] + ":"
-	if int(tarr[1]) < 10:
-	  s1 = s1 + "0" + tarr[1]
-	else:
-	  s1 = s1 + tarr[1]
-	s = s + s1 + b
-	tarr = st["end"].split(":")
-	if int(tarr[0]) < 10:
-	  s1 = "0" + tarr[0] + ":"
-	else:
-	  s1 = tarr[0] + ":"
-	if int(tarr[1]) < 10:
-	  s1 = s1 + "0" + tarr[1]
-	else:
-	  s1 = s1 + tarr[1]
-	s = s + s1 + b
-	
-	s = s + t["project"].ljust(10)
-	s = s + b + filter(lambda x: x in string.printable, t["task title"][:15]).ljust(15)
-	s = s + b + filter(lambda x: x in string.printable, st["subtask title"][:20])
-
-	return s
 
 def show_list(dat, typ, prj, title, stat):
 	lst, types, stats, projs, titles = sorted_key_list(data)
@@ -274,10 +140,11 @@ def runmenu(dat, menu, parent):
 			if row ==  nrow: row = nrow -1
 		elif x == ord('\n'):
 			(yy,mm,dd,task,subtask) = t_i
-			modify_task_new(screen, dat, yy, mm, dd, task, subtask)
+			modify_task(screen, dat, yy, mm, dd, task, subtask)
 		elif x == ord('d'):
-			(yy,mm,dd,task,subtask) = t_i
-			rm_task_kernel(dat, task, subtask, yy, mm, dd)
+			if confirm(screen, "Do you want to delete this task (y/n): ", ymax-4) == "y":
+			      (yy,mm,dd,task,subtask) = t_i
+			      rm_task_kernel(dat, task, subtask, yy, mm, dd)
 		elif x == ord('y'):
 			(yy,mm,dd,task,subtask) = t_i
 			ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1)
