@@ -185,7 +185,7 @@ def get_the_date(wl, v, y):
 		ypos = wr_win(wl, ypos, 1, "Existing tasks for " +str(dt) + " :", n)
 		lst, ypos = display_daily_task_sorted(wl, v, yy, mm, dd, ypos+1)
 		ypos = wr_win(wl, ypos, 1, "", n)
-		days, ypos = curses_raw_input(wl, ypos, 1, "Add days to " + str(dt) + " :")
+		days, ypos = curses_raw_input(wl, ymax-4, startx, "Add days to " + str(dt) + " :")
 		if not days.strip():
 			dateflag = False
 		else:
@@ -336,7 +336,10 @@ def display_daily_task_sorted(wl, v, y, m, d, ypos):
 			st = str(len(view)) + b + tmp[sk]["start"] + b + tmp[sk]["end"] + b + tmp["task title"][:20] + b + tmp[sk]["subtask title"][:20] + b + tmp[sk]["status"] + b + tmp["type"]
 			ypos = wr_win(wl, ypos, 1, st, n)
 			view.append([len(view), tmp[sk]["start"], tmp[sk]["end"], tmp["task title"][:20], tmp[sk]["subtask title"][:20], tmp[sk]["status"], tmp["type"] ])
-		#print tabulate(view)
+		ypos1 = ypos
+		for i in range(ypos1, ymax-5):
+			ypos = wr_win(wl, ypos, 1, "", n)
+			
 	except:
 		pass
 	return lst, ypos
