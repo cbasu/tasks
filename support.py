@@ -511,7 +511,7 @@ def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos, ttyp):
 	try:
 	      subtask["detail"]
 	except:
-	      subtask["detail"] = ""
+	      subtask["detail"] = "no"
 	try:
 	      subtask["attachment"]
 	except:
