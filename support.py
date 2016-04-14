@@ -439,7 +439,7 @@ def rm_task_kernel(data, tid, stid, yy, mm, dd):
 	file_write(db_name(), data)
 	
 
-def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos):
+def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos, ttyp):
 	yy = str(yy)
 	mm = str(mm)
 	dd = str(dd)
@@ -472,7 +472,12 @@ def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos):
 	try:
 	      task["type"]
 	except:
-	      task["type"] = ""
+	      if ttyp == "work":
+		task["type"] = "work"
+	      elif ttyp == "pers":
+		task["type"] = "pers"
+	      else:
+		task["type"] = ""
 	try:
 	      task["task title"]
 	except:
@@ -484,19 +489,21 @@ def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos):
 	try:
 	      subtask["status"]
 	except:
-	      subtask["status"] = ""
+	      subtask["status"] = "open"
 	try:
 	      subtask["flex"]
 	except:
-	      subtask["flex"] = ""
+	      subtask["flex"] = "normal"
 	try:
 	      subtask["start"]
 	except:
-	      subtask["start"] = ""
+	      startt = last_task_end_time(dat, yy, mm, dd)
+	      subtask["start"] = startt
 	try:
 	      subtask["end"]
 	except:
-	      subtask["end"] = ""
+	      endt = add_time(yy, mm, dd, subtask["start"], 60)
+	      subtask["end"] = endt
 	try:
 	      subtask["link"]
 	except:
@@ -683,14 +690,14 @@ def curses_raw_input(wl, ypos, xpos, txt, dfl_inp="", key_words=[]):
 		y = wr_win(wl, ypos, 1, txt + st, n)
 	return st, y		
 
-def add_newtask(wl, d):
+def add_newtask(wl, d, tsk_typ):
 	var = 1
 	curses.echo()
 	wl.clear()
 	title = "New Task"
 	y = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT)
 	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, y+1) 
-	ypos = edit_task_kernel_new1(wl, data, tid, stid, yy, mm, dd, ypos)
+	ypos = edit_task_kernel_new1(wl, d, tid, stid, yy, mm, dd, ypos, tsk_typ)
 	while var == 1:
 		y = wr_win(wl, ymax -4 , 1, 'Do you want to close the window: ', n)
 		key = wl.getch()
@@ -748,11 +755,7 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 		y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q): ", n)
 		c = wl.getch()
 		if c == curses.KEY_DOWN:
-			l = len(key)
-			if row < l-1:
-			      row = row + 1
-			else:
-			      row = l - 1
+			row = next_row(row, key)
 		elif c == curses.KEY_UP:
 			if row > 0:
 			      row = row - 1
@@ -764,9 +767,22 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			wl.move(yh, 1)
 			stn = key[row]+":"
 			stn = stn.ljust(17)
-			tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row], lst)
+			subtask = d[yy][mm][dd][tid][stid]
+			startt = subtask["start"]
+			if key[row] == "start":
+			    tmp_t[row],y = new_time(wl, "start", subtask, yy, mm, dd, startt, y)
+			elif key[row] == "end":
+			    try:
+				endt = add_time(yy, mm, dd, tmp_t[row], 60)
+			    except:
+				endt = add_time(yy, mm, dd, startt, 60)
+
+			    tmp_t[row],y = new_time(wl, "end", subtask, yy, mm, dd, endt, y)
+			else:
+			    tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row], lst)
 			if key[row] == "detail" and tmp_t[row] == "yes":
 			      os.system("gvim " +  strn)
+			row = next_row(row, key)
 			curses.noecho()
 		elif c == ord('x'):
 			for i,k in enumerate(key):
@@ -781,6 +797,14 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			if os.path.isfile(strn+".tmp"):
 			      os.system("mv " + strn+".tmp" + " " + strn)
 			break
+
+def next_row(r, arr):
+      l = len(arr)
+      if r < l-1:
+	    r = r + 1
+      else:
+	    r = l - 1
+      return r
 
 def confirm(wl, msg, y1):
 	var = 1

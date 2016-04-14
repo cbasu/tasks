@@ -154,7 +154,7 @@ def runmenu(dat, menu, parent):
 			dat[yy][mm][dd][task][subtask]["status"] = "close"
 			file_write(db_name(), dat)
 		elif x == ord('n'):
-			add_newtask(screen, dat)
+			add_newtask(screen, dat, typ)
 
 # This function calls showmenu and then acts on the selected item
 def processmenu(dat, menu, parent=None):
