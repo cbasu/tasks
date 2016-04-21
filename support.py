@@ -567,7 +567,7 @@ def edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos):
 	file_write(db_name(), data)
 	return ypos
 
-def copy_task_kernel(wl, data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos):
+def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos):
 	yy = str(yy)
 	mm = str(mm)
 	dd = str(dd)
@@ -581,51 +581,37 @@ def copy_task_kernel(wl, data, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, y
 	nstid = str(nstid)
 
 	try:
-		data[ny]
+		dat[ny]
 	except:	
-		data[ny] = {}
+		dat[ny] = {}
 	try:
-		data[ny][nm]
+		dat[ny][nm]
 	except:
-		data[ny][nm] = {}
+		dat[ny][nm] = {}
 	try:
-		data[ny][nm][nd]
+		dat[ny][nm][nd]
 	except:
-		data[ny][nm][nd] = {}
+		dat[ny][nm][nd] = {}
 	try:
-		task = data[ny][nm][nd][ntid]
+		task = dat[ny][nm][nd][ntid]
 	except:
-		task = data[ny][nm][nd][ntid]= {}
-		task["project"] = data[yy][mm][dd][taskid]["project"]
-		task["task title"] = data[yy][mm][dd][taskid]["task title"]
-		task["type"] =  data[yy][mm][dd][taskid]["type"] 
+		task = dat[ny][nm][nd][ntid]= {}
+		task["project"] = dat[yy][mm][dd][taskid]["project"]
+		task["task title"] = dat[yy][mm][dd][taskid]["task title"]
+		task["type"] =  dat[yy][mm][dd][taskid]["type"] 
 	try:
 		subtask = task[nstid]
 	except:
 		subtask = task[nstid] = {}
-		subtask["subtask title"] = data[yy][mm][dd][taskid][subtaskid]["subtask title"]
-
-	ypos = wr_win(wl, ypos, 1, "Project :" + task["project"], n)
-	ypos = wr_win(wl, ypos, 1, "Task title :" + task["task title"], n)
-	ypos = wr_win(wl, ypos, 1, "Task type :" + task["type"], n)
-	ypos = wr_win(wl, ypos, 1, "Subtask title :" + subtask["subtask title"], n)
-	dur = duration_time(data[yy][mm][dd][taskid][subtaskid])
-	subtask["start"], ypos = new_time(wl, "start", data[yy][mm][dd][taskid][subtaskid], ny, nm, nd, 0, ypos)
-	ypos = wr_win(wl, ypos, 1, "start :" + subtask["start"], n)
-	endt = add_time(ny, nm, nd, subtask["start"], dur)
-	subtask["end"], ypos = new_time(wl, "end", subtask, ny, nm, nd, endt, ypos)
-	ypos = wr_win(wl, ypos, 1, "end :" + subtask["end"], n)
-	subtask["link"] = data[yy][mm][dd][taskid][subtaskid]["link"]
-	subtask["detail"] = data[yy][mm][dd][taskid][subtaskid]["detail"]
-	if subtask["detail"] == "yes":
-		strold = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-		strnew = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
-		os.system("cp " + strold + " " + strnew)	
-	subtask["attachment"] = data[yy][mm][dd][taskid][subtaskid]["attachment"]
-	subtask["status"] = data[yy][mm][dd][taskid][subtaskid]["status"]
-	subtask["flex"] = data[yy][mm][dd][taskid][subtaskid]["flex"]
-	file_write(db_name(), data)
-	check, ypos = curses_raw_input(wl, ypos, 1, "Do you want to quit :")
+		subtask["subtask title"] = dat[yy][mm][dd][taskid][subtaskid]["subtask title"]
+		subtask["status"] = dat[yy][mm][dd][taskid][subtaskid]["status"]
+		subtask["flex"] = dat[yy][mm][dd][taskid][subtaskid]["flex"]
+		subtask["start"] = dat[yy][mm][dd][taskid][subtaskid]["start"]
+		subtask["end"] = dat[yy][mm][dd][taskid][subtaskid]["end"]
+		subtask["link"] = dat[yy][mm][dd][taskid][subtaskid]["link"]
+		subtask["detail"] = dat[yy][mm][dd][taskid][subtaskid]["detail"]
+		subtask["attachment"] = dat[yy][mm][dd][taskid][subtaskid]["attachment"]
+	modify_task(wl, dat, ny, nm, nd, ntid, nstid)
 
 def curses_del_text(wl, ys, xs, ye, xe):
 	for y in range(ys, ye):

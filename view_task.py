@@ -2,6 +2,8 @@
 
 from support import *
 
+copied_task = None
+
 
 
 def show_list(dat, typ, prj, title, stat):
@@ -99,7 +101,7 @@ def runmenu(dat, menu, parent):
 		      row, t_i, nrow =  main_list(screen, dat, menu, typ, stat, row, act, prj, title)
 		except:
 		      pass
-		msg1 = "commands - d(elete), c(lose), y(ank), n(ew), q(uit): "
+		msg1 = "commands - d(elete), c(lose), p(aste), y(ank), n(ew), q(uit): "
 		wr_win(screen, ymax-4, startx, msg1, n)
 		x = screen.getch()
 		if x == ord('\t'):
@@ -146,9 +148,15 @@ def runmenu(dat, menu, parent):
 			      (yy,mm,dd,task,subtask) = t_i
 			      rm_task_kernel(dat, task, subtask, yy, mm, dd)
 		elif x == ord('y'):
-			(yy,mm,dd,task,subtask) = t_i
-			ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1)
-			copy_task_kernel(screen, dat, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
+			copied_task = t_i
+		elif x == ord('p'):
+			try:
+			      (yy,mm,dd,task,subtask) = copied_task
+			      ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1)
+			      paste_task_kernel(screen, dat, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
+			      copied_task = None
+			except:
+			      pass
 		elif x == ord('c'):
 			(yy,mm,dd,task,subtask) = t_i
 			dat[yy][mm][dd][task][subtask]["status"] = "close"
