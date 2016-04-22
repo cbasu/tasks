@@ -172,6 +172,26 @@ def wr_win(win, ypos, xpos, txt, higlight):
 	win.refresh()
 	return ypos+1
 
+def row_for_today(rows):
+	dt = datetime.date.today()
+	yy_today = str(dt.year)
+	mm_today = str(dt.month)
+	dd_today = str(dt.day)
+	for row, val in enumerate(rows[0]):
+	      (yy,mm,dd,task,subtask) = rows[2][rows[1][row]]
+	      if yy == yy_today and mm == mm_today and dd == dd_today:
+		    break
+	return row
+
+def rows_len(rows):
+      return len(rows[0])
+	
+
+def get_keys(row, rows):
+      return rows[2][rows[1][row]]
+
+	      
+
 def get_the_date(wl, v, y):
 	dt = datetime.date.today()
 	dateflag = True
