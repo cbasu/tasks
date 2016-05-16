@@ -704,11 +704,11 @@ def add_newtask(wl, d, tsk_typ):
 	y = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT)
 	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, y+1) 
 	ypos = edit_task_kernel_new1(wl, d, tid, stid, yy, mm, dd, ypos, tsk_typ)
-	while var == 1:
-		y = wr_win(wl, ymax -4 , 1, 'Do you want to close the window: ', n)
-		key = wl.getch()
-		if key == ord("y"):
-			var = 0
+#	while var == 1:
+#		y = wr_win(wl, ymax -4 , 1, 'Do you want to close the window: ', n)
+#		key = wl.getch()
+#		if key == ord("y"):
+#			var = 0
 	curses.noecho() 
 
 def modify_task(wl, d, yy, mm, dd, tid, stid):
