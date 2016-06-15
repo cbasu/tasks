@@ -92,7 +92,6 @@ def runmenu(dat, menu, parent):
 	act = "new"
 	prj = "all"
 	title = "all"
-
 	row_arr = make_show_list(dat, typ, prj, title, stat)
 	nrow = rows_len(row_arr)
 	row = row_for_today(row_arr)

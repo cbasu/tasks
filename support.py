@@ -173,6 +173,7 @@ def wr_win(win, ypos, xpos, txt, higlight):
 	return ypos+1
 
 def row_for_today(rows):
+	row = 0
 	dt = datetime.date.today()
 	yy_today = str(dt.year)
 	mm_today = str(dt.month)
@@ -236,6 +237,16 @@ def add_time(yy, mm, dd, start, minute):
         t = t + datetime.timedelta(minutes=int(minute))
 	return str(t.time().hour) + ":" + str(t.time().minute)
 
+def add_time_new(yy, mm, dd, start, dur):
+	(h, m) = tuple(start.split(':'))
+	(h1, m1) = tuple(dur.split(':'))
+	h1 = int(h1)
+	m1 = int(m1)
+	if dur[0] == "-":
+	  m1 = -m1
+        t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
+        t = t + datetime.timedelta(hours=h1, minutes = m1)
+	return str(t.time().hour) + ":" + str(t.time().minute)
 def duration_time(tsk):
 	
 	FMT = '%H:%M'
@@ -631,6 +642,11 @@ def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, y
 		subtask["link"] = dat[yy][mm][dd][taskid][subtaskid]["link"]
 		subtask["detail"] = dat[yy][mm][dd][taskid][subtaskid]["detail"]
 		subtask["attachment"] = dat[yy][mm][dd][taskid][subtaskid]["attachment"]
+	if subtask["detail"] == "yes":
+		str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+		str2 = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
+		os.system("cp " + str1 + " " + str2)	
+	
 	modify_task(wl, dat, ny, nm, nd, ntid, nstid)
 
 def curses_del_text(wl, ys, xs, ye, xe):
@@ -694,6 +710,40 @@ def curses_raw_input(wl, ypos, xpos, txt, dfl_inp="", key_words=[]):
 			except:
 			      pass
 		y = wr_win(wl, ypos, 1, txt + st, n)
+	return st, y		
+
+def curses_time_input(wl, ypos, xpos, txt, dfl_inp=""):
+	loop = True
+	txt1 = txt + dfl_inp 
+	st = "+00:00"
+	y = wr_win(wl, ypos, 1, txt1 + st, n)
+	while loop:
+		c = wl.getch()
+		if c == ord("\n") and len(st) == 6:
+			loop = False
+		elif c == BACKSPACE:
+			st = st[:-1]
+		elif len(st) == 0:
+			try:
+			    if chr(c) in ['+', '-']:
+				  st = st + chr(c)
+			except:
+			    pass
+		elif len(st) == 3:
+			try:
+			    if chr(c) in [':']:
+				  st = st + chr(c)
+			except:
+			    pass
+		else:
+			try:
+			    if chr(c) in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+				if len(st) < 6:
+				  st = st + chr(c)
+			except:
+			    pass
+		y = wr_win(wl, ypos, 1, txt1 + st, n)
+
 	return st, y		
 
 def add_newtask(wl, d, tsk_typ):
@@ -776,14 +826,12 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			subtask = d[yy][mm][dd][tid][stid]
 			startt = subtask["start"]
 			if key[row] == "start":
-			    tmp_t[row],y = new_time(wl, "start", subtask, yy, mm, dd, startt, y)
-			elif key[row] == "end":
-			    try:
-				endt = add_time(yy, mm, dd, tmp_t[row], 60)
-			    except:
-				endt = add_time(yy, mm, dd, startt, 60)
+			    t_incr,y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
 
-			    tmp_t[row],y = new_time(wl, "end", subtask, yy, mm, dd, endt, y)
+			    tmp_t[row] = add_time_new(yy, mm, dd, tmp_t[row], t_incr)
+			elif key[row] == "end":
+			    t_incr,y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
+			    tmp_t[row] = add_time_new(yy, mm, dd, tmp_t[row], t_incr)
 			else:
 			    tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row], lst)
 			if key[row] == "detail" and tmp_t[row] == "yes":
