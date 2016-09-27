@@ -90,7 +90,8 @@ def db_name():
 	return db_file_name
 
 def db_path():
-	return "'%s'" % db_folder
+	#return "'%s'" % db_folder
+	return db_folder
 
 def file_write(name, d):
 	f = open(name,'w')
@@ -449,9 +450,10 @@ def sorted_key_list(data):
 	return lst, list(set(types)), list(set(statuses)), list(set(projs)), list(set(title))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
-	if data[yy][mm][dd][tid][stid]["detail"] == "yes":
-		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-		os.system("rm " + strn)	
+	#if data[yy][mm][dd][tid][stid]["detail"] == "yes":
+	strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+        if os.path.isfile(strn):
+	        os.system("rm " + "'%s'"%strn)	
 		
 	del data[yy][mm][dd][tid][stid]
 	deltask = True
@@ -542,7 +544,7 @@ def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos, ttyp):
 	try:
 	      subtask["detail"]
 	except:
-	      subtask["detail"] = "no"
+	      subtask["detail"] = ""
 	try:
 	      subtask["attachment"]
 	except:
@@ -550,53 +552,6 @@ def edit_task_kernel_new1(wl, dat, tid, stid, yy, mm, dd, ypos, ttyp):
 	modify_task(wl, dat, yy, mm, dd, taskid, subtaskid)
 
 
-def edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos):
-	yy = str(yy)
-	mm = str(mm)
-	dd = str(dd)
-	taskid =  str(tid)
-	subtaskid = str(stid)
-	lastend = 9 
-
-	try:
-		data[yy]
-	except:	
-		data[yy] = {}
-	try:
-		data[yy][mm]
-	except:
-		data[yy][mm] = {}
-	try:
-		data[yy][mm][dd]
-	except:
-		data[yy][mm][dd] = {}
-	try:
-		task = data[yy][mm][dd][taskid]
-	except:
-		task = data[yy][mm][dd][taskid]= {}
-	try:
-		subtask =task[subtaskid]
-	except:
-		subtask = task[subtaskid] = {}
-	startt = last_task_end_time(data, yy, mm, dd)	
-	task["project"], ypos = get_input_for(wl, "project", task, data, ypos)
-	task["task title"], ypos = get_input_for(wl, "task title", task, data, ypos)
-	task["type"], ypos = get_input_for(wl, "type", task, data, ypos)
-	subtask["subtask title"], ypos = get_input_for(wl, "subtask title", subtask, data, ypos)
-	subtask["start"], ypos = new_time(wl, "start", subtask, yy, mm, dd, startt, ypos)
-	endt = add_time(yy, mm, dd, subtask["start"], 60)
-	subtask["end"], ypos = new_time(wl, "end", subtask, yy, mm, dd, endt, ypos)
-	subtask["link"], ypos = get_input_for(wl, "link", subtask, data, ypos)
-	subtask["detail"], ypos = get_input_for(wl, "detail", subtask, data, ypos)
-	if subtask["detail"] == "yes":
-		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-		os.system("gvim " + strn)	
-	subtask["attachment"], ypos = get_input_for(wl, "attachment", subtask, data, ypos)
-	subtask["status"], ypos = get_input_for(wl, "status", subtask, data, ypos)
-	subtask["flex"], ypos = get_input_for(wl, "flex", subtask, data, ypos)
-
-	file_write(db_name(), data)
-	return ypos
 
 def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos):
 	yy = str(yy)
@@ -640,12 +595,14 @@ def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, y
 		subtask["start"] = dat[yy][mm][dd][taskid][subtaskid]["start"]
 		subtask["end"] = dat[yy][mm][dd][taskid][subtaskid]["end"]
 		subtask["link"] = dat[yy][mm][dd][taskid][subtaskid]["link"]
-		subtask["detail"] = dat[yy][mm][dd][taskid][subtaskid]["detail"]
+		subtask["detail"] = "" #dat[yy][mm][dd][taskid][subtaskid]["detail"]
 		subtask["attachment"] = dat[yy][mm][dd][taskid][subtaskid]["attachment"]
-	if subtask["detail"] == "yes":
-		str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-		str2 = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
-		os.system("cp " + str1 + " " + str2)	
+	#if subtask["detail"] == "yes":
+	str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+	str2 = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
+        if os.path.isfile(str1):
+                os.system("cp " + "'%s'"%str1 + " " + "'%s'"%str2)	
+	        subtask["detail"] = str2
 	
 	modify_task(wl, dat, ny, nm, nd, ntid, nstid)
 
@@ -714,36 +671,46 @@ def curses_raw_input(wl, ypos, xpos, txt, dfl_inp="", key_words=[]):
 
 def curses_time_input(wl, ypos, xpos, txt, dfl_inp=""):
 	loop = True
-	txt1 = txt + dfl_inp 
-	st = "+00:00"
+	txt1 = txt 
+	st = dfl_inp
+        (h, m) = tuple(dfl_inp.split(':'))
+        h = int(h)
+        m = int(m)
+        hrmode = True
 	y = wr_win(wl, ypos, 1, txt1 + st, n)
 	while loop:
-		c = wl.getch()
-		if c == ord("\n") and len(st) == 6:
-			loop = False
-		elif c == BACKSPACE:
-			st = st[:-1]
-		elif len(st) == 0:
-			try:
-			    if chr(c) in ['+', '-']:
-				  st = st + chr(c)
-			except:
-			    pass
-		elif len(st) == 3:
-			try:
-			    if chr(c) in [':']:
-				  st = st + chr(c)
-			except:
-			    pass
-		else:
-			try:
-			    if chr(c) in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
-				if len(st) < 6:
-				  st = st + chr(c)
-			except:
-			    pass
-		y = wr_win(wl, ypos, 1, txt1 + st, n)
-
+	    c = wl.getch()
+            try:
+                if c == ord("\n"):
+                            loop = False
+                if c == TAB:
+                    hrmode = not hrmode
+                if hrmode:
+                    if chr(c) == "+":
+                        h = h+1
+                        if h > 24:
+                            h = 0
+                        st = str(h).zfill(2)+":"+str(m).zfill(2)
+                    if chr(c) == "-":
+                        h = h-1
+                        if h < 0:
+                            h = 24
+                        st = str(h).zfill(2)+":"+str(m).zfill(2)
+                else:
+                    if chr(c) == "+":
+                        m = m+1
+                        if m > 60:
+                            m = 0
+                        st = str(h).zfill(2)+":"+str(m).zfill(2)
+                    if chr(c) == "-":
+                        m = m-1
+                        if m < 0:
+                            m = 60
+                        st = str(h).zfill(2)+":"+str(m).zfill(2)
+            except:
+                pass
+	    y = wr_win(wl, ypos, 1, txt1 + st, n)
+            
 	return st, y		
 
 def add_newtask(wl, d, tsk_typ):
@@ -826,16 +793,19 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			subtask = d[yy][mm][dd][tid][stid]
 			startt = subtask["start"]
 			if key[row] == "start":
-			    t_incr,y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
-
-			    tmp_t[row] = add_time_new(yy, mm, dd, tmp_t[row], t_incr)
+			    tmp_t[row],y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
 			elif key[row] == "end":
-			    t_incr,y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
-			    tmp_t[row] = add_time_new(yy, mm, dd, tmp_t[row], t_incr)
+			    tmp_t[row],y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
+			elif key[row] == "detail": 
+                            p = subprocess.Popen("gvim " +  "'%s'"%strn, stdout=subprocess.PIPE, shell=True)
+
+                            (output, err) = p.communicate()  
+                            p_status = p.wait()
+
+        		    if os.path.isfile(strn):
+                                tmp_t[row] = strn
 			else:
 			    tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row], lst)
-			if key[row] == "detail" and tmp_t[row] == "yes":
-			      os.system("gvim " +  strn)
 			row = next_row(row, key)
 			curses.noecho()
 		elif c == ord('x'):
@@ -844,12 +814,12 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 				    t[k] = tmp_t[i]
 			      else:
 				    st[k] = tmp_t[i] 
-			      if k == "detail" and tmp_t[i] == "no":
-				    os.system("rm -f " + strn)
+#			      if k == "detail" and tmp_t[i] == "":
+#				    os.system("rm -f " + strn)
 			file_write(db_name(), d)
 			
-			if os.path.isfile(strn+".tmp"):
-			      os.system("mv " + strn+".tmp" + " " + strn)
+#			if os.path.isfile(strn+".tmp"):
+#			      os.system("mv " + strn+".tmp" + " " + strn)
 			break
 
 def next_row(r, arr):
@@ -909,3 +879,54 @@ def one_line(i, yy, mm, dd, t, st):
 	s = s + b + filter(lambda x: x in string.printable, st["subtask title"][:20])
 
 	return s
+
+############################ not used any more
+
+
+#def edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos):
+#	yy = str(yy)
+#	mm = str(mm)
+#	dd = str(dd)
+#	taskid =  str(tid)
+#	subtaskid = str(stid)
+#	lastend = 9 
+#
+#	try:
+#		data[yy]
+#	except:	
+#		data[yy] = {}
+#	try:
+#		data[yy][mm]
+#	except:
+#		data[yy][mm] = {}
+#	try:
+#		data[yy][mm][dd]
+#	except:
+#		data[yy][mm][dd] = {}
+#	try:
+#		task = data[yy][mm][dd][taskid]
+#	except:
+#		task = data[yy][mm][dd][taskid]= {}
+#	try:
+#		subtask =task[subtaskid]
+#	except:
+#		subtask = task[subtaskid] = {}
+#	startt = last_task_end_time(data, yy, mm, dd)	
+#	task["project"], ypos = get_input_for(wl, "project", task, data, ypos)
+#	task["task title"], ypos = get_input_for(wl, "task title", task, data, ypos)
+#	task["type"], ypos = get_input_for(wl, "type", task, data, ypos)
+#	subtask["subtask title"], ypos = get_input_for(wl, "subtask title", subtask, data, ypos)
+#	subtask["start"], ypos = new_time(wl, "start", subtask, yy, mm, dd, startt, ypos)
+#	endt = add_time(yy, mm, dd, subtask["start"], 60)
+#	subtask["end"], ypos = new_time(wl, "end", subtask, yy, mm, dd, endt, ypos)
+#	subtask["link"], ypos = get_input_for(wl, "link", subtask, data, ypos)
+#	subtask["detail"], ypos = get_input_for(wl, "detail", subtask, data, ypos)
+#	if subtask["detail"] == "yes":
+#		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+#		os.system("gvim " + strn)	
+#	subtask["attachment"], ypos = get_input_for(wl, "attachment", subtask, data, ypos)
+#	subtask["status"], ypos = get_input_for(wl, "status", subtask, data, ypos)
+#	subtask["flex"], ypos = get_input_for(wl, "flex", subtask, data, ypos)
+#
+#	file_write(db_name(), data)
+#	return ypos
