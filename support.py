@@ -844,36 +844,11 @@ def confirm(wl, msg, y1):
 def one_line(i, yy, mm, dd, t, st):
 	b = " "
 	s = str(i) + b + yy + "-"
-	if int(mm) < 10:
-	  s1 = "0" + mm + "-"
-	else:
-	  s1 = mm + "-"
-	if int(dd) < 10:
-	  s1 = s1 + "0" + dd
-	else:
-	  s1 = s1 + dd
-	s = s + s1 + b 
+        s = s + mm.zfill(2) + "-" + dd.zfill(2) + b
 	tarr = st["start"].split(":")
-	if int(tarr[0]) < 10:
-	  s1 = "0" + tarr[0] + ":"
-	else:
-	  s1 = tarr[0] + ":"
-	if int(tarr[1]) < 10:
-	  s1 = s1 + "0" + tarr[1]
-	else:
-	  s1 = s1 + tarr[1]
-	s = s + s1 + b
+        s = s + tarr[0].zfill(2) + ":" + tarr[1].zfill(2) + b
 	tarr = st["end"].split(":")
-	if int(tarr[0]) < 10:
-	  s1 = "0" + tarr[0] + ":"
-	else:
-	  s1 = tarr[0] + ":"
-	if int(tarr[1]) < 10:
-	  s1 = s1 + "0" + tarr[1]
-	else:
-	  s1 = s1 + tarr[1]
-	s = s + s1 + b
-	
+        s = s + tarr[0].zfill(2) + ":" + tarr[1].zfill(2) + b
 	s = s + t["project"].ljust(10)
 	s = s + b + filter(lambda x: x in string.printable, t["task title"][:15]).ljust(15)
 	s = s + b + filter(lambda x: x in string.printable, st["subtask title"][:20])
