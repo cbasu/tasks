@@ -337,11 +337,19 @@ def sorted_key_list(data):
 	return lst, list(set(types)), list(set(statuses)), list(set(projs)), list(set(title))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
-	#if data[yy][mm][dd][tid][stid]["detail"] == "yes":
 	strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
         if os.path.isfile(strn):
-	        os.system("rm " + "'%s'"%strn)	
-		
+            p = subprocess.Popen(["rm",strn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (output, err) = p.communicate() 
+            p_status = p.wait()
+	
+        attach = data[yy][mm][dd][tid][stid]["attachment"]
+        if attach:
+	    fl = db_path() + "/attachment/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid 
+            p = subprocess.Popen(["rm","-rf",fl], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (output, err) = p.communicate() 
+            p_status = p.wait()
+
 	del data[yy][mm][dd][tid][stid]
 	deltask = True
 	for k in data[yy][mm][dd][tid].keys():
@@ -660,7 +668,7 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 		y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q): ", n)
 		c = wl.getch()
 		if c == curses.KEY_DOWN:
-			row = next_row(row, key)
+			row = next_row(row, len(key))
 		elif c == curses.KEY_UP:
 			if row > 0:
 			      row = row - 1
@@ -686,9 +694,11 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 
         		    if os.path.isfile(strn):
                                 tmp_t[row] = strn
+			elif key[row] == "attachment":
+                            tmp_t[row] = modify_attachment(wl, yy, mm, dd, tid, stid, tmp_t[row])
 			else:
 			    tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row], lst)
-			row = next_row(row, key)
+			row = next_row(row, len(key))
 			curses.noecho()
 		elif c == ord('x'):
 			for i,k in enumerate(key):
@@ -700,13 +710,84 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			
 			break
 
-def next_row(r, arr):
-      l = len(arr)
-      if r < l-1:
-	    r = r + 1
-      else:
-	    r = l - 1
-      return r
+def modify_attachment(wl, yy, mm, dd, tid, stid, name):
+	wl.clear()
+	wl.refresh()
+	title = "view/modify attachment"
+	c = None
+
+	row = 0
+	y1 = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT) ## Title
+        key = ["Download", "View", "Delete"]
+	tmp_t = [name,"", ""]
+	while c != ord('x') :
+		y = y1+2
+
+		for i, opt in enumerate(key):
+		      stn = str(i+1).zfill(2) + ". " + opt+":"
+		      stn = stn.ljust(17) + tmp_t[i]
+		      if i  == row:
+			  y = wr_win(wl, y, 1, stn, h)
+		      else:
+			  y = wr_win(wl, y, 1, stn, n)
+
+		y = wr_win(wl, ymax-4, 2, "save and quit (x): ", n)
+		c = wl.getch()
+		if c == curses.KEY_DOWN:
+			row = next_row(row, len(key))
+		elif c == curses.KEY_UP:
+                        row = prev_row(row)
+		elif c == ord('\n'):
+			curses.echo() 
+			stn = str(row+1).zfill(2) + ". " + key[row]+":"
+			stn = stn.ljust(17)
+			if key[row] == "Download":
+                            
+	                    fl = yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+                            y = y1+2+row
+			    tmp_t[row],y = curses_raw_input(wl, y, 1, stn, tmp_t[row])
+                            pat = db_path() + "/attachment/"+fl
+                            p = subprocess.Popen(["mkdir","-p",pat], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                            (output, err) = p.communicate() 
+                            p_status = p.wait()
+                            p = subprocess.Popen(["wget","-N","-P",pat, tmp_t[row]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                            
+                            y = wr_win(wl, y-1, len(tmp_t[row]+stn) + 2, "Downloading .... ", n)
+                            (output, err) = p.communicate() 
+                            y = wr_win(wl, y-1, len(tmp_t[row]+stn) + 2, "Downloading .... Done ", n)
+                             
+                            p_status = p.wait()
+			if key[row] == "View":
+                            if tmp_t[0]:
+                                fl = db_path() + "/attachment/" 
+                                fl = fl + os.path.basename(tmp_t[0])
+                                p = subprocess.Popen(["evince", fl], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                (output, err) = p.communicate() 
+                                p_status = p.wait()
+			if key[row] == "Delete":
+                            if tmp_t[0]:
+                                fl = db_path() + "/attachment/" 
+                                fl = fl + os.path.basename(tmp_t[0])
+                                p = subprocess.Popen(["rm", fl], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                (output, err) = p.communicate() 
+                                p_status = p.wait()
+                                tmp_t[0] = ""
+
+        return tmp_t[0]
+
+def next_row(r, l):
+    if r < l-1:
+        r = r + 1
+    else:
+        r = l - 1
+    return r
+
+def prev_row(r):
+    if r > 0:
+          r = r - 1
+    else:
+        r = 0
+    return r
 
 def confirm(wl, msg, y1):
 	var = 1
