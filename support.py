@@ -511,35 +511,42 @@ def curses_tab_completion(wl, st, key_words):
 	h = 6
 	ym = yM - h
 	xm = xM
-	strng = ""
 	nmatch = 0
 	shift = 0
 	stt = st
 	curses_del_text(wl, ym, 1, yM, xM)
 	
 	y = wr_win(wl, ym, 1, "Existing values", n)
-	
+
+        key_match = []
+        l = []
 	for key in key_words:
 		if key.startswith(st):
-			strng = strng + "," + key
-			key_match = key
+			key_match.append(key)
+                        l.append(len(key))
 			nmatch += 1
+        strng = ','.join(key_match)
 	num = len(strng) / (xM - 2)
 	rem = len(strng) % (xM - 2)
-	if (num > h - 2):
-		num = h - 2
-		last_line="Too many options ... narrow the search"
-	else:
-		last_line=strng[num*(xM - 2):num*(xM - 2)+rem]
-	for i in range(1, num):
-		end = i * (xM - 2)
-		start = end - (xM - 2)
-		y = wr_win(wl, y, 1, strng[start:end], n)
-	y = wr_win(wl, y, 1, last_line, n)
-	
-	if nmatch == 1:
-		shift = len(key_match) - len(st)
-		stt = key_match
+	last_line=strng[num*(xM - 2):num*(xM - 2)+rem]
+        for i in range(num):
+                if i == h - 2:
+		    last_line="Too many matches ... narrow the search"
+                    break
+                else:
+                    start = i * (xM - 2)
+                    end = start + (xM - 2)
+                    y = wr_win(wl, y, 1, strng[start:end], n)
+        y = wr_win(wl, y, 1, last_line, n)
+        stt = st
+	if len(l) > 0:
+	        mini = min(x for x in l)
+                for i in range(len(st), mini):
+                    out = [x[i] for x in key_match]
+                    if len(set(out)) == 1:
+                        stt = stt + out[0]
+                    else:
+                        break
 	return stt 
 	
 
