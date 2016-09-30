@@ -1,0 +1,8 @@
+db=/home/cbasu/cbasu_work/tasks/todo_db
+#dt=$(date +%d%m%y-%H%M%S)
+#
+./view_task.py "$db"
+#cd "$db"
+#git add *
+#git commit -a -m "commit $dt"
+

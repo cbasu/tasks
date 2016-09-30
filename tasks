@@ -1,0 +1,7 @@
+
+db='./mytasks'
+dt=$(date +%d%m%y-%H%M%S)
+./view_task.py "$db"
+cd "$db"
+git commit -a -m "commit $dt"
+
