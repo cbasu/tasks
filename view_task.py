@@ -98,7 +98,7 @@ def runmenu(dat, menu, parent):
 	row = row_for_today(row_arr)
 
 	x = None 
-	msg1 = "commands - d(elete), f(ilter), c(lose), p(aste), y(ank), n(ew), u(n filter), q(uit): "
+	msg1 = "commands - d(elete), c(lose), p(aste), y(ank), n(ew), q(uit): "
 	while x != ord("q") : 
 		try:
 		      main_list(screen, dat, menu, typ, stat, row, row_arr)
@@ -171,7 +171,7 @@ def runmenu(dat, menu, parent):
 			      rm_task_kernel(dat, task, subtask, yy, mm, dd)
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			nrow = rows_len(row_arr)
-                elif x == ord('f'):
+                elif x == ord('+'):
 			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
                         if filt == 0:
                             prj = dat[yy][mm][dd][task]["project"]
@@ -183,7 +183,7 @@ def runmenu(dat, menu, parent):
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			row = row_for_today(row_arr)
 			nrow = rows_len(row_arr)
-                elif x == ord('u'):
+                elif x == ord('-'):
 			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
                         if filt == 2:
                             title = "all"
