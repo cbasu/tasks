@@ -766,14 +766,16 @@ def modify_attachment(wl, yy, mm, dd, tid, stid, name):
                             p_status = p.wait()
 			if key[row] == "View":
                             if tmp_t[0]:
-                                fl = db_path() + "/attachment/" 
+	                        fl = yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+                                fl = db_path() + "/attachment/"+fl +"/"
                                 fl = fl + os.path.basename(tmp_t[0])
                                 p = subprocess.Popen(["evince", fl], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                                 (output, err) = p.communicate() 
                                 p_status = p.wait()
 			if key[row] == "Delete":
                             if tmp_t[0]:
-                                fl = db_path() + "/attachment/" 
+	                        fl = yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+                                fl = db_path() + "/attachment/"+fl +"/"
                                 fl = fl + os.path.basename(tmp_t[0])
                                 p = subprocess.Popen(["rm", fl], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                                 (output, err) = p.communicate() 
@@ -809,8 +811,10 @@ def confirm(wl, msg, y1):
 
 def one_line(i, yy, mm, dd, t, st):
 	b = " "
-	s = str(i) + b + yy + "-"
-        s = s + mm.zfill(2) + "-" + dd.zfill(2) + b
+        day = datetime.date(int(yy), int(mm), int(dd)).strftime("%a")
+        v = datetime.date(int(yy), int(mm), int(dd)).isocalendar()[1]
+	s = str(i).zfill(3) + b + "W" + str(v).zfill(2) + b + day + b + yy + "-"
+        s = s + mm.zfill(2) + "-" + dd.zfill(2) + b 
 	tarr = st["start"].split(":")
         s = s + tarr[0].zfill(2) + ":" + tarr[1].zfill(2) + b
 	tarr = st["end"].split(":")
