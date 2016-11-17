@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-import sys
+import sys, tempfile
 import subprocess
 import readline
 import glob
@@ -82,9 +82,9 @@ def db_init(path):
 		f.close()
 		
 	db_folder = os.path.dirname(os.path.realpath(db_file_name))
-	detail = db_folder + "/detail" 
-	if not os.path.exists(detail):
-    		os.makedirs(detail)
+#detail	detail = db_folder + "/detail" 
+#detail	if not os.path.exists(detail):
+#detail    		os.makedirs(detail)
 
 def db_name():
 	return db_file_name
@@ -337,11 +337,11 @@ def sorted_key_list(data):
 	return lst, list(set(types)), list(set(statuses)), list(set(projs)), list(set(title))
 
 def rm_task_kernel(data, tid, stid, yy, mm, dd):
-	strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-        if os.path.isfile(strn):
-            p = subprocess.Popen(["rm",strn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (output, err) = p.communicate() 
-            p_status = p.wait()
+#detail	strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+#detail        if os.path.isfile(strn):
+#detail            p = subprocess.Popen(["rm",strn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#detail            (output, err) = p.communicate() 
+#detail            p_status = p.wait()
 	
         attach = data[yy][mm][dd][tid][stid]["attachment"]
         if attach:
@@ -493,11 +493,11 @@ def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, y
 		subtask["detail"] = "" #dat[yy][mm][dd][taskid][subtaskid]["detail"]
 		subtask["attachment"] = dat[yy][mm][dd][taskid][subtaskid]["attachment"]
 	#if subtask["detail"] == "yes":
-	str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-	str2 = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
-        if os.path.isfile(str1):
-                os.system("cp " + "'%s'"%str1 + " " + "'%s'"%str2)	
-	        subtask["detail"] = str2
+#detail	str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+#detail	str2 = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
+#detail        if os.path.isfile(str1):
+#detail                os.system("cp " + "'%s'"%str1 + " " + "'%s'"%str2)	
+#detail	        subtask["detail"] = str2
 	
 	modify_task(wl, dat, ny, nm, nd, ntid, nstid)
 
@@ -632,7 +632,7 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 	c = None
 	t = d[yy][mm][dd][tid]
 	st = t[stid]
-	strn = db_path() + "/detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
+#detail	strn = db_path() + "/detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
 	
 	key = []
 	tmp_t = []
@@ -665,7 +665,10 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 		y = y1+2
 		for i, opt in enumerate(key):
 		      stn = key[i]+":"
-		      stn = stn.ljust(17) + tmp_t[i]
+                      stt = tmp_t[i].split('\n', 1)[0] 
+                      if len(stt) > 20:
+                          stt = stt[:20] + "..."
+		      stn = stn.ljust(17) + stt
 		      if i  == row:
 			  y = wr_win(wl, y, 1, stn, h)
 			  (yh, xh) = wl.getyx()
@@ -694,13 +697,23 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			elif key[row] == "end":
 			    tmp_t[row],y = curses_time_input(wl, yh, 1, stn, tmp_t[row])
 			elif key[row] == "detail": 
-                            p = subprocess.Popen("gvim " +  "'%s'"%strn, stdout=subprocess.PIPE, shell=True)
+                            try:
+                                initial_message = tmp_t[row] 
+                            except:
+                                initial_message = ""
+                            with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
+                                tf.write(initial_message)
+                                tf.flush()
+                                p = subprocess.Popen("gvim" + " " + tf.name, stdout=subprocess.PIPE, shell=True, env=os.environ)
+                                (output, err) = p.communicate()  
+                                p_status = p.wait()
 
-                            (output, err) = p.communicate()  
-                            p_status = p.wait()
-
-        		    if os.path.isfile(strn):
-                                tmp_t[row] = strn
+                                #editor = os.environ.get('EDITOR','vim')
+                                #env=os.environ
+                                #subprocess.call('%s %s' % (editor, tf.name), shell=True)
+                                tf.seek(0)
+                                tmp_t[row] = tf.read()
+                            
 			elif key[row] == "attachment":
                             tmp_t[row] = modify_attachment(wl, yy, mm, dd, tid, stid, tmp_t[row])
 			else:
