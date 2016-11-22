@@ -492,12 +492,6 @@ def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, y
 		subtask["link"] = dat[yy][mm][dd][taskid][subtaskid]["link"]
 		subtask["detail"] = dat[yy][mm][dd][taskid][subtaskid]["detail"]
 		subtask["attachment"] = dat[yy][mm][dd][taskid][subtaskid]["attachment"]
-	#if subtask["detail"] == "yes":
-#detail	str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-#detail	str2 = db_path() + "/detail/" +ny+"-"+nm+"-"+nd+"-"+ntid+"-"+nstid
-#detail        if os.path.isfile(str1):
-#detail                os.system("cp " + "'%s'"%str1 + " " + "'%s'"%str2)	
-#detail	        subtask["detail"] = str2
 	
 	modify_task(wl, dat, ny, nm, nd, ntid, nstid)
 
@@ -632,7 +626,6 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 	c = None
 	t = d[yy][mm][dd][tid]
 	st = t[stid]
-#detail	strn = db_path() + "/detail/"+yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
 	
 	key = []
 	tmp_t = []
@@ -707,10 +700,6 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
                                 p = subprocess.Popen("gvim" + " " + tf.name, stdout=subprocess.PIPE, shell=True, env=os.environ)
                                 (output, err) = p.communicate()  
                                 p_status = p.wait()
-
-                                #editor = os.environ.get('EDITOR','vim')
-                                #env=os.environ
-                                #subprocess.call('%s %s' % (editor, tf.name), shell=True)
                                 tf.seek(0)
                                 tmp_t[row] = tf.read()
                             
@@ -838,165 +827,3 @@ def one_line(i, yy, mm, dd, t, st):
 
 	return s
 
-############################ not used any more
-
-#def find_new(key, d): 
-#	lst = []
-#	for yy in d.keys():
-#		if key == yy:
-#			lst.append(d[yy])
-#		for mm in d[yy].keys():
-#			if key == mm:
-#				lst.append(d[yy][mm])
-#			for dd in d[yy][mm].keys():
-#				if key == dd:
-#					lst.append(d[yy][mm][dd])
-#				for tid in d[yy][mm][dd].keys():
-#					if key == tid:
-#						lst.append(d[yy][mm][dd][tid])
-#					for name in d[yy][mm][dd][tid].keys():
-#						if key == name:
-#							lst.append(d[yy][mm][dd][tid][name])
-#	print lst
-#	return lst
-#def add_time_new(yy, mm, dd, start, dur):
-#	(h, m) = tuple(start.split(':'))
-#	(h1, m1) = tuple(dur.split(':'))
-#	h1 = int(h1)
-#	m1 = int(m1)
-#	if dur[0] == "-":
-#	  m1 = -m1
-#        t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
-#        t = t + datetime.timedelta(hours=h1, minutes = m1)
-#	return str(t.time().hour) + ":" + str(t.time().minute)
-#def duration_time(tsk):
-#	
-#	FMT = '%H:%M'
-#	try:
-#		tdelta = datetime.datetime.strptime(tsk["end"], FMT) - datetime.datetime.strptime(tsk["start"], FMT)
-#		return int(tdelta.seconds) / 60
-#	except:
-#		print "error in duration_time"
-#		sys.exit(1)
-#
-#def new_time(wl, key, v, yy, mm, dd, offset, ypos):
-#	try:
-#		(h, m) = tuple(v[key].split(':'))
-#        	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
-#	except:
-#		(h, m) = tuple(offset.split(':'))
-#        	t = datetime.datetime(int(yy), int(mm), int(dd), int(h), int(m))
-#
-#        timeflag = True
-#	ypos1 = ypos
-#        while timeflag:
-#                st = str(t.time().hour) + ":" + str(t.time().minute)
-#		ypos = wr_win(wl, ypos1, 1, key + ": " + st, n)
-#		newt, ypos = curses_raw_input(wl, ypos, 1, "Add minute :")
-#                if not newt.strip():
-#                        timeflag = False
-#                else:
-#                        try: 
-#                                t = t + datetime.timedelta(minutes=int(newt))
-#                        except:
-#                                continue
-#                                
-#                        
-#	return str(t.time().hour) + ":" + str(t.time().minute), ypos
-
-#def get_input_for(wl, key, tt, d, ypos):
-#	try:
-#		st = tt[key]
-#	except:
-#		st = ""
-#	lst = list(set(find(key, d)))	
-#	text=key + ": "
-#	stt, ypos = curses_raw_input(wl, ypos, 1, text, st, lst)
-#	return stt.strip(), ypos
-#
-#def get_input_for_new(txt, deflt, lst):
-#	readline.set_startup_hook(lambda: readline.insert_text(deflt))
-#	t = tabCompleter()
-#	t.createListCompleter(lst)
-#	readline.set_completer_delims('\t')
-#	readline.parse_and_bind("tab: complete")
-#	readline.set_completer(t.listCompleter)
-#	strng = "Enter " + txt + ": " 
-#	return raw_input(strng)
-
-	
-#def get_taskid(d):
-#	try:
-#		id = len(d.keys())
-#	except:
-#		return 1
-#	tbl = []
-#	lst = []
-#	print "Add subtask or create new task: "
-#	for tid in d.keys():
-#		for stid in d[tid].keys():
-#			if "subtask-" in stid:
-#				tbl.append([len(lst), d[tid]["task title"], d[tid]["project"], d[tid][stid]["start"], d[tid][stid]["end"], d[tid][stid]["status"], d[tid]["type"]])
-#		lst.append(int(tid.split("-")[1]))
-#	print tabulate(tbl)
-#	dflt_txt = str(len(d.keys()))
-#	readline.set_startup_hook(lambda: readline.insert_text(dflt_txt))
-#	task_id = raw_input("Enter task no.")
-#	try:
-#		task_id = int(task_id)
-#	except:
-#		print "error"
-#		sys.exit(0)
-#	if task_id < len(lst):
-#		task_id = lst[task_id]
-#	else:
-#		task_id = len(lst) + 1
-#	return task_id
-
-#def edit_task_kernel(wl, data, tid, stid, yy, mm, dd, ypos):
-#	yy = str(yy)
-#	mm = str(mm)
-#	dd = str(dd)
-#	taskid =  str(tid)
-#	subtaskid = str(stid)
-#	lastend = 9 
-#
-#	try:
-#		data[yy]
-#	except:	
-#		data[yy] = {}
-#	try:
-#		data[yy][mm]
-#	except:
-#		data[yy][mm] = {}
-#	try:
-#		data[yy][mm][dd]
-#	except:
-#		data[yy][mm][dd] = {}
-#	try:
-#		task = data[yy][mm][dd][taskid]
-#	except:
-#		task = data[yy][mm][dd][taskid]= {}
-#	try:
-#		subtask =task[subtaskid]
-#	except:
-#		subtask = task[subtaskid] = {}
-#	startt = last_task_end_time(data, yy, mm, dd)	
-#	task["project"], ypos = get_input_for(wl, "project", task, data, ypos)
-#	task["task title"], ypos = get_input_for(wl, "task title", task, data, ypos)
-#	task["type"], ypos = get_input_for(wl, "type", task, data, ypos)
-#	subtask["subtask title"], ypos = get_input_for(wl, "subtask title", subtask, data, ypos)
-#	subtask["start"], ypos = new_time(wl, "start", subtask, yy, mm, dd, startt, ypos)
-#	endt = add_time(yy, mm, dd, subtask["start"], 60)
-#	subtask["end"], ypos = new_time(wl, "end", subtask, yy, mm, dd, endt, ypos)
-#	subtask["link"], ypos = get_input_for(wl, "link", subtask, data, ypos)
-#	subtask["detail"], ypos = get_input_for(wl, "detail", subtask, data, ypos)
-#	if subtask["detail"] == "yes":
-#		strn = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
-#		os.system("gvim " + strn)	
-#	subtask["attachment"], ypos = get_input_for(wl, "attachment", subtask, data, ypos)
-#	subtask["status"], ypos = get_input_for(wl, "status", subtask, data, ypos)
-#	subtask["flex"], ypos = get_input_for(wl, "flex", subtask, data, ypos)
-#
-#	file_write(db_name(), data)
-#	return ypos
