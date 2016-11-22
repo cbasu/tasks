@@ -490,7 +490,7 @@ def paste_task_kernel(wl, dat, tid, stid, yy, mm, dd, ntid, nstid, ny, nm, nd, y
 		subtask["start"] = dat[yy][mm][dd][taskid][subtaskid]["start"]
 		subtask["end"] = dat[yy][mm][dd][taskid][subtaskid]["end"]
 		subtask["link"] = dat[yy][mm][dd][taskid][subtaskid]["link"]
-		subtask["detail"] = "" #dat[yy][mm][dd][taskid][subtaskid]["detail"]
+		subtask["detail"] = dat[yy][mm][dd][taskid][subtaskid]["detail"]
 		subtask["attachment"] = dat[yy][mm][dd][taskid][subtaskid]["attachment"]
 	#if subtask["detail"] == "yes":
 #detail	str1 = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+tid+"-"+stid
