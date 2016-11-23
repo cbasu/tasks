@@ -5,6 +5,7 @@ import sys, tempfile
 import subprocess
 import readline
 import glob
+from urllib2 import urlparse
 
 import random
 import json
@@ -667,8 +668,10 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
 			  (yh, xh) = wl.getyx()
 		      else:
 			  y = wr_win(wl, y, 1, stn, n)
-
-		y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q): ", n)
+                if key[row] == "attachment":
+		    y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q), download(d): ", n)
+                else:
+		    y = wr_win(wl, ymax-4, 2, "save and quit (x), quit (q): ", n)
 		c = wl.getch()
 		if c == curses.KEY_DOWN:
 			row = next_row(row, len(key))
@@ -704,7 +707,22 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
                                 tmp_t[row] = tf.read()
                             
 			elif key[row] == "attachment":
-                            tmp_t[row] = modify_attachment(wl, yy, mm, dd, tid, stid, tmp_t[row])
+			    
+                            tmp,y = curses_raw_input(wl, yh, 1, stn, tmp_t[row])
+                            if tmp_t[row] != tmp:
+                                folder = yy+mm+dd+"/"
+                                pat = db_path() + "/attachment/"+folder
+                                p = subprocess.Popen(["mkdir","-p",pat], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                (output, err) = p.communicate() 
+                                p_status = p.wait()
+
+                                p = subprocess.Popen(["wget","-N","-P",pat, tmp], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                (output, err) = p.communicate() 
+                                p_status = p.wait()
+                                fl = os.path.basename(tmp)
+                                tmp_t[row] = "file://"+pat+fl
+                            
+                            #tmp_t[row] = modify_attachment(wl, yy, mm, dd, tid, stid, tmp_t[row])
 			else:
 			    tmp_t[row],y = curses_raw_input(wl, yh, 1, stn, tmp_t[row], lst)
 			row = next_row(row, len(key))
