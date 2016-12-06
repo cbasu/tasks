@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 
 import os
 import sys, tempfile
@@ -6,6 +7,8 @@ import subprocess
 import readline
 import glob
 from urllib2 import urlparse
+import codecs
+
 
 import random
 import json
@@ -25,6 +28,7 @@ from copy import deepcopy
 from operator import itemgetter
 import string
 
+koden=sys.stdin.encoding
 
 ESC = 27
 BACKSPACE = 263    #127
@@ -698,7 +702,7 @@ def modify_task(wl, d, yy, mm, dd, tid, stid):
                             except:
                                 initial_message = ""
                             with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
-                                tf.write(initial_message)
+                                tf.write(initial_message.encode(koden))
                                 tf.flush()
                                 p = subprocess.Popen("gvim" + " " + tf.name, stdout=subprocess.PIPE, shell=True, env=os.environ)
                                 (output, err) = p.communicate()  

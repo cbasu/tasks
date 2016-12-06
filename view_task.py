@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 
 from support import *
 
@@ -25,7 +26,7 @@ def make_show_list(dat, typ, prj, title, stat):
 						table_index.append(index)
 	return (tbl, table_index, lst)
 
-def make_report(dat, typ, prj, title, stat):
+def make_report(f, dat, typ, prj, title, stat):
 	lst, types, stats, projs, titles = sorted_key_list(data)
 	tbl = []
 	table_index = []
@@ -34,43 +35,43 @@ def make_report(dat, typ, prj, title, stat):
         c = "="
         h = "-"
         n = "\n"
-        f = open("/tmp/tmp12341",'w')
+#        f = open("/tmp/tmp12341",'w')
         f.write("*"*10 + b + "Report" + b + "*"*10 + n)
-	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
-		td = data[yy][mm][dd][task]
-		new_dt = datetime.date(int(yy),int(mm),int(dd))
-		if td["type"] == typ or typ == "all":
-			std = td[subtask]
-			if td["project"] == prj or prj == "all":
-				if td["task title"] == title or title == "all":
-					if std["status"] == stat or stat == "all":
-						l = len(table_index)
+        for index, (yy,mm,dd,task, subtask) in enumerate(lst):
+                td = data[yy][mm][dd][task]
+                new_dt = datetime.date(int(yy),int(mm),int(dd))
+                if td["type"] == typ or typ == "all":
+                        std = td[subtask]
+                        if td["project"] == prj or prj == "all":
+                                if td["task title"] == title or title == "all":
+                                        if std["status"] == stat or stat == "all":
+                                                l = len(table_index)
                                                 strn = yy + h + mm + h + dd + n
                                                 f.write(c*len(strn)+n)
                                                 f.write("No.: " + str(l).zfill(3)+n)
                                                 f.write("Date: " + strn)
-                                                f.write("Start: " + std["start"] + n)
-                                                f.write("End: " + std["end"] + n)
-                                                f.write("Project: " + td["project"] + n)
-                                                strn = filter(lambda x: x in string.printable, td["task title"])
-                                                f.write("Task: " + strn + n)
-                                                strn = filter(lambda x: x in string.printable, std["subtask title"])
-                                                f.write("Sub Task: " + strn + n)
-                                                f.write("Link: " + std["link"] + n)
-                                                f.write("Attachment: " + std["attachment"] + n)
-                                                filename = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask
-                                                try:
-                                                    fl = open(filename)
-                                                    f.write("Description:" + n)
-                                                    f.write(fl.read())
-                                                    fl.close()
-                                                except:
-                                                    pass
-                                                f.write(n)
-
-						tbl.append(one_line(l, yy, mm, dd, td, std))
-						table_index.append(index)
-        f.close()
+                                                f.write("Start: " + std["start"].encode(koden) + n)
+                                                f.write("End: " + std["end"].encode(koden) + n)
+                                                f.write("Project: " + td["project"].encode(koden) + n)
+                                                f.write("Task: " + td["task title"].encode(koden) + n)
+                                                f.write("Sub Task: " + std["subtask title"].encode(koden) + n)
+                                                f.write("Detail: " + n + std["detail"].encode(koden) + n )
+                                                f.write("Link: " + std["link"].encode(koden) + n)
+                                                f.write("Attachment: " + std["attachment"].encode(koden) + n)
+#                                                filename = db_path() + "/detail/" +yy+"-"+mm+"-"+dd+"-"+task+"-"+subtask
+#                                                try:
+#                                                    fl = open(filename)
+#                                                    f.write("Description:" + n)
+#                                                    f.write(fl.read())
+#                                                    fl.close()
+#                                                except:
+#                                                    pass
+#                                                f.write(n)
+#
+                                                tbl.append(one_line(l, yy, mm, dd, td, std))
+                                                table_index.append(index)
+        #f.close()
+        f.flush()
 	return 
 def list_range(r, l):
 	w = 10
@@ -213,11 +214,12 @@ def runmenu(dat, menu, parent):
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			nrow = rows_len(row_arr)
 		elif x == ord('r'):
-                        make_report(dat, typ, prj, title, stat)
-                        p = subprocess.Popen("gvim /tmp/tmp12341", stdout=subprocess.PIPE, shell=True)
+                        with tempfile.NamedTemporaryFile(suffix=".tmp") as f:
+                            make_report(f, dat, typ, prj, title, stat)
+                            p = subprocess.Popen("gvim " + f.name, stdout=subprocess.PIPE, shell=True)
 
-                        (output, err) = p.communicate()  
-                        p.wait()
+                            (output, err) = p.communicate()  
+                            p.wait()
 
 		elif x == ord('d'):
 			if confirm(screen, "Do you want to delete this task (y/n): ", ymax-4) == "y":
@@ -291,7 +293,6 @@ if __name__ == '__main__':
 	except:
 		print "error"
 		sys.exit(1)
-
 	# Main program
 	menu = {}
 
