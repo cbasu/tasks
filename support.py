@@ -183,14 +183,16 @@ def get_keys(row, rows):
 def get_the_date(wl, v, y):
 	dt = datetime.date.today()
 	dateflag = True
+	b = " "
 	while dateflag:
 		#wl.clear()
 		ypos = y
 		yy = str(dt.year)
 		mm = str(dt.month)
 		dd = str(dt.day)
-		#ypos = wr_win(wl, ypos, 1, txt, n)
-		ypos = wr_win(wl, ypos, 1, "Existing tasks for " +str(dt) + " :", n)
+                day = dt.strftime("%a")
+                week = "W-"+str(dt.isocalendar()[1])
+		ypos = wr_win(wl, ypos, 1, "Existing tasks for "+str(dt)+b+day+b+week+ " :", n)
 		lst, ypos = display_daily_task_sorted(wl, v, yy, mm, dd, ypos+1)
 		ypos = wr_win(wl, ypos, 1, "", n)
 		days, ypos = curses_raw_input(wl, ymax-4, startx, "Add days to " + str(dt) + " :")
