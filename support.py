@@ -180,8 +180,9 @@ def get_keys(row, rows):
 
 	      
 
-def get_the_date(wl, v, y):
-	dt = datetime.date.today()
+def get_the_date(wl, v, y, dt = None):
+        if dt is None: 
+	        dt = datetime.date.today()
 	dateflag = True
 	b = " "
 	while dateflag:
@@ -278,8 +279,8 @@ def next_task_id(v):
 			maxid = i
 	return "task-" + str(maxid+1)
 
-def get_task_subtask_id(wl, v, ypos):
-	(y, m, d), lst, ypos = get_the_date(wl, v, ypos)
+def get_task_subtask_id(wl, v, ypos, dt = None):
+	(y, m, d), lst, ypos = get_the_date(wl, v, ypos, dt)
 	tk =""
 	stk = ""
 	try:

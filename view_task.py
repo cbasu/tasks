@@ -258,7 +258,9 @@ def runmenu(dat, menu, parent):
 		elif x == ord('p'):
 			try:
 			      (yy,mm,dd,task,subtask) = copied_task
-			      ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1)
+                              nday = datetime.date(int(yy), int(mm), int(dd))
+                              nday = nday + datetime.timedelta(days=1)
+			      ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1, nday)
 			      paste_task_kernel(screen, dat, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
 			      copied_task = None
 			except:
