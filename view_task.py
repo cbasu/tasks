@@ -257,11 +257,12 @@ def runmenu(dat, menu, parent):
 			nrow = rows_len(row_arr)
 		elif x == ord('p'):
 			try:
-			      (yy,mm,dd,task,subtask) = copied_task
+			      (yy,mm,dd,task,subtask) = get_keys(row, row_arr)
+			      (oyy,omm,odd,otask,osubtask) = copied_task
                               nday = datetime.date(int(yy), int(mm), int(dd))
                               nday = nday + datetime.timedelta(days=1)
 			      ypos, (ntid, nstid, ny, nm, nd) = get_task_subtask_id(screen, dat, 1, nday)
-			      paste_task_kernel(screen, dat, task, subtask, yy, mm, dd, ntid, nstid, ny, nm, nd, ypos)
+			      paste_task_kernel(screen, dat, otask, osubtask, oyy, omm, odd, ntid, nstid, ny, nm, nd, ypos)
 			      copied_task = None
 			except:
 			      pass
@@ -274,7 +275,10 @@ def runmenu(dat, menu, parent):
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			nrow = rows_len(row_arr)
 		elif x == ord('n'):
-			add_newtask(screen, dat, typ)
+			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
+                        nday = datetime.date(int(yy), int(mm), int(dd))
+
+			add_newtask(screen, dat, typ, nday)
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			nrow = rows_len(row_arr)
 

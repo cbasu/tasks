@@ -162,12 +162,17 @@ def wr_win(win, ypos, xpos, txt, higlight):
 def row_for_today(rows):
 	row = 0
 	dt = datetime.date.today()
-	yy_today = str(dt.year)
-	mm_today = str(dt.month)
-	dd_today = str(dt.day)
+	#yy_today = str(dt.year)
+	#mm_today = str(dt.month)
+	#dd_today = str(dt.day)
+	yy_today = dt.year
+	mm_today = dt.month
+	dd_today = dt.day
 	for row, val in enumerate(rows[0]):
 	      (yy,mm,dd,task,subtask) = rows[2][rows[1][row]]
-	      if yy == yy_today and mm == mm_today and dd == dd_today:
+	      #if yy == yy_today and mm == mm_today and dd == dd_today:
+	#	    break
+	      if int(yy) >= yy_today and int(mm) >= mm_today and int(dd) >= dd_today:
 		    break
 	return row
 
@@ -617,13 +622,13 @@ def curses_time_input(wl, ypos, xpos, txt, dfl_inp=""):
             
 	return st, y		
 
-def add_newtask(wl, d, tsk_typ):
+def add_newtask(wl, d, tsk_typ, dt = None):
 	var = 1
 	curses.echo()
 	wl.clear()
 	title = "New Task"
 	y = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT)
-	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, y+1) 
+	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, y+1, dt) 
 	ypos = edit_task_kernel(wl, d, tid, stid, yy, mm, dd, ypos, tsk_typ)
 	curses.noecho() 
 
