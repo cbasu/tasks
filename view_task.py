@@ -8,13 +8,13 @@ copied_task = None
 
 
 def make_show_list(dat, typ, prj, title, stat):
-	lst, types, stats, projs, titles = sorted_key_list(data)
+	lst, types, stats, projs, titles = sorted_key_list(dat)
 	tbl = []
 	table_index = []
 	l = 0
 	b = " "
 	for index, (yy,mm,dd,task, subtask) in enumerate(lst):
-		td = data[yy][mm][dd][task]
+		td = dat[yy][mm][dd][task]
 		new_dt = datetime.date(int(yy),int(mm),int(dd))
 		if td["type"] == typ or typ == "all":
 			std = td[subtask]
@@ -24,10 +24,18 @@ def make_show_list(dat, typ, prj, title, stat):
 						l = len(table_index)
 						tbl.append(one_line(l, yy, mm, dd, td, std))
 						table_index.append(index)
-	return (tbl, table_index, lst)
+	dt = datetime.date.today()
+	yy_today = dt.year
+	mm_today = dt.month
+	dd_today = dt.day
+	for row, val in enumerate(tbl):
+	      (yy,mm,dd,task,subtask) = lst[table_index[row]]
+	      if int(yy) >= yy_today and int(mm) >= mm_today and int(dd) >= dd_today:
+		    break
+	return (tbl, table_index, lst, row)
 
 def make_report(f, dat, typ, prj, title, stat):
-	lst, types, stats, projs, titles = sorted_key_list(data)
+	lst, types, stats, projs, titles = sorted_key_list(dat)
 	tbl = []
 	table_index = []
 	l = 0
@@ -38,7 +46,7 @@ def make_report(f, dat, typ, prj, title, stat):
 #        f = open("/tmp/tmp12341",'w')
         f.write("*"*10 + b + "Report" + b + "*"*10 + n)
         for index, (yy,mm,dd,task, subtask) in enumerate(lst):
-                td = data[yy][mm][dd][task]
+                td = dat[yy][mm][dd][task]
                 new_dt = datetime.date(int(yy),int(mm),int(dd))
                 if td["type"] == typ or typ == "all":
                         std = td[subtask]
@@ -143,7 +151,7 @@ def runmenu(dat, menu, parent):
         filt = 0
 	row_arr = make_show_list(dat, typ, prj, title, stat)
 	nrow = rows_len(row_arr)
-	row = row_for_today(row_arr)
+	row = row_arr[3] #row_for_today(row_arr)
 
 	x = None 
 	msg1 = "commands - d(elete), c(lose), p(aste), y(ank), n(ew), q(uit): "
@@ -166,7 +174,8 @@ def runmenu(dat, menu, parent):
 			if ind == len(menu): ind = 0
 			typ = lst[ind]
 			row_arr = make_show_list(dat, typ, prj, title, stat)
-			row = row_for_today(row_arr)
+			#row = row_for_today(row_arr)
+	                row = row_arr[3] #row_for_today(row_arr)
 			nrow = rows_len(row_arr)
 		elif x == curses.KEY_BTAB:
 			stat = "open"
@@ -180,7 +189,8 @@ def runmenu(dat, menu, parent):
 			if ind < 0 : ind = len(menu) - 1
 			typ = lst[ind]
 			row_arr = make_show_list(dat, typ, prj, title, stat)
-			row = row_for_today(row_arr)
+			#row = row_for_today(row_arr)
+	                row = row_arr[3] #row_for_today(row_arr)
 			nrow = rows_len(row_arr)
 		elif x == curses.KEY_RIGHT:
 			row = 0
@@ -190,7 +200,8 @@ def runmenu(dat, menu, parent):
 			if ind > len(menu[typ])-1: ind = 0
 			stat = lst[ind]
 			row_arr = make_show_list(dat, typ, prj, title, stat)
-			row = row_for_today(row_arr)
+			#row = row_for_today(row_arr)
+	                row = row_arr[3] #row_for_today(row_arr)
 			nrow = rows_len(row_arr)
 		elif x == curses.KEY_LEFT:
 			row = 0
@@ -200,7 +211,8 @@ def runmenu(dat, menu, parent):
 			if ind < 0: len(menu[typ]) - 1
 			stat = lst[ind]
 			row_arr = make_show_list(dat, typ, prj, title, stat)
-			row = row_for_today(row_arr)
+			#row = row_for_today(row_arr)
+	                row = row_arr[3] #row_for_today(row_arr)
 			nrow = rows_len(row_arr)
 		elif x == curses.KEY_UP:
 			row = row - 1
@@ -237,7 +249,8 @@ def runmenu(dat, menu, parent):
                             filt = filt + 1
                         
 			row_arr = make_show_list(dat, typ, prj, title, stat)
-			row = row_for_today(row_arr)
+			#row = row_for_today(row_arr)
+	                row = row_arr[3] #row_for_today(row_arr)
 			nrow = rows_len(row_arr)
                 elif x == ord('-'):
 			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
@@ -249,7 +262,8 @@ def runmenu(dat, menu, parent):
                             filt = filt - 1
                         
 			row_arr = make_show_list(dat, typ, prj, title, stat)
-			row = row_for_today(row_arr)
+			#row = row_for_today(row_arr)
+	                row = row_arr[3] #row_for_today(row_arr)
 			nrow = rows_len(row_arr)
 		elif x == ord('y'):
 			copied_task = get_keys(row, row_arr)
