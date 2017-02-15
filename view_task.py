@@ -222,7 +222,11 @@ def runmenu(dat, menu, parent):
 			if row ==  nrow: row = nrow -1
 		elif x == ord('\n'):
 			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
-			modify_task(screen, dat, yy, mm, dd, task, subtask)
+			past = past_task(yy,mm,dd, dat[yy][mm][dd][task][subtask]["end"]) 
+			if past :
+				view_task(screen, dat, yy, mm, dd, task, subtask)
+                        else:
+				modify_task(screen, dat, yy, mm, dd, task, subtask)
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			nrow = rows_len(row_arr)
 		elif x == ord('r'):

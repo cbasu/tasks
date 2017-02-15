@@ -183,6 +183,20 @@ def rows_len(rows):
 def get_keys(row, rows):
       return rows[2][rows[1][row]]
 
+def past_task(y, m, d, t):
+	y = int(y)
+	m = int(m)
+	d = int(d)
+	(h,mi) = t.split(":")
+	h = int(h)
+	mi = int(mi)
+        r = True
+        dt = datetime.datetime(y, m, d, h, mi)
+	now = datetime.datetime.now()
+        if dt > now:
+            r = False
+	return r
+
 	      
 
 def get_the_date(wl, v, y, dt = None):
@@ -631,6 +645,75 @@ def add_newtask(wl, d, tsk_typ, dt = None):
 	ypos, (tid, stid, yy, mm, dd) = get_task_subtask_id(wl, d, y+1, dt) 
 	ypos = edit_task_kernel(wl, d, tid, stid, yy, mm, dd, ypos, tsk_typ)
 	curses.noecho() 
+
+def view_task(wl, d, yy, mm, dd, tid, stid):
+	wl.clear()
+	wl.refresh()
+	title = "view task"
+	c = None
+	t = d[yy][mm][dd][tid]
+	st = t[stid]
+	
+	key = []
+	tmp_t = []
+	key.append("project")
+	key.append("type")
+	key.append("task title")
+	key.append("subtask title")
+	key.append("status")
+	key.append("flex")
+	key.append("start")
+	key.append("end")
+	key.append("link")
+	key.append("detail")
+	key.append("attachment")
+	tmp_t.append(t["project"])
+	tmp_t.append(t["type"])
+	tmp_t.append(t["task title"])
+	tmp_t.append(st["subtask title"])
+	tmp_t.append(st["status"])
+	tmp_t.append(st["flex"])
+	tmp_t.append(st["start"])
+	tmp_t.append(st["end"])
+	tmp_t.append(st["link"])
+	tmp_t.append(st["detail"])
+	tmp_t.append(st["attachment"])
+
+	row = 0
+	y1 = wr_win(wl, 2, xmax/2 - len(title)/2, title, curses.A_STANDOUT) ## Title
+	while c != ord('q') :
+		y = y1+2
+		for i, opt in enumerate(key):
+		      stn = key[i]+":"
+                      stt = tmp_t[i].split('\n', 1)[0] 
+                      if key[i] == "detail" and  len(stt) > 20:
+                          stt = stt[:20] + "..."
+		      stn = stn.ljust(17) + stt
+		      if i  == row:
+			  y = wr_win(wl, y, 1, stn, h)
+			  (yh, xh) = wl.getyx()
+		      else:
+			  y = wr_win(wl, y, 1, stn, n)
+                
+		y = wr_win(wl, ymax-4, 2, "quit (q): ", n)
+		c = wl.getch()
+		if c == curses.KEY_DOWN:
+			row = next_row(row, len(key))
+		elif c == curses.KEY_UP:
+			if row > 0:
+			      row = row - 1
+			else:
+			    row = 0
+		elif c == ord('\n') and key[row] == "detail":
+                        if tmp_t[row]: 
+                            with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
+                                tf.write(tmp_t[row].encode(koden))
+                                tf.flush()
+                                p = subprocess.Popen("gview" + " " + tf.name, stdout=subprocess.PIPE, shell=True, env=os.environ)
+                                (output, err) = p.communicate()  
+                                p_status = p.wait()
+                                tf.seek(0)
+                                tf.read()
 
 def modify_task(wl, d, yy, mm, dd, tid, stid):
 	wl.clear()
