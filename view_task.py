@@ -154,7 +154,7 @@ def runmenu(dat, menu, parent):
 	row = row_arr[3] #row_for_today(row_arr)
 
 	x = None 
-	msg1 = "commands - d(elete), c(lose), p(aste), y(ank), n(ew), q(uit): "
+	msg1 = "commands - d(elete), s(et status), p(aste), y(ank), n(ew), q(uit): "
 	while x != ord("q") : 
 		try:
 		      main_list(screen, dat, menu, typ, stat, row, row_arr)
@@ -285,12 +285,26 @@ def runmenu(dat, menu, parent):
 			      pass
 			row_arr = make_show_list(dat, typ, prj, title, stat)
 			nrow = rows_len(row_arr)
-		elif x == ord('c'):
+		elif x == ord('s'):
 			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
-			dat[yy][mm][dd][task][subtask]["status"] = "close"
-			file_write(db_name(), dat)
-			row_arr = make_show_list(dat, typ, prj, title, stat)
-			nrow = rows_len(row_arr)
+		        wr_win(screen, ymax-5, startx, "set status, o(pen)/p(ending)/c(lose): ", n)
+	                while True : 
+                            status = screen.getch()
+                            try:
+                                if status == ord("c"):
+                                    dat[yy][mm][dd][task][subtask]["status"] = "close"
+                                    break
+                                elif status == ord("p"):
+                                    dat[yy][mm][dd][task][subtask]["status"] = "pending"
+                                    break
+                                elif status == ord("o"):
+                                    dat[yy][mm][dd][task][subtask]["status"] = "open"
+                                    break
+                            except:
+                                pass
+                        file_write(db_name(), dat)
+                        row_arr = make_show_list(dat, typ, prj, title, stat)
+                        nrow = rows_len(row_arr)
 		elif x == ord('n'):
 			(yy,mm,dd,task,subtask) = get_keys(row, row_arr)
                         nday = datetime.date(int(yy), int(mm), int(dd))

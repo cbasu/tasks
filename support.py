@@ -704,7 +704,8 @@ def view_task(wl, d, yy, mm, dd, tid, stid):
 			      row = row - 1
 			else:
 			    row = 0
-		elif c == ord('\n') and key[row] == "detail":
+		elif c == ord('\n'):
+                    if key[row] == "detail":
                         if tmp_t[row]: 
                             with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
                                 tf.write(tmp_t[row].encode(koden))
@@ -714,6 +715,7 @@ def view_task(wl, d, yy, mm, dd, tid, stid):
                                 p_status = p.wait()
                                 tf.seek(0)
                                 tf.read()
+                        
 
 def modify_task(wl, d, yy, mm, dd, tid, stid):
 	wl.clear()
